@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>HTML DOM elements and attributes support</title>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+<style type="text/css">
+body, p, h1, h2, span {
+	font-family: Lato, sans-serif, Arial;
+}
+p, table {
+	margin-right: 15em;
+}
+table {
+	border-collapse:collapse;
+}
+span.true, span.false {
+	display:inline-block;
+	height:16px;
+	width:16px;
+	/*	font-family:Webdings;	*/
+	vertical-align:text-bottom;
+}
+span.true {
+	background: url(accept.png) center center;
+}
+span.true:before {
+/*	content:"\0061";	*/
+	content:" ";
+}
+span.true:before, tr.true, span.true.example {
+	color: #393;
+	background-color:#cfc;
+}
+span.false {
+	background: url(delete_edit.gif) center center;
+}
+span.false:before {
+/*	content:"\0072";	*/
+	content:" ";
+}
+span.false:before, tr.false, span.false.example {
+	color: #933;
+	background-color:#fcc;
+}
+span.nonspecific:before {
+	content: " ";
+}
+span.nonspecific:before, tr.nonspecific, span.nonspecific.example {
+	color: #993;
+	background-color:#ffc;
+}
+td:first-child {
+	font-weight: bold;
+}
+tr, td {
+	vertical-align:middle;
+}
+td {
+	padding:0.7em 0.15em;
+}
+td.info {
+/*	width:50%;	*/
+	text-align:right;
+}
+td.propscell {
+	width:25em;
+}
+td.altpropscell {
+	width:25em;
+}
+code {
+	margin-right: 0.25em;
+	font-style:italic;
+}
+span.propsupp, span.propdepr {
+	font-family: Calibri, Lato, sans-serif, Arial;
+	font-size: 0.72em;
+	border-radius: 0.35em;
+/*	margin: 0.25em 0.3em;*/
+	margin: 0.3em;
+	padding: 0.15em 0.3em;
+	display:inline-block;
+	border: solid 1px #090;
+	vertical-align: text-top;
+}
+span.propsupp {
+	color: #090;	
+	background-color: #dfd;
+}
+span.propsupp.required {
+	font-weight: bold;
+	box-shadow: 0 0 0.35em green;
+	background-color: #f6fff6;
+}
+span.propsupp.isdep {
+	color: #600!important;
+	font-weight: bold;
+	font-style:italic;
+	box-shadow: 0 0 0.35em #600;
+	border-color:#333!important;
+/*	background-color: #fee!important;	*/
+	background: rgba(0, 0, 0, 0) linear-gradient(135deg, #fdd 25%, #dfd 25%, #dfd 50%, #fdd 50%, #fdd 75%, #dfd 75%, #dfd) repeat scroll 0 0 / 16px 16px !important;
+}
+td.altpropscell span.isdep {
+	opacity: 0.2;
+}
+td.altpropscell span.propsupp, li span.propsupp.globalex {
+	color: #246;	
+	background-color: #ddf;
+	border-color: #246;
+	box-shadow: 0 0 0.35em #246;
+	font-weight: bold;
+}
+span.propdepr {
+	color: #900;	
+	background-color: #fdd;
+	border-color: #900;
+}
+span.example {
+	width: 6em;
+	display:inline-block;
+	background-position: right;
+	background-repeat: no-repeat;
+	padding:0.3em;
+}
+span.example:before {
+	content:"";
+}
+span.global {
+	color: #555!important;
+	background-color: #f9f9f9!important;
+	border-color: #555!important;
+	box-shadow: none!important;
+	font-weight: normal!important;
+	font-style:normal!important;
+	opacity: 0.5;
+}
+span.bld {
+	font-weight:bold;
+	font-size:0.9em;
+}
+tr {
+	vertical-align:middle;
+}
+tr:first-child {
+	padding-left: 0.2em;
+}
+tr:hover {
+	background-color: #f9f9f9;
+	color: #246;
+}
+ul li {
+	list-style: none inside;
+	margin-bottom: 0.5em;
+}
+
+#navpane {
+	position:fixed;
+	right: 3em;
+	width: 12em;
+}
+/*
+ul#props li {
+	display:inline;
+}
+*/
+</style>
+</head>
+
+<body>
+<div id="navpane">
+<p>
+	<input type="text" id="search" list="tags" placeholder="type element name here">
+    <datalist id="tags">
+    </datalist>
+</p>
+<div id="navlinks"></div>
+<div id="navinfo"></div>
+</div>
+<h1>HTML DOM elements and attributes support</h1>
+<p>The list below is not one of current trends or statistics, but support for this particular browser version.</p> 
+<p>Elements include those from the Jurassic Era to HTML5, and the attributes include the latest mobile device innovations if a mobile device is detected.</p>
+<p>Information listed below is obtained by querying the HTML API to discover the status of currently supported and daprecated attributes.</p>
+<p>Columns for each table are: element, if supported (graphic), the actual API reference returned, the element-specific properties, and lastly other attributes found i.e. non-standard, vendor-specific, microdata and global</p>
+<p>Element legend (row colours):</p>
+<ul>
+    <li><span class="true example">&lt;a&gt;</span> - element is supported</li>
+    <li><span class="false example">&lt;listing&gt;</span> - element is not supported</li>
+    <li><span class="nonspecific example">&lt;basefont&gt;</span> - unusual or generic reference (may have different property support), normally the parent (<code>HTMLElement</code>).<br />
+    Hover over the name if followed by an asterisk to see which value was expected.</li>
+</ul>
+<p>Attributes legend:</p>
+<ul id="props">
+	<li><span class="propsupp">rel</span> - property is supported <span class="propsupp" title="new in HTML5">ping <span class="bld">5</span></span> - property is new in HTML5</li>
+	<li><span class="propsupp required">href</span> - property is required</li>
+	<li><span class="propdepr">datasrc</span> - property is deprecated and not supported by this browser</li>
+	<li><span class="propsupp isdep">coords</span> - property is deprecated, but still supported by this browser</li>
+	<li><span class="propsupp global">title</span> - global property</li>
+	<li><span class="propsupp globalex">volume</span> - property found that is not in the current spec.</li>
+</ul>
+<p>To report any issues, please contact me <a href="mailto:nick%40innovaweb.co.uk?subject=Elements%20and%20properties%20chart">here</a>.</p>
+<script>
+// from Prototypejs
+if (!String.dasherize) Object.defineProperty(String.prototype, "dasherize", {
+	enumerable: false,
+	writable: true,
+	value: function() {
+		return this.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+		   .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+		   .toLowerCase();
+	}
+});
+
+function objLen(obj) {
+	leng = 0;
+	for(var s in obj) {
+		if (obj.hasOwnProperty(s)) leng++;
+	}
+	return leng;
+}
+
+function in_array(needle, haystack) {
+	retVal = false;
+	if (typeof haystack == "object" && haystack.length) // arrays only,please
+	haystack.forEach(function(n) {
+		if (n===needle) retVal = true;
+	});
+	return retVal;
+}
+
+function wordInString(needle, haystack, flags) {
+	reFlags=flags|| 'i';
+	// using booean true to pass the test (universally supported)
+	return haystack===true || (typeof haystack=="string" && (new RegExp('(^|\\s)'+needle+'(\\s|$)', reFlags)).test(haystack));
+}
+
+function getStyle(el, prop, pseudo) { pseu=pseudo || null; return d.defaultView.getComputedStyle(el,pseu).getPropertyValue(prop) || null;};
+
+// browser detection
+var Browser = {
+	Mobile: !!(/mobi/i.test(navigator.userAgent)),
+ // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+	Opera: !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+	Chrome: !!window.chrome && !!this.Opera,             // Chrome 1+
+	IE: /*@cc_on!@*/false || !!document.documentMode,   // At least IE6
+	SafariMobile: !!(this.Mobile && this.Safari),
+	FirefoxOS: !!(!!"mozApps" in navigator && this.Mobile),
+	Firefox: typeof InstallTrigger !== 'undefined',  // Firefox 1.0+
+// At least Safari 3+: "[object HTMLElementConstructor]"
+	Safari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0
+},
+
+nativeTypesSafari = {
+	blockquote: "Blockquote",
+},
+nativeTypesOpera = {
+	
+},
+nativeTypesFirefox = {
+	
+},
+nativeTypesChrome = {
+},
+nativeTypesIE = {
+	abbr: "Phrase",
+	acronym: "Phrase",
+	address: "Block",
+	b: "Phrase",
+	bdo: "Phrase",
+	big: "Phrase",
+	blink: "Phrase",
+	blockquote: "Block",
+    center: "Block", 
+    cite: "Phrase", 
+    code: "Phrase", 
+    dd: "DD", 
+    dfn: "Phrase", 
+    dt: "DT", 
+    em: "Phrase", 
+    i: "Phrase", 
+    kbd: "Phrase", 
+    keygen: "Block", 
+    listing: "Block", 
+	nobr: "Phrase",
+    plaintext: "Block", 
+    rp: "Phrase", 
+    rt: "Phrase", 
+    ruby: "Phrase", 
+    s: "Phrase", 
+    samp: "Phrase", 
+    small: "Phrase", 
+    strike: "Phrase", 
+    strong: "Phrase", 
+    sub: "Phrase", 
+    sup: "Phrase", 
+    td: "TableDataCell", 
+    th: "TableHeaderCell", 
+    thead: "TableSection",
+    tt: "Phrase", 
+    u: "Phrase", 
+    var: "Phrase", 
+    xmp: "Block"
+},
+// base list
+nativeTypesBase = {
+	a: "Anchor",
+	abbr: "",
+	acronym: "",
+	address: "",
+	article: "",
+	aside: "",
+	b: "",
+//	b: "Bold",
+	basefont: "BaseFont",
+	bdi: "",
+	bdo: "",
+	bgsound: "BGSound",
+	big: "",
+	blink: "",
+	blockquote: "Quote",
+	br: "BR",
+	caption: "TableCaption",
+	center: "",
+	cite: "",
+	code: "",
+	col: "TableCol", // col, colgroup
+	colgroup: "TableCol", // col, colgroup
+	dd: "",
+	del: "Mod", // ins, del
+	dfn: "",
+	dir: "Directory",
+	dl: "DList",
+	dt: "",
+	datalist: "DataList",
+	em: "",
+	fieldset: "FieldSet",
+	figcaption: "",
+	figure: "",
+	footer: "",
+	frameset: "FrameSet",
+	h1: "Heading",
+	h2: "Heading",
+	h3: "Heading",
+	h4: "Heading",
+	h5: "Heading",
+	h6: "Heading",
+	header: "",
+	hgroup: "",
+	hr: "HR",
+    html: "Html", 
+	i: "",
+	iframe: "IFrame",
+	image: "",
+	img: "Image",
+	ins: "Mod", // ins, del
+	isindex: "IsIndex",
+	li: "LI",
+	listing: "Pre",
+	kbd: "",
+	main: "",
+	mark: "",
+	menuitem: "MenuItem",
+	nav: "",
+	nextid: "NextId",
+	nobr: "",
+	noembed: "",
+	noframes: "",
+	noscript: "",
+	ol: "OList",
+	optgroup: "OptGroup",
+	p: "Paragraph",
+	plaintext: "Pre",
+	q: "Quote",
+	rp: "",
+	rt: "",
+	ruby: "",
+	s: "",
+	samp: "",
+	section: "",
+	small: "",
+	strike: "",
+	strong: "",
+	sup: "",
+	sub: "",
+	summary: "",
+	tbody: "TableSection", 
+	td: "TableCell", 
+	textarea: "TextArea",
+	tfoot: "TableSection", 
+	th: "TableCell", 
+	thead: "TableSection", 
+	tr: "TableRow",
+	tt: "",
+	u: "",
+	ul: "UList",
+	var: "",
+	wbr: "",
+	xmp: "Pre"
+},
+attribsMap = {
+	// array members: 0 - still supported, 1 - deprecated, 2 - replacement method (new attr or "css"), 3 - css array / other repl. options / error message if applicabe (args[2]===false)
+	abbr: [null, "td th", "title"], // th.abbr or td.title
+	accept: ["input", "form"], //	List of types the server accepts, typically a file type. now used on inputs only
+	acceptCharset: ["form"], //	List of supported charsets.
+	accessKey: ["global"], //	Defines a keyboard shortcut to activate or add focus to the element.
+	action: ["form isindex"], //	The URI of a program that processes the information submitted via the form.
+	align: [null, "applet caption col colgroup div embed h1 h2 h3 h4 h5 h6 hr iframe img input legend object p spacer table tbody td tfoot th thead tr", "css", ["textAlign"]], //	Specifies the horizontal alignment of the element. (derprecated)
+	aLink: [null, "body", "css", ["a:active"]],
+	allowFullscreen: ["iframe"],
+	alt: ["area img input", "applet"], //	 Alternative text in case an image can't be displayed.
+	archive: [null, "applet object"], // null, Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
+	async: ["script"], //Indicates that the script should be executed asynchronously.
+	autobuffer: ["audio"], //	, "video"
+//	autocapitalize: ["form input textarea"], // safari moile only
+	autocomplete: ["form input textarea"], //	Indicates whether controls in this form can by default have their values automatically completed by the browser.
+//	autocorrect: ["input"], // safari
+	autofocus: ["button input keygen select textarea"], //	The element should be automatically focused after the page loaded.
+	autoplay: ["audio video"], //	The audio or video should play as soon as possible.
+	autosave: ["input"], //	Previous values should persist dropdowns of selectable values across page loads.
+	axis: [null, "td th"], // Use the scope attribute on the relevant th instead
+	background:[null, "body frame iframe", "css", ["backgroundImage"]],
+	balance: ["bgsound"],
+	bgColor: [null, "body col colgroup marquee table tbody tfoot td th thead tr", "css", ["backgroundColor"]], //	Background color of the element. Note: This is a legacy attribute. Please use the CSS background-color property instead.
+	behavior: ["marquee"],
+	border: [null, "img object table", "css", ["borderWidth"]], //	The border width. Note: This is a legacy attribute. Please use the CSS border property instead.
+	bottomMargin: [null, "body", "css", ["marginBottom"]],
+//	buffered: ["audio video"], //	Contains the time range of already buffered media.
+	cellPadding: ["table"], //
+	cellSpacing: ["table"], //
+	challenge: ["keygen"], //	A challenge string that is submitted along with the public key.
+	ch: [null, "col tbody td tfoot th thead tr", "css"], // css
+	chOff: [null, "col tbody td tfoot th thead tr", "css"], // css
+	charset: ["meta script", "a link"], //	Declares the character encoding of the page or script.
+	checked: ["command input menuitem"], //	Indicates whether the element should be checked on page load.
+	cite: ["blockquote del ins q"], //	Contains a URI which points to the source of the quote or change.
+	className: ["global"], //	Often used with CSS to style elements with common properties.
+	classId: [null, "object"], // null Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
+	clear: [null, "br", "css", ["clear"]], // css
+	code: [null, "applet object"], // null, Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
+	codeBase: [null, "applet object"], // null Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
+	codeTag: ["object"], //
+	codeType: [null, "object"], // Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
+//	color: [null, "basefont font hr", "css", ["color"]], //	This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
+	color: [null, "basefont font", "css", ["color"]], //	This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
+	cols: ["textarea frame frameset", "pre"], //	Defines the number of columns in a textarea.
+	colSpan: ["td th"], //	The colspan attribute defines the number of columns a cell should span.
+	command: ["menuitem"],
+	compact: ["dl dir menu", "ol ul"], // dl, ol, ul => css, else null
+	content: ["meta"], //	A value associated with http-equiv or name depending on the context.
+	contentEditable: ["global"], //	Indicates whether the element's content is editable.
+	contextMenu: ["global"], //	Defines the ID of a <menu> element which will serve as the element's context menu.
+	controls: ["audio video"], //	Indicates whether the browser should show playback controls to the user.
+	coords: ["area", "a"], //		A set of values specifying the coordinates of the hot-spot region.
+	crossOrigin: ["img link script video"],
+	data: ["object"], //	 Specifies the URL of the resource.
+	dataPageSize: [null, "table"], // null obsoete
+	dataset: ["global"], // Lets you attach custom attributes to an HTML element. (data-*)
+	dateTime: ["del ins time"], //	Indicates the date and time associated with the element.
+	declare: [null, "object"], // Repeat the object element completely each time the resource is to be reused
+	default: ["track menuitem"], //	Indicates that the track should be enabled unless the user's preferences indicate something different.
+	defer	: ["script"], //		Indicates that the script should be executed after the page has been parsed.
+	dir: ["global"], //	Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
+	direction: ["marquee"],
+	dirName: ["input textarea"], //		 
+//	disabled: ["button command fieldset input keygen link menuitem optgroup option select style textarea"], //	Indicates whether the user can interact with the element.
+	disabled: ["button command fieldset input keygen menuitem optgroup option select style textarea"], //	Indicates whether the user can interact with the element.
+	download: ["a area"], //	Indicates that the hyperlink is to be used for downloading a resource.
+	draggable: ["global"], //	Defines whether the element can be dragged.
+	dropzone: ["global"], //	Indicates that the element accept the dropping of content on it.
+	enctype: ["form"], //	Defines the content type of the form date when the method is POST.
+	event: [null, "script"],  // null Use DOM Events mechanisms to register event listeners
+	face: [null, "font basefont"], //	Deprecated attribute
+	htmlFor: ["label output", "script"], //	Describes elements which belongs to this one. // null Use DOM Events mechanisms to register event listeners
+	form: ["button fieldset input keygen label meter output progress select textarea"], //	 Indicates the form that is the owner of the element.
+	formAction: ["button input"], //	Indicates the action of the element, overriding the action defined in the <form>.
+	formEnctype: ["button input"],
+	formMethod: ["button input"],
+	formNoValidate: ["button input"],
+	formTarget: ["button input"],
+	frame: ["table"], //
+	frameBorder: ["frame", "iframe"],
+	hAlign: [null, "col tbody thead tfoot td th tr div", "css", ["textAlign"]],
+	headers: ["td th"], //	 IDs of the <th> elements which applies to this element.
+	height: ["canvas embed iframe img input marquee object spacer video", "td th applet div frame", "css", ["height"]], //	Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead. In other cases, such as <canvas>, the height must be specified with this attribute.
+	// when using height with input type:image it refers to the height of the image
+	hidden: ["global"], // attribute	Prevents rendering of given element, while keeping child elements, e.g. script elements, active.
+	high: ["meter"], //	Indicates the lower bound of the upper range.
+	href: ["a area base link"], //The URL of a linked resource.
+	hreflang	: ["a area link"], //Specifies the language of the linked resource.
+	hspace: [null, "applet div embed iframe input img marquee object", "css", ["paddingLeft", "paddingRight"]], //
+	httpEquiv: ["meta"], //	 
+	icon: ["command menuitem"], // Specifies a picture which represents the command.
+	id: ["global"],  //	Often used with CSS to style a specific element. The value of this attribute must be unique.
+	incremental: ["input"], // debounced event firing on search inputs
+	indeterminate: ["input"],
+//	inputMode: ["input"], // switches between keyboard layouts for portable devices
+	integrity: ["link script"],
+	isMap: ["img", "input"], // Indicates that the image is part of a server-side image map.// null Unnecessary. Omit it altogether. All input elements with a type attribute in the Image Button state are processed as server-side image maps
+	itemprop: ["global"], //
+	keytype: ["keygen"], // Specifies the type of key generated.
+	kind: ["track"], // Specifies the kind of text track.
+	label: ["command track menu menuitem optgroup option tr"], // Specifies a user-readable title of the text track.
+	lang: ["global"],  //	Defines the language used in the element.
+	language: [null, "script"], // 	Defines the script language used in the element.// convert to type
+	leftMargin: [null, "body", "css", ["marginLeft"]],
+	link:[null, "body", "css", ["a:link"]],
+	list: ["input"], // Identifies a list of pre-defined options to suggest to the user.
+	longDesc: ["img", "frame iframe"], // <a>
+	loop: ["audio bgsound marquee video"], // 	Indicates whether the media should start playing from the start when it's finished.
+	low: ["meter"], // 	Indicates the upper bound of the lower range.
+	lowsrc: [null, "img"], // progressive jpg
+	manifest: ["html"], // Specifies the URL of the document's cache manifest.
+	max: ["input meter progress"], // Indicates the maximum value allowed.
+	maxLength: ["input textarea"], // Defines the maximum number of characters allowed in the element.
+//	marginbottom: [null, "body", "css", ["marginBottom"]], // css
+	marginHeight: ["frame", "body iframe", "css", ["marginBottom", "marginTop"]], // css
+//	marginleft: [null, "body", "css", ["marginLeft"]], // css
+//	marginright: [null, "body", "css", ["marginRight"]], // css
+//	marginTop: [null, "body", "css", ["marginTop"]], // css
+	marginWidth: ["frame", "body iframe", "css", ["marginLeft", "marginRight"]], 
+	media: ["a area link style source"], // Specifies a hint of the media for which the linked resource was designed.// null Use script to select the media resource(s) to use
+	method: ["form"], // Defines which HTTP method to use when submitting the form. Can be GET (default) or POST.
+//	methods: [null, "a link"], // null Use the HTTP OPTIONS feature instead
+	min: ["input meter"], // Indicates the minimum value allowed.
+	minLength: ["input textarea"],
+//	mozActionHint: ["input"], // enter key styling on mobile devices
+//	mozApp: ["iframe"],
+//	mozBrowser: ["iframe"],
+//	mozOpaque: ["canvas"],
+	multiple: ["input select"], // Indicates whether multiple values can be entered in an input of the type email or file.
+	muted: ["audio video"],
+	name: ["button form fieldset frame iframe input keygen map meta object output param select textarea", "a applet embed img option"], // Name of the element. For example used by the server to identify the fields in form submits. // null/Use the id attribute instead
+	noHref: [null, "area"], // This attribute indicates that the form shouldn't be validated when submitted. // null obsolete
+	noResize: ["frame"], // 
+	noShade: [null, "hr"], // deprecated
+	noValidate: ["form"], // This attribute indicates that the form shouldn't be validated when submitted.
+//	noWrap: ["dd", "td th", "css", ["whiteSpace"]], // white-space: nowrap;
+	noWrap: ["dd", "td th", "css", ["whiteSpace"]], // white-space: nowrap;
+	object: [null, "applet"], // null
+	open: ["details dialog"], //	Indicates whether the details will be shown on page load.
+	optimum: ["meter"], // Indicates the optimal numeric value.
+	pattern: ["input"], //Defines a regular expression which the element's value will be validated against.
+	ping: ["a area"], //	 
+	placeholder: ["input textarea"], // Provides a hint to the user of what can be entered in the field.
+	played: ["audio video"],
+	poster: ["video"], //	A URL indicating a poster frame to show until the user plays or seeks.
+	preload: ["audio video"], // Indicates whether the whole resource, parts of it or nothing should be preloaded.
+	profile: [null, "head"], // depercated in html5
+	prompt: ["isindex"],
+	pubDate: ["time"], // Indicates whether this date and time is the date of the nearest <article> ancestor element.
+	radioGroup: ["command menuitem"], //
+	readOnly: ["input textarea iframe"], // Indicates whether the element can be edited.
+	rel	: ["a area link"], // Specifies the relationship of the target object to the link object.
+	required: ["input select textarea"], // Indicates whether this element is required to fill out or not.
+	rev: [null, "a link"], //null Use the rel attribute instead, with an opposite term. (For example, instead of rev="made", use rel="author"
+	rightMargin: [null, "body", "css", ["marginRight"]], // css
+	reversed: ["ol"], // Indicates whether the list should be displayed in a descending order instead of a ascending.
+	rows: ["textarea frame frameset"], // Defines the number of rows in a textarea.
+	rowspan: ["td th"], //	Defines the number of rows a table cell should span over.
+//	results: ["input"], // safari
+	reversed: ["ol"],
+	rules: ["table"], //
+	sandbox: ["iframe"], // 
+	scheme: [null, "meta"], //	  "Use only one scheme per field, or make the scheme declaration part of the value"
+	scope: ["th", "td"], //	 Use th elements for heading cells
+	scoped: ["style"], // 
+	scrollAmount: ["marquee"],
+	scrollDelay: ["marquee"],
+	scrolling: ["frame", "iframe"],
+	seamless: ["iframe"], // 
+	select: ["content"], // 
+	selected: ["option"], // Defines a value which will be selected on page load.
+	shape: ["area", "a"], //   Use area instead of a for image maps
+	size: ["input select spacer", "applet hr font basefont", "css"], //Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters. deprecated elements added.
+	sizes: ["link img source"], // 
+	span: ["col colgroup"], //	 
+	spellcheck: ["global"], // 	Indicates whether spell checking is allowed for the element.
+	src: ["audio bgsound embed frame iframe img input script source track video"], //The URL of the embeddable content.
+	srcdoc: ["iframe"], //	 
+	srcLang: ["track"], //	 
+	srcset: ["img source"], // 
+	standby: [null, "object"], // null Optimise the linked resource so that it loads quickly or, at least, incrementally
+	start: ["ol"], //	Defines the first number if other than 1. no replacement  MAYBE css ["counterReset"]
+	step: ["input"], //	 
+	style: ["global"], //	Defines CSS styles which will override styles previously set.
+	summary: ["table"], //  null (re-code)
+	tabIndex: ["global"], //		, "area object"	// Overrides the browser's default tab order and follows the one specified instead.
+	target: ["a area base form"], // 
+	text: [null, "body", "css", ["color"]],
+	title: ["global"], //	Text to be displayed in a tooltip when hovering over the element.
+	topMargin: [null, "body", "css", ["marginTop"]], // css
+	trueSpeed: ["marquee"],
+	type: ["a area button input command embed menu menuitem object ol script source spacer style type", "li ul param"], // Defines the type of the element. // null/param: Use the name and value attributes without declaring value types
+	typeMustMatch: ["object"],
+	urn: [null, "link", "href"], // => href
+	useMap	: ["img object", "input"], // <img>
+	value: ["button data input li meter option output progress param"], // Defines a default value which will be displayed in the element on page load. // ??
+	valueType: [null, "param"], // null Use the name and value attributes without declaring value types
+	version: [null, "html"],
+	vLink: [null, "body", "css", ["a:visited"]],
+	vAlign: [null, "col colgroup tbody thead tfoot td th thead tr div", "css", ["verticalAlign"]],
+	volume: ["audio bgsound"],
+	vspace: [null, "applet div embed iframe input img marquee object", "css", ["paddingTop", "paddingBottom"]], // css
+	width: ["canvas embed iframe img input marquee object spacer video", "col basefont colgroup frame hr table td th applet pre div", "css", ["width"]], // Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead. In other cases, such as <canvas>, the width must be specified with this attribute.
+	wrap: ["textarea", "pre"], // Indicates whether the text should be wrapped.
+	xmlns: ["html"]
+},
+requiredAttrMap = {
+	a: "href",
+	applet: "width",
+	area: "href alt",
+	basefont: "size",
+	bgsound: "src",
+	form: "action",
+	frame: "src",
+	img: "src alt",
+	input: "type",
+	link: "href",
+	map: "name",
+	meta: "content",
+	optgroup: "label",
+	param: "name",
+	script: "type",
+	style: "type",
+	textarea: "cols rows"
+},
+stdTags = "a abbr acronym address area b base bdo blockquote body br button caption cite code col colgroup dd del dfn div dl dt em embed fieldset form h1 h2 h3 h4 h5 h6 head hr html i iframe img input ins kbd label legend li link map meta noscript object ol optgroup option p param pre q samp script select span strong style sub sup table tbody td textarea tfoot th thead title tr tt u ul var",
+deprTags = "applet basefont bgsound big blink center command dir font frame frameset image isindex listing marquee menu multicol nextid nobr noembed noframes plaintext rb s small spacer strike xmp",
+html5tags = "audio bdi canvas data datalist details dialog keygen menuitem meter output picture progress rp rt ruby source time track video wbr",
+html5semantics = "article aside figcaption figure footer header hgroup main mark nav section summary",
+shadowDOM = "content decorator element shadow template",
+
+// secondary attribute matrices
+// newest attributes
+html5attribs = {
+	async: "script",
+	autobuffer: "audio video",
+	autoplay: "audio video",
+	autocomplete: "input textarea form",
+	autofocus: "button input select textarea",
+	autosave: "input",
+	charset: "meta",
+	contentEditable: true,
+	contextMenu: true,
+	controls: "audio video",
+	crossOrigin: "audio img link script video",
+	dataset: true,
+	disabled: "fieldset",
+	download: "a area",
+	draggable: true,
+	form: "button fieldset input label object select textarea",
+	formAction: "input button",
+	formEnctype: "button input",
+	formMethod: "button input",
+	formNoValidate: "button input",
+	formTarget: "button input",
+	hreflang: "area",
+	high: "meter",
+	incremental: "input", // debounced event firing on search inputs
+	indeterminate: "input",
+	inputMode: "input",
+	integrity: "link script",
+	keytype: "keygen",
+	kind: "track",
+	label: "track",
+	list: "input",
+	loop: "audio video",
+	manifest: "html",
+	max: "input",
+	min: "input",
+	maxLength: "textarea",
+	minLength: "textarea",
+	media: true,
+	multiple: "input",
+	muted: true,
+	name: "fieldset",
+	noValidate: "form",
+	mozOpaque: "canvas",
+	pattern: "input",
+	ping: "a",
+	preload: true,
+	placeholder: "input textarea",
+	played: true,
+	poster: "video",
+	readOnly: "input",
+	rel: "area",
+	required: "input select textarea",
+	reversed: "object",
+	sandbox: "iframe",
+	seamless: "iframe",
+	sizes: "img link",
+//	spellcheck: "input textarea",
+	spellcheck: true,
+	srcdoc: "iframe",
+	srcset: "img",
+	start: "object",
+	step: "input",
+	type: "ol",
+	typeMustMatch: "object",
+	value: "li",
+	volume: true,
+	wrap: "textarea",
+	xMozErrormessage: "input"
+},
+// tag name list, deprecated since
+html5attribsDepr = {
+	abbr: ["td th"],
+	accept: ["form", "5"],
+	accessKey: ["area input", "5"],
+	align: ["applet caption col colgroup div embed h1 h2 h3 h4 h5 h6 hr iframe img input legend object p table tbody td tfoot th thead tr", "5"], // div - 5
+	archive: ["object", "5"],
+	axis: ["td th"],
+	border: ["img object", "4.1"],
+//	char: ["col colgroup tbody td tfoot th thead tr", "4.0"],
+	ch: ["col colgroup tbody td tfoot th thead tr", "4.1"],
+	charset: [true, "5"],
+	chOff: ["col colgroup tbody td tfoot th thead tr", "4.1"],
+	classId: ["object", "5"],
+	clear: ["br", "4.1"],
+	codeBase: ["object", "5"],
+	codeType: ["object", "5"],
+	coords: ["a", "5"],
+	declare: ["object", "5"],
+	frameBorder: ["iframe", "4"],
+	hAlign: ["col colgroup tbody td th thead tr", "4.1"],
+	hspace: ["img", "4.1"],
+	longDesc: ["iframe frame", "5"],
+	marginHeight: ["iframe", "5"],
+	marginWidth: ["iframe", "5"],
+	name: ["a area img", "5"],
+	noHref: ["area", "5"],
+	noshade: ["hr"],
+	profile: ["head", "5"],
+	rev: ["a", "5"],
+	shape: ["a", "5"],
+	scope: ["td"],
+	scrolling: ["iframe", "5"],
+	standby: ["object", "5"],
+//	tabIndex: ["area object", "5"], // 
+	useMap: ["input", "5"],
+	vAlign: ["col colgroup tbody td th thead tr", "4.1"],
+	version: ["html", "4.1"],
+	vspace: ["img", "4.1"],
+	width: ["col colgroup hr td th", "4.1"], // colgroup depr in html5, special values		
+},
+attribsExpand = "acceptCharset httpEquiv xMozErrormessage formatDetection".split(" "),
+// tag name, user agent
+attribsNonStandard = {
+//	allowFullscreen: ["iframe"], // Firefox"", "FF"
+	autobuffer: ["video"],
+	autocapitalize: ["form input textarea", "SM"], // safari mobile
+	autocomplete: ["button", "FF"],
+	autocorrect: ["input", "SAF"], // safari
+	borderColor: [true, "IE"], // string 
+	borderColorDark: [true, "IE"], // string 
+	borderColorLight: [true, "IE"], 
+	color: ["hr"],
+	datafld: ["a applet button div fieldset frame iframe img input label legend marquee object param select textarea", "IE"],
+	dataFormatAs: ["button div input label legend marquee object option select span table", "IE"], // null Use script and a mechanism such as XMLHttpRequest to populate the page
+	datasrc: ["a applet button div frame iframe img input label legend marquee object option select span table textarea", "IE"],
+	disabled: ["link"],
+	inputMode: ["input", "MOB"],
+	mayscript: ["applet", "FF"], // Netscape
+	methods: ["a link", "IE"],
+	mozActionHint: ["input", "MOB"], // mobile devices
+	mozApp: ["iframe", "FFOS"], // Firefox OS
+	mozBrowser: ["iframe", "FFOS"],
+	mozOpaque: ["canvas", "FF"],
+//	nowrap: ["dd"],
+	remote: ["iframe", "FFOS"],
+	results: ["input", "SAF"],
+	src: ["applet", "IE"],
+	target: ["link"],
+	urn: ["a", "IE"],
+	xMozErrormessage: ["input", "FF"]
+},
+// match codes to Browser object
+uaName = {
+	CH: "Chrome",
+	FF: "Firefox",
+	OP: "Opera",
+	SAF: "Safari",
+	IE: "IE",
+	FFOS: "FirefoxOS",
+	SM: "SafariMobie",
+	MOB: "Mobile"
+},
+// dependant
+// attribs, required attribute
+attribDepend = {
+	area: ["hreflang media rel target type", "href"],
+	a: ["hreflang rel target type", "href"]
+},
+html5events = {
+	onafterprint: "body",
+	onbeforeprint: "body",
+	onbeforeunload: "body",
+//	onblur: "body",
+	onerror: "body",
+//	onfocus: "body",
+	onhashchange: "body",
+	onlanguagechange: "body",
+	onmessage: "body",
+	onoffline: "body",
+	ononline: "body",
+	onpopstate: "body",
+	onredo: "body",
+	onstorage: "body",
+	onundo: "body"
+},
+globalAttribsStr = "accessKey className contentEditable contextMenu dataset dir draggable dropzone hidden id lang spellcheck style tabIndex title translate"+(Browser.IE ? " disabled language" : ""),
+attribsFalsePositives = {
+	// not attributes, but function properties
+	content: "template",
+	form: "legend option object",
+	item: "select",
+	rows: "table tbody tfoot thead",
+	select: "input textarea",
+	start: "marquee",
+	text: "a option script title",
+	type: "fieldset keygen link output select textarea",
+	value: "select textarea",
+	width: "listing xmp" ,// some browsers (i.e. Chrome) convert these tags to a <pre>
+	wrap: "listing xmp"
+},
+// Microdata model
+microdataAttribs = "item itemid itemprop itemref itemscope itemtype".split(" ");
+// add conditions per browser
+function updateObj(modObj) {
+	tmpObj = nativeTypesBase;
+	if (typeof modObj == "object") {
+		for (z in modObj) {
+			if (modObj.hasOwnProperty(z)) tmpObj[z] = modObj[z];
+		}
+	}
+	return tmpObj;
+}
+// returns: 1st array supported, 2nd array deprecated
+function getProperties(tagName) {
+	var propSupp = [], propDepr = [];
+	for (var b in attribsMap) {
+		if (wordInString(tagName, attribsMap[b][0])) {
+			propSupp.push(b); 
+		}
+		if (wordInString(tagName, attribsMap[b][1])) {
+			propDepr.push(b);
+		}
+	}
+	return [propSupp, propDepr];
+}
+
+// main function
+function getNativeTagSupport(label, tagString) {
+	testName = label.replace(/\s/g, "");
+	tagArr = tagString.split(" ");
+	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+tagArr.length+")</a></h4>");
+	modObj = (Browser.Chrome) ? nativeTypesChrome : (Browser.IE) ? nativeTypesIE : (Browser.Firefox || Browser.FirefoxOS) ? nativeTypesFirefox : (Browser.Opera) ? nativeTypesOpera : (Browser.Safari || Browser.SafariMobile) ? nativeTypesSafari : null;
+	lookupObj = updateObj(modObj) || nativeTypesBase;
+	var html = "<a name=\""+testName+"\" id=\""+testName+"\" /><h3>"+label+"</h3>\n<table>\n";
+	tagArr.forEach(function(el){
+		window.tempElem = document.createElement(el);
+		actualElemStr = ({}).toString.call(window.tempElem).replace("[object ", "").replace("]", "");
+		dynElemStr = "HTML"+((el in lookupObj) ? lookupObj[el] : el.charAt(0).toUpperCase()+el.substring(1))+"Element";
+		// not supported
+		dataClass = !!(actualElemStr !== "HTMLUnknownElement");
+		// non-specific functions that use the parent (HTMLElement) and iE-specific groups (Phrase|Block|Span)
+		if ((Browser.IE ? (actualElemStr.match(/(Phrase|Block|Span)/) || actualElemStr==="HTMLElement" && lookupObj[el]!=="") : actualElemStr==="HTMLElement" && lookupObj[el]!=="")) dataClass = "nonspecific";
+		propsText = "";
+		morePropsText = "";
+		elemProps = getProperties(el);
+		propsDepr = elemProps[1];
+		propsArr = [];
+		elemProps.forEach(function(c) {
+			c.forEach(function(d){
+				if (!in_array(d, propsArr)) propsArr.push(d); // .toLowerCase()
+			});
+		});
+		propsArr.sort();
+		propsArr.forEach(function(g){
+			titleTexts = [];
+			deprClass = (in_array(g, propsDepr) && g in window.tempElem) ? " isdep" : "";
+			if (deprClass.length>0) titleTexts.push("This property is supported, but is officially deprecated");
+			reqClass = (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) ? " required" : "";
+			if (reqClass.length>0) titleTexts.push("This property is required by the element");
+			
+			if (wordInString(el, html5attribs[g])) titleTexts.push("This property is new in HTML5");
+			if (g in html5attribsDepr && wordInString(el, html5attribsDepr[g][0]) && !!html5attribsDepr[g][1]) 
+				titleTexts.push("Deprecated in HTML "+html5attribsDepr[g][1]);
+			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
+			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
+			propsText += "<span class=\"prop"+(g in window.tempElem ? "supp" : "depr")+reqClass+deprClass+"\""+titleText+">"+propName(g, el)+"</span>";
+		});
+		// not element-specific attributes
+		otherProps = [];
+		for (p in window.tempElem) {
+			if (
+			p in attribsMap &&
+			!in_array(p, otherProps) &&
+			!in_array(p, propsArr) &&
+			wordInString(el, attribsFalsePositives[p])===false
+			/*			&&
+			p!=="toString" &&
+		    p.indexOf("_")<0 &&
+			!p.match(/^(on|insert|create|delete|remove)/)
+			*/
+			) 
+			 otherProps.push(p);
+			 if (wordInString(el, attribsFalsePositives[p])) console.log("false positive found for "+el+" attribute "+p);
+			// non-standard and vendor-specific
+			 if (p in attribsNonStandard &&
+			 !in_array(p, otherProps) &&
+			 wordInString(el, attribsNonStandard[p][0]) &&
+			 (typeof attribsNonStandard[p][1]=="string" ? !!Browser[uaName[attribsNonStandard[p][1]]] : !attribsNonStandard[p][1])
+			 ) otherProps.push(p);
+			 
+//			 microdata
+//			 if (in_array(p, microdataAttribs)) otherProps.push(p);
+		}		
+		otherProps.sort();
+//		console.log(el+": ", otherProps);
+		// add some conditional globals for IE
+		if (Browser.IE) {
+			if (lookupObj[el]=="Phrase") globalAttribsStr+=" cite dateTime";
+			else if (lookupObj[el]=="Block") globalAttribsStr+=" clear width";
+		}
+		globalAttribs = globalAttribsStr.split(" ");
+		if (Browser.IE) globalAttribs.sort();
+		otherProps.forEach(function(pr) {
+			otherTitleTexts = [];
+			otherClassTxt="";
+			if (pr in html5attribsDepr && wordInString(el, html5attribsDepr[pr][0]) && !!html5attribsDepr[pr][1]) 
+				otherTitleTexts.push("Deprecated in HTML "+html5attribsDepr[pr][1]);
+			if (wordInString(el, html5attribs[pr])) otherTitleTexts.push("This property is new in HTML5");
+			if (!in_array(pr, globalAttribs)) otherTitleTexts.push("This attribute is not in the spec but was found in the element");
+			else otherClassTxt+=" global";
+			allOtherTitles = otherTitleTexts.length>0 ? otherTitleTexts.join("\n") : null;
+			otherTitleText = allOtherTitles==null ? "" :  " title=\""+allOtherTitles+"\"";
+			morePropsText += "<span class=\"prop"+(pr in window.tempElem ? "supp" : "depr")+otherClassTxt+"\""+otherTitleText+">"+propName(pr, el)+"</span>";
+		});
+		html += "<tr class=\""+dataClass+"\"><td><a id=\""+el+"\" name=\""+el+"\">&lt;"+el+"&gt;</td><td><span class=\""+dataClass+"\"></span></td><td class=\"info\"><code"+((actualElemStr!==dynElemStr) ? " title=\"expected "+dynElemStr+"\"" : "")+">"+actualElemStr+((actualElemStr!==dynElemStr) ? " *" : "")+" </code></td><td class=\"propscell\">"+propsText+"</td><td class=\"altpropscell\">"+morePropsText+"</td></tr>\n"; 
+		delete window.tempElem;
+	});
+	html += "</table>\n";
+	document.body.insertAdjacentHTML("beforeend", html);
+}
+
+var propNamesExp={
+	ch:"char",
+	chOff:"charoff",
+	htmlFor:"for",
+	className:"class",
+	dataset: "data-*"
+}
+
+function propName(pn, el) {
+	return (pn in propNamesExp ? propNamesExp[pn] : in_array(pn, attribsExpand) ? pn.dasherize() : pn.toLowerCase())+((wordInString(el, html5attribs[pn])) ? " <span class=\"bld\">5</span>" : "");
+}
+
+var inputAttribs = {
+	accept: ["file"],
+	accessKey: [null], // deprecated in html5
+	checked: ["radio checkbox"],
+	formAction: ["submit image"],
+	formEnctype: ["submit image"],
+	formMethod: ["submit image"],
+	formNoValidate: ["submit image"],
+	formTarget: ["submit image"],
+	height: ["image"],
+	incremental: ["search", "SAF"],
+	inputMode: ["email password text url" , "MOB"], // typeof keyboard layout to render //
+	list: ["color date datetime datetime-local email image month number password range reset search submit tel text time url week"], //  (, submit?)
+	max: ["number date datetime datetime-local range"], // numeric vaues
+	maxLength: ["email password search tel text url"], // overrides the size attribute
+	min: ["number date datetime datetime-local range"],
+	minLength: ["email password search tel text url"], 
+	mozActionHint: ["submit button", "FF"],
+	multiple: ["email file"],
+	pattern: ["email search tel text url"],
+	placeholder: ["email search tel text url"],
+	readOnly: ["date datetime datetime-local email image month number password search tel text time url week"],
+	required: ["checkbox color date datetime datetime-local email file month number password radio range search tel text time url week"],
+	results: ["search", "SAF"],
+	size: ["email password search tel text url"], // text/password: size in chars, otherwise pixels, defaults to 20
+	src: ["image"],
+	step: ["number range"],
+	width: ["image"]
+},
+inputAttribsGlobal = {
+	autocapitalize: "SM",
+	autocomplete: true,
+	autocorrect: "SAF",
+	autofocus: true,
+	autosave: true, // persistent data
+	disabled: true,
+	form: true,
+	name: true,
+	spellcheck: true,
+	tabIndex: true,
+	usemap: true, // deprecated in html5
+	value: true,
+	xMozErrormessage: "FF"
+}
+function $(id) {
+	return document.getElementById(id);
+}
+newInputTypes = "color date datetime datetime-local email month number range search tel time url week".split(" ");
+function showNewInputTypes(label, typesArr) {
+	testName = label.replace(/\s/g, "");
+	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+typesArr.length+")</a></h4>");
+	var html = "<a name=\""+testName+"\" id=\""+testName+"\" /><h3>"+label+"</h3>\n<table>\n",
+// best approach is set pattern attribute for matches on false positives ? (but need to rely on UA capabilities for true checking)
+//	inputPatterns = "[\#+[A-Za-z0-9]{6} [0-9\:] ".split(" "),
+	tmpTxt = ":(";
+	typesArr.forEach(function(type) {
+		// borrowed from Mike Taylor
+		var tmpTag = document.createElement("INPUT");
+		document.body.appendChild(tmpTag);
+		tmpTag.setAttribute("type", type);
+		tmpTag.setAttribute("id", type);
+//		tmpTag.value = tmpTxt;
+		tmpTag.setAttribute("value", tmpTxt);
+		// use universal regexp for tel?
+//		if (type=="tel") tmpTag.setAttribute("pattern", "[\+0-9\s\-]");
+//		console.log(type+": "+tmpTxt+" same as "+$(type).value+" ? "+!!(tmpTxt == $(type).value));
+//		if (tmpTxt == $(type).value) console.log("\tvalue is valid ? "+(!!tmpTag.validity ? tmpTag.validity.valid : " validation not supported"));
+		// oninvalid not universally supported (yet)
+		/*
+		tmpTag.addEventListener("invalid", function(event) {
+			console.log(type+" triggered the oninvalid event");
+		}, false);
+		*/
+		// tel gets a pass at the moment
+		// search accepts any input
+		// do Mike Taylor's check first, then use the constraint vaidation API, otherwise bye bye
+		inputSupported = (type.match(/^(tel|search)$/) || (tmpTxt !== $(type).value) ? true : (tmpTag.validity && !tmpTag.validity.valid)) ? true : false;
+		// safari 5.1.7 on windows (2012, last version)  gives a false positive for color, so .....
+		if (Browser.Safari) {
+			if (type=="color" && tmpTxt==$(type).value) inputSupported = false;
+		}
+		// old tests, default values
+//		if ((type=="range" && tmpTag.value=="50") || (type=="number" && tmpTag.value=="") || (type=="color" && tmpTag.value=="#000000")) inputSupported = true;
+		// supported attributes
+		attrs = [];
+		for (var a in inputAttribs) {
+			if (typeof inputAttribs[a][0]=="string" && wordInString(type, inputAttribs[a][0]) && (typeof inputAttribs[a][1] == "undefined" || (typeof inputAttribs[a][1] == "string" ? !!Browser[uaName[inputAttribs[a][1]]] : true)))  attrs.push(a); 
+			 
+		}
+		attrs.sort();
+//		console.log(attrs);
+		attrsText = "";
+		attrs.forEach(function(atr) {
+			titleTexts = [];
+			if (wordInString("string", html5attribs[atr])) titleTexts.push("This property is new in HTML5");
+			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
+			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
+			attrsText += "<span class=\"prop"+(atr in tmpTag ? "supp" : "depr")+"\""+titleText+">"+propName(atr, "input")+"</span>"; // +reqClass+deprClass
+		});
+		// global attributes
+		globAttrs = [];
+		for (var b in inputAttribsGlobal) {
+			if (inputAttribsGlobal[b]==true || (typeof inputAttribsGlobal[b] == "string" ? !!Browser[uaName[inputAttribsGlobal[b]]] : !inputAttribsGlobal[b]))  globAttrs.push(b); 
+		}
+		globAttrs.sort();
+		globAttrsText = "";
+		globAttrs.forEach(function(atr) {
+			globAttrsTitleTexts = [];
+			if (wordInString("input", html5attribs[atr])) globAttrsTitleTexts.push("This property is new in HTML5");
+			allTitles = globAttrsTitleTexts.length>0 ? globAttrsTitleTexts.join("\n") : null;
+			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
+			globAttrsText += "<span class=\"prop"+(atr in tmpTag ? "supp" : "depr")+" global\""+titleText+">"+propName(atr, "input")+"</span>"; // +reqClass+deprClass
+		});
+		html += "<tr class=\""+inputSupported+"\"><td>&lt;input type=\""+type+"\"&gt;</td><td><span class=\""+inputSupported+"\"></span></td><td class=\"info\"><input type=\""+type+"\" /></td><td class=\"propscell\">"+attrsText+"</td><td class=\"altpropscell\">"+globAttrsText+"</td></tr>\n"; 
+		tmpTag.parentNode.removeChild(tmpTag);
+		delete window["tmpTag"];
+	});
+	html += "</table>\n";
+	document.body.insertAdjacentHTML("beforeend", html);
+}
+
+/// build the page
+
+getNativeTagSupport("Standard tags", stdTags);
+showNewInputTypes("HTML5 form controls", newInputTypes);
+getNativeTagSupport("Deprecated tags", deprTags);
+getNativeTagSupport("HTML5 tags", html5tags);
+getNativeTagSupport("HTML5 semantic tags", html5semantics);
+getNativeTagSupport("Web Components", shadowDOM);
+getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
+for (br in Browser) if (!!Browser[br]) console.log("Browser: "+br);
+
+// populate the datalist element
+var allTagsArr = [stdTags, deprTags, html5tags, html5semantics, shadowDOM].join(" ").split(" ");
+allTagsArr.sort();
+allTagsArr.forEach(function(tag){
+	opt = document.createElement("option");
+	opt.value = tag;
+	$("tags").appendChild(opt);
+});
+// search control
+/*
+*/
+//	console.log($("tags").options);
+$("search").addEventListener("input", function(e) {
+	goTo = e.target.value;
+	if (allTagsArr.indexOf(goTo)>-1) { // valid tag only
+		href = location.href;
+//		location.href = ""+location.href.replace(location.href.hash, "")+"#"+goTo;
+		location.href = href.replace(href.substring(href.indexOf("#")), "")+"#"+goTo;
+//		console.log("scrolling to #"+goTo+" by "+$(goTo).parentNode.parentNode.clientTop+" pixels");
+//		window.scrollTo($(goTo).parentNode.parentNode.clientTop, 0);
+//		console.log("#"+goTo);
+	}
+});
+</script>
+</body>
+</html>
