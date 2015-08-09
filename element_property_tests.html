@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+<title>HTML DOM property inspector</title>
+</head>
+
+<body>
+<script>
+/*
+var marquee = (typeof window.HTMLMarqueeElement === "function") ? document.createElement("MARQUEE") : null;
+document.write("The &lt;marquee&gt; element is "+(marquee==null ? " <strong>NOT</strong>" : "")+" supported by this browser.");
+if (marquee) {
+	["behavior", "bgColor", "direction", "height", "hspace", "loop", "scrollAmount", "scrollDelay", "trueSpeed", "vspace", "width"].forEach(function(attr){
+		document.writeln("<br> the attribute '"+attr+"' is"+((attr in marquee) ? "" : " <strong>NOT</strong>")+" present");
+	});
+}
+*/
+// custom view
+function changeView() {
+	showEvCbox = ($('events') && !!$('events').checked) || false;
+	showFnCbox = ($('functions') && !!$('functions').checked) || false;
+	tagname = $('element').value || "input";
+	goTo = 
+	((tagname!=="input" || !!showEvCbox || !!showFnCbox) ? "?" : "") +
+	((tagname=="input") ? "" : "tag="+tagname) +
+	(!!showEvCbox ? "&events=true" : "") +
+	(!!showFnCbox ? "&functions=true" : "");
+	window.location.href=window.location.pathname+goTo;
+}
+function $(id) {
+	return document.getElementById(id);
+}
+var theTag = "input", showEv=false, showFn=false, theType=null;
+if (window.location.search!=="") {
+	window.location.search.substring(1).split("&").forEach(function(q){
+		qBits = q.split("=");
+		if (qBits[0].match(/tag/i)) theTag = qBits[1];
+		if (qBits[0]=="events" && !!qBits[1]) showEv=true;
+		if (qBits[0]=="functions" && !!qBits[1]) showFn=true;
+	});
+}
+if (theTag.indexOf(":")>0) {
+	tagbits = theTag.split(":");
+	theType = tagbits[1];
+	theTag = tagbits[0];
+}
+var newTag = document.createElement(theTag), prop;
+if (theType) newTag.type = theType;
+document.writeln("<h1>HTML DOM property inspector</h1>"+
+					 "<p>Choose<!-- options: change--> tag name <input type=\"text\" id=\"element\" value=\""+theTag+"\" /> <!--show events <input type=\"checkbox\" id=\"events\""+(!!showEv ? " checked" : "")+" /> show functions <input type=\"checkbox\" id=\"functions\""+(!!showFn ? " checked" : "")+" />--> <input type=\"button\" value=\"update\" onclick=\"changeView();\" /></p>"+
+						 "<hr>Showing properties of the &lt;"+theTag+"&gt; element:<br><table>");
+
+// begin
+for(prop in newTag) {
+//	if (input.hasOwnProperty(prop)) 
+	// filter out functions and event handlers
+//	if ((!showEv && prop.substring(0, 2)!=="on") && (!showFn && typeof newTag[prop] == "string" && newTag[prop].indexOf("[native code]")<0)) 
+
+//	document.writeln("<tr><td>"+prop+"</td><td>"+(newTag[prop] ? '<strong>'+newTag[prop]+'</strong>' : '<em>'+({}).toString.call(prop)+'</em>')+"</td></tr>");
+	document.writeln("<tr><td>"+prop+"</td><td>"+(newTag[prop] ? '<strong>'+newTag[prop]+'</strong>' : '<em>'+(typeof prop)+'</em>')+"</td></tr>");
+	
+//	if (typeof prop=="string")
+//	if (prop.substring(0, 6)=="webkit" || prop.match(/valid/i))
+//	if (prop.substring(0, 6)=="webkit" || prop.match(/create|delete|select|insert/i))
+
+//	document.writeln("<tr><td>"+prop+"&nbsp;</td></tr>");
+}
+document.write("</table>");
+// if (theType && typeof newTag.defaultValue !== 'undefined') console.log("defaultValue: "+newTag.defaultValue);
+delete window[newTag];
+</script>
+</body>
+</html>
