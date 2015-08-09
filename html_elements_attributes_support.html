@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -824,7 +825,7 @@ attribsFalsePositives = {
 	width: "listing xmp" ,// some browsers (i.e. Chrome) convert these tags to a <pre>
 	wrap: "listing xmp"
 },
-// Microdata model
+// Microdata model, not used as it emulates betamax :-)
 microdataAttribs = "item itemid itemprop itemref itemscope itemtype".split(" ");
 // add conditions per browser
 function updateObj(modObj) {
@@ -880,13 +881,13 @@ function getNativeTagSupport(label, tagString) {
 		propsArr.forEach(function(g){
 			titleTexts = [];
 			deprClass = (in_array(g, propsDepr) && g in window.tempElem) ? " isdep" : "";
-			if (deprClass.length>0) titleTexts.push("This property is supported, but is officially deprecated");
+			if (deprClass.length>0) titleTexts.push("supported but officially deprecated");
 			reqClass = (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) ? " required" : "";
-			if (reqClass.length>0) titleTexts.push("This property is required by the element");
+			if (reqClass.length>0) titleTexts.push("required by the element");
 			
-			if (wordInString(el, html5attribs[g])) titleTexts.push("This property is new in HTML5");
-			if (g in html5attribsDepr && wordInString(el, html5attribsDepr[g][0]) && !!html5attribsDepr[g][1]) 
-				titleTexts.push("Deprecated in HTML "+html5attribsDepr[g][1]);
+			if (wordInString(el, html5attribs[g])) titleTexts.push("new in HTML5");
+			if (g in html5attribsDepr && wordInString(el, html5attribsDepr[g][0])) 
+				titleTexts.push("deprecated"+(!!html5attribsDepr[g][1] ? " in HTML "+html5attribsDepr[g][1] : ""));
 			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
 			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
 			propsText += "<span class=\"prop"+(g in window.tempElem ? "supp" : "depr")+reqClass+deprClass+"\""+titleText+">"+propName(g, el)+"</span>";
@@ -898,15 +899,15 @@ function getNativeTagSupport(label, tagString) {
 			p in attribsMap &&
 			!in_array(p, otherProps) &&
 			!in_array(p, propsArr) &&
-			wordInString(el, attribsFalsePositives[p])===false
+			wordInString(el, attribsFalsePositives[p])===false &&
+			p!=="toString" 
 			/*			&&
-			p!=="toString" &&
 		    p.indexOf("_")<0 &&
 			!p.match(/^(on|insert|create|delete|remove)/)
 			*/
 			) 
 			 otherProps.push(p);
-			 if (wordInString(el, attribsFalsePositives[p])) console.log("false positive found for "+el+" attribute "+p);
+//			 if (wordInString(el, attribsFalsePositives[p])) console.log("false positive found for "+el+" attribute "+p);
 			// non-standard and vendor-specific
 			 if (p in attribsNonStandard &&
 			 !in_array(p, otherProps) &&
@@ -929,11 +930,14 @@ function getNativeTagSupport(label, tagString) {
 		otherProps.forEach(function(pr) {
 			otherTitleTexts = [];
 			otherClassTxt="";
-			if (pr in html5attribsDepr && wordInString(el, html5attribsDepr[pr][0]) && !!html5attribsDepr[pr][1]) 
-				otherTitleTexts.push("Deprecated in HTML "+html5attribsDepr[pr][1]);
-			if (wordInString(el, html5attribs[pr])) otherTitleTexts.push("This property is new in HTML5");
-			if (!in_array(pr, globalAttribs)) otherTitleTexts.push("This attribute is not in the spec but was found in the element");
-			else otherClassTxt+=" global";
+//			if (pr in html5attribsDepr && wordInString(el, html5attribsDepr[pr][0]) && !!html5attribsDepr[pr][1]) 
+//				otherTitleTexts.push("Deprecated in HTML "+html5attribsDepr[pr][1]);
+			if (pr in attribsNonStandard && wordInString(el, attribsNonStandard[pr][0])) otherTitleTexts.push((!!attribsNonStandard[pr][1] ? "vendor-specific" : "non-standardized / erroneous"));
+			if (wordInString(el, html5attribs[pr])) otherTitleTexts.push("new in HTML5");
+			if (!in_array(pr, globalAttribs) && typeof attribsNonStandard[pr]=="undefined") otherTitleTexts.push("not documented but found in the element");
+			else if (in_array(pr, globalAttribs)) otherClassTxt+=" global";
+			if (pr in html5attribsDepr && wordInString(el, html5attribsDepr[pr][0])) 
+				otherTitleTexts.push("deprecated"+(!!html5attribsDepr[pr][1] ? " in HTML "+html5attribsDepr[pr][1] : ""));
 			allOtherTitles = otherTitleTexts.length>0 ? otherTitleTexts.join("\n") : null;
 			otherTitleText = allOtherTitles==null ? "" :  " title=\""+allOtherTitles+"\"";
 			morePropsText += "<span class=\"prop"+(pr in window.tempElem ? "supp" : "depr")+otherClassTxt+"\""+otherTitleText+">"+propName(pr, el)+"</span>";
