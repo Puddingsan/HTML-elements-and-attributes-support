@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>HTML DOM elements and attributes support</title>
+<title>HTML elements and attributes support</title>
 <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 <!--
 <style type="text/css">
@@ -165,8 +165,6 @@ ul#props li {
 </style>
 -->
 <style type="text/css">
-
-
 body, p, h1, h2, span {
 	font-family: Lato, sans-serif, Arial;
 }
@@ -175,7 +173,9 @@ p, table, ul {
 }
 table {
 	border-collapse:collapse;
-}table, li span.example {
+}
+/*	http://cssdeck.com/labs/css-metallic-background	*/
+table, li span.example {
 	background: -webkit-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
 	background: -moz-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
 	background: -ms-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
@@ -224,6 +224,9 @@ td:first-child {
 	font-weight: bold;
 	text-align:center;
 }
+td:first-child, span.example {
+	text-shadow: 1px 1px 2px #667;
+}
 tr, td {
 	vertical-align:middle;
 }
@@ -252,9 +255,9 @@ span.propgood, span.propbad, span.global {
 	padding: 0.2em 0.4em;
 	display:inline-block;
 	vertical-align: text-top;
-	box-shadow: 1px 1px 3px black;
+	box-shadow: 1px 1px 2px #333;
 	background-color: #f0f0f6;
-	border: 1px solid #888;
+	border: 1px solid #555;
 }
 span.propgood {
 	border-bottom: 0.4em solid #bcd;
@@ -267,20 +270,20 @@ span.propgood.required {
 span.propgood.isdep {
 	font-weight: bold;
 	font-style:italic;
-	border-bottom: 0.4em solid #faa;
+	border-bottom: 0.4em solid #ff5;
 	background-color: #f0f0f6!important;
 }
 
 td.altpropscell span.isdep {
 }
-td.altpropscell span.propgood, li span.propgood.globalex {
+td.altpropscell span.propgood, li span.propgood.nonstand {
 	color: #246;	
 	background-color: #ddf;
 	font-weight: bold;
 	border-bottom: 0.4em solid #246;
 }
 span.propbad {
-	color: #900;	
+	color: #600;	
 	border-bottom: 0.4em solid #900;
 }
 span.example {
@@ -298,7 +301,7 @@ span.global, li span.propgood.globalex {
 	background-color: #f9f9f9!important;
 	font-weight: normal!important;
 	font-style:normal!important;
-	border-bottom: 0.4em solid #999!important;
+	border-bottom: 0.4em solid #840!important;
 }
 span.propgood.obsolete, span.propbad.obsolete {
 	font-weight: bold;
@@ -376,7 +379,7 @@ ul#props li {
 	<li><span class="propgood isdep">coords</span> - attribute is deprecated, but still supported by this browser</li>
 	<li><span class="propgood obsolete">charoff</span> - attribute is obsolete but still supported</li>
 	<li><span class="propgood global">title</span> - global attribute</li>
-	<li><span class="propgood globalex">volume</span> - attribute is non-standard or browser-specific</li>
+	<li><span class="propgood nonstand">volume</span> - attribute is non-standard or browser-specific</li>
 </ul>
 <p>To report any issues, please contact me <a href="mailto:nick%40innovaweb.co.uk?subject=Elements%20and%20properties%20chart">here</a>.</p>
 <script>
@@ -417,17 +420,17 @@ function getStyle(el, prop, pseudo) { pseu=pseudo || null; return d.defaultView.
 
 // browser detection
 var Browser = {
-	Mobile: !!(/mobi/i.test(navigator.userAgent)),
+	Mobile: /mobi/i.test(navigator.userAgent),
  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
 	Opera: !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
 	Chrome: !!window.chrome && !this.Opera,             // Chrome 1+
 	IE: /*@cc_on!@*/false || !!document.documentMode,   // At least IE6
-	SafariMobile: !!(this.Mobile && this.Safari),
-	FirefoxOS: !!(!!"mozApps" in navigator && this.Mobile),
+	SafariMobile: this.Mobile && this.Safari,
+	FirefoxOS: "mozApps" in navigator && this.Mobile,
 	Firefox: typeof InstallTrigger !== 'undefined',  // Firefox 1.0+
 // At least Safari 3+: "[object HTMLElementConstructor]"
 	Safari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
-	Webkit: !!(/webkit/i.test(navigator.userAgent) || (this.Safari || this.Chrome))
+	Webkit: /webkit/i.test(navigator.userAgent) || (this.Safari || this.Chrome)
 },
 
 nativeTypesSafari = {
@@ -589,8 +592,8 @@ attribsMap = {
 	alt: ["area img input", "applet"], //	 Alternative text in case an image can't be displayed.
 	archive: [null, "applet object"], // null, Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
 	async: ["script"], //Indicates that the script should be executed asynchronously.
-	autobuffer: [null, "audio"], //	, "video"
-//	autocapitalize: ["form input textarea"], // safari moile only
+	autobuffer: [null, "audio video"], //	, "video"
+//	autocapitalize: ["form input textarea"], // safari moile only, Chrome detected aug 2015
 	autocomplete: ["form input textarea"], //	Indicates whether controls in this form can by default have their values automatically completed by the browser.
 //	autocorrect: ["input"], // safari
 	autofocus: ["button input keygen select textarea"], //	The element should be automatically focused after the page loaded.
@@ -603,9 +606,8 @@ attribsMap = {
 	behavior: ["marquee"],
 	border: [null, "img object table", "css", ["borderWidth"]], //	The border width. Note: This is a legacy attribute. Please use the CSS border property instead.
 	bottomMargin: [null, "body", "css", ["marginBottom"]],
-//	buffered: ["audio video"], //	Contains the time range of already buffered media.
-	cellPadding: ["table"], //
-	cellSpacing: ["table"], //
+	cellPadding: [null, "table", "css", "borderCollapse"], // needs some juggling with css on descendants (padding)
+	cellSpacing: [null, "table", "css", "padding"], //
 	challenge: ["keygen"], //	A challenge string that is submitted along with the public key.
 	ch: [null, "col colgroup tbody td tfoot th thead tr", "css"], // css
 	chOff: [null, "col colgroup tbody td tfoot th thead tr", "css"], // css
@@ -654,9 +656,10 @@ attribsMap = {
 	formMethod: ["button input"],
 	formNoValidate: ["button input"],
 	formTarget: ["button input"],
-	frame: ["table"], //
+	frame: [null, "table"], //
 	frameBorder: ["frame", "iframe"],
-	hAlign: [null, "col tbody thead tfoot td th tr div", "css", ["textAlign"]],
+//	hAlign: [null, "col thead td th tr div", "css", ["textAlign"]],
+	hAlign: [null, null, "css", ["textAlign"]], // looks ike not supported anymore [confirm]
 	headers: ["td th"], //	 IDs of the <th> elements which applies to this element.
 	height: ["canvas embed iframe img input marquee object spacer video", "td th applet div frame", "css", ["height"]], //	Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead. In other cases, such as <canvas>, the height must be specified with this attribute.
 	// when using height with input type:image it refers to the height of the image
@@ -673,7 +676,7 @@ attribsMap = {
 //	inputMode: ["input"], // switches between keyboard layouts for portable devices
 	integrity: ["link script"],
 	isMap: ["img", "input"], // Indicates that the image is part of a server-side image map.// null Unnecessary. Omit it altogether. All input elements with a type attribute in the Image Button state are processed as server-side image maps
-	itemprop: ["global"], //
+//	itemprop: ["global"], //
 	keytype: ["keygen"], // Specifies the type of key generated.
 	kind: ["track"], // Specifies the kind of text track.
 	label: ["command track menu menuitem optgroup option tr"], // Specifies a user-readable title of the text track.
@@ -689,11 +692,7 @@ attribsMap = {
 	manifest: ["html"], // Specifies the URL of the document's cache manifest.
 	max: ["input meter progress"], // Indicates the maximum value allowed.
 	maxLength: ["input textarea"], // Defines the maximum number of characters allowed in the element.
-//	marginbottom: [null, "body", "css", ["marginBottom"]], // css
 	marginHeight: ["frame", "body iframe", "css", ["marginBottom", "marginTop"]], // css
-//	marginleft: [null, "body", "css", ["marginLeft"]], // css
-//	marginright: [null, "body", "css", ["marginRight"]], // css
-//	marginTop: [null, "body", "css", ["marginTop"]], // css
 	marginWidth: ["frame", "body iframe", "css", ["marginLeft", "marginRight"]], 
 	media: ["a area link style source"], // Specifies a hint of the media for which the linked resource was designed.// null Use script to select the media resource(s) to use
 	method: ["form"], // Defines which HTTP method to use when submitting the form. Can be GET (default) or POST.
@@ -736,7 +735,7 @@ attribsMap = {
 	rowspan: ["td th"], //	Defines the number of rows a table cell should span over.
 //	results: ["input"], // safari
 	reversed: ["ol"],
-	rules: ["table"], //
+	rules: [null, "table"], //
 	sandbox: ["iframe"], // 
 	scheme: [null, "meta"], //	  "Use only one scheme per field, or make the scheme declaration part of the value"
 	scope: ["th", "td"], //	 Use th elements for heading cells
@@ -760,7 +759,7 @@ attribsMap = {
 	start: ["ol"], //	Defines the first number if other than 1. no replacement  MAYBE css ["counterReset"]
 	step: ["input"], //	 
 	style: ["global"], //	Defines CSS styles which will override styles previously set.
-	summary: ["table"], //  null (re-code)
+	summary: [null, "table"], //  null (re-code)
 	tabIndex: ["global"], //		, "area object"	// Overrides the browser's default tab order and follows the one specified instead.
 	target: ["a area base form"], // 
 	text: [null, "body", "css", ["color"]],
@@ -833,6 +832,7 @@ html5attribs = {
 	formMethod: "button input",
 	formNoValidate: "button input",
 	formTarget: "button input",
+	height: "video",
 	hreflang: "area",
 	high: "meter",
 	htmlFor: "output",
@@ -874,8 +874,9 @@ html5attribs = {
 	sizes: "img link source",
 //	spellcheck: "input textarea",
 	spellcheck: true,
-	src: "source",
+	src: "source track video",
 	srcdoc: "iframe",
+	srcLang: "track", //	 
 	srcset: "img source",
 	start: "object ol",
 	step: "input",
@@ -883,6 +884,7 @@ html5attribs = {
 	typeMustMatch: "object",
 	value: "data li meter option output progress",
 	volume: "audio video",
+	width: "canvas video",
 	wrap: "textarea",
 	xMozErrormessage: "input"
 },
@@ -891,23 +893,27 @@ html5attribsDepr = {
 	abbr: ["td th"],
 	accept: ["form", "5"],
 	accessKey: ["area input", "5"],
-	align: ["applet caption col colgroup div embed h1 h2 h3 h4 h5 h6 hr iframe img input legend object p table tbody td tfoot th thead tr", "4.01"], //	,  div - 5
+	align: ["applet caption col colgroup div embed h1 h2 h3 h4 h5 h6 hr iframe img input legend object p table tbody td tfoot th thead tr", "4.01"], //	,  div - 5, th - 4
 	align: ["div", "5"],
 	archive: ["object", "5"],
 	axis: ["td th"],
 	background: ["frame"],
+	bgColor: ["tbody td tr", "4.01"],
 	border: ["img object", "4.01"],
 	ch: ["col colgroup tbody td tfoot th thead tr", "4.01"],
 	charset: ["a", "5"],
 	chOff: ["col colgroup tbody td tfoot th thead tr", "4.01"],
+	cellPadding: ["table"], // needs some juggling with css on descendants (padding)
+	cellSpacing: ["table"], //
 	classId: ["object", "5"],
 	clear: ["br", "4.01"],
 	codeBase: ["object", "5"],
 	codeType: ["object", "5"],
 	coords: ["a", "5"],
 	declare: ["object", "5"],
+	frame: ["table"], //
 	frameBorder: ["iframe", "4"],
-	hAlign: ["col colgroup tbody td th thead tr", "4.01"],
+	hAlign: ["col colgroup td th thead tr", "4.01"],
 	height: ["frame"],
 	hspace: ["img", "4.01"],
 	longDesc: ["iframe frame", "5"],
@@ -918,12 +924,15 @@ html5attribsDepr = {
 	noShade: ["hr"],
 	profile: ["head", "5"],
 	rev: ["a", "5"],
+	rules: ["table"], //
 	shape: ["a", "5"],
 	size: ["hr", "4.01"],
 	scope: ["td"],
 	scrolling: ["iframe", "5"],
 	standby: ["object", "5"],
+	summary: ["table"], //
 	tabIndex: ["area object", "5"], // 
+	type: ["ul"],
 	useMap: ["input", "5"],
 	vAlign: ["col colgroup tbody td th thead tr", "4.01"],
 	version: ["html", "4.01"],
@@ -932,14 +941,18 @@ html5attribsDepr = {
 },
 // tagstring, since version number
 attribsObsolete = {
+	abbr: ["td th", "5"],
 	accessKey: ["input", "5"],
 	archive: ["object", "5"],
-	align: ["caption col h1 h2 h3 h4 h5 h6 hr iframe img", "5"],
+	align: ["caption col h1 h2 h3 h4 h5 h6 hr iframe img tbody td th thead tr", "5"],
+	autobuffer: ["video"],
+	axis: ["td th", "5"],
 	background: ["frame"],
+	bgColor: ["tr", "5"],
 	border: ["img object", "5"],
-	ch: ["col colgroup", "5"],
+	ch: ["col colgroup tbody td tfoot th thead tr", "5"],
 	charset: ["a", "5"],
-	chOff: ["col colgroup", "5"],
+	chOff: ["col colgroup tbody td tfoot th thead tr", "5"],
 	classId: ["object", "5"],
 	clear: ["br", "4.01"],
 	codeBase: ["object", "5"],
@@ -958,6 +971,7 @@ attribsObsolete = {
 	size: ["hr", "5"],
 	standby: ["object", "5"],
 	tabIndex: ["col object", "5"],
+	vAlign: ["tbody th thead tfoot tr", "5"],
 	vspace: ["img", "5"],
 	useMap: ["input", "5"],
 	width: ["basefont col frame hr", "5"]
@@ -967,10 +981,10 @@ attribsToKebabCase = "acceptCharset httpEquiv xMozErrormessage formatDetection".
 attribsNonStandard = {
 	allowFullscreen: ["iframe"], // Firefox""
 	autobuffer: ["audio video"],
-	autocapitalize: ["form input textarea", "SM"], // safari mobile
+	autocapitalize: ["form input textarea", "WK"], // safari mobile
 	autocomplete: ["button", "FF"],
 	autocorrect: ["input", "SAF"], // safari
-	bgColor: ["col colgroup"],
+	bgColor: ["col colgroup tbody td tfoot th thead tr"],
 	borderColor: [true, "IE"], // string 
 	borderColorDark: [true, "IE"], // string 
 	borderColorLight: [true, "IE"], 
@@ -1221,7 +1235,7 @@ var inputAttribs = {
 	xMozErrormessage: ["input", "FF"]
 },
 inputAttribsGlobal = {
-	autocapitalize: "SM",
+	autocapitalize: "WK",
 	autocomplete: "FF",
 	autocorrect: "SAF",
 	autofocus: true,
