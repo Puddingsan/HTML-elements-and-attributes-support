@@ -5,7 +5,7 @@
 <title>HTML elements and attributes support</title>
 <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 <!--
-<style type="text/css">
+<style type="text/css" id="old" disabled="disabled">
 body, p, h1, h2, span {
 	font-family: Lato, sans-serif, Arial;
 }
@@ -123,7 +123,7 @@ span.global {
 	box-shadow: none!important;
 	font-weight: normal!important;
 	font-style:normal!important;
-	opacity: 0.5;
+/*	opacity: 0.5;	*/
 }
 span.propgood.obsolete, span.propbad.obsolete {
 	font-weight: bold;
@@ -147,24 +147,9 @@ tr:hover {
 	background-color: #f9f9f9;
 	color: #246;
 }
-ul li {
-	list-style: none inside;
-	margin-bottom: 0.5em;
-}
-
-#navpane {
-	position:fixed;
-	right: 3em;
-	width: 12em;
-}
-/*
-ul#props li {
-	display:inline;
-}
-*/
 </style>
 -->
-<style type="text/css">
+<style type="text/css" id="new">
 body, p, h1, h2, span {
 	font-family: Lato, sans-serif, Arial;
 }
@@ -177,11 +162,11 @@ table {
 /*	http://cssdeck.com/labs/css-metallic-background	*/
 table, li span.example {
 	background: -webkit-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
-	background: -moz-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
-	background: -ms-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
-	background: -o-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
-	background: radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -webkit-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -webkit-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -webkit-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
-	background-size: 100% 100%, 10px 10px, 10px 10px, 100% 100%;
+	background: -moz-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -moz-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -moz-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -moz-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
+	background: -ms-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -ms-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -ms-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -ms-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
+	background: -o-radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), -o-radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), -o-radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), -o-radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
+	background: radial-gradient(center, circle farthest-corner, rgba(255,255,255,0) 50%, rgba(200,200,200,1)), radial-gradient(center, circle, rgba(255,255,255,.35), rgba(255,255,255,0) 20%, rgba(255,255,255,0) 21%), radial-gradient(center, circle, rgba(0,0,0,.2), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 21%), radial-gradient(center, circle farthest-corner, #f0f0f0, #c0c0c0);
+	background-size: 100% 25em, 10px 10px, 10px 10px, 100% 100%;
 	background-position: top center, 1px 1px, 0px 0px, top center;
 	
 	bottom: 0;
@@ -251,13 +236,13 @@ span.propgood, span.propbad, span.global {
 	font-family: Calibri, Lato, sans-serif, Arial;
 	font-size: 0.74em;
 	border-radius: 0.2em;
-	margin: 0.2em;
+	margin: 0.3em;
 	padding: 0.2em 0.4em;
 	display:inline-block;
 	vertical-align: text-top;
-	box-shadow: 1px 1px 2px #333;
+	box-shadow: 2px 2px 2px #333;
 	background-color: #f0f0f6;
-	border: 1px solid #555;
+	outline: 1px solid #555;
 }
 span.propgood {
 	border-bottom: 0.4em solid #bcd;
@@ -270,7 +255,7 @@ span.propgood.required {
 span.propgood.isdep {
 	font-weight: bold;
 	font-style:italic;
-	border-bottom: 0.4em solid #ff5;
+	border-bottom: 0.4em solid #fa9;
 	background-color: #f0f0f6!important;
 }
 
@@ -283,6 +268,7 @@ td.altpropscell span.propgood, li span.propgood.nonstand {
 	border-bottom: 0.4em solid #246;
 }
 span.propbad {
+	font-style:italic;
 	color: #600;	
 	border-bottom: 0.4em solid #900;
 }
@@ -305,14 +291,22 @@ span.global, li span.propgood.globalex {
 }
 span.propgood.obsolete, span.propbad.obsolete {
 	font-weight: bold;
-	font-style:normal;
+	font-style:italic;
 	color: #003080!important;
 	border-bottom: 0.4em solid #dda062;
 	background-color: #f0f0f6!important;
 }
+span.missing {
+	color: #600;
+	font-style:normal;
+	font-weight: bold;
+	border-bottom: 0.4em solid #f33;
+	background-color: #fee!important;
+}
 span.bld {
 	font-weight:bold;
 	font-size:0.9em;
+	font-style:normal;
 }
 tr {
 	vertical-align:middle;
@@ -332,6 +326,8 @@ tr.nonspecific:hover {
 	background-color: rgba(255, 255, 240, 0.5);
 	color: #660;
 }
+</style>
+<style type="text/css">
 ul li {
 	list-style: none inside;
 	margin-bottom: 0.5em;
@@ -339,21 +335,40 @@ ul li {
 
 #navpane {
 	position:fixed;
-	right: 3em;
-	width: 12em;
+	right: 1em;
+	width: 14em;
 }
-/*
-ul#props li {
-	display:inline;
+#navinfo {
+	font-size: 0.7em;
+	max-height: 38em;
+	overflow-y: scroll;
+	background-color:#f6f6ff;
 }
-*/
+#navinfo p, button {
+	margin-right:0px;
+}
+#overlay {
+	position: absolute;
+	z-Index: 3001;
+	display: block;
+	height:100%;
+	width:100%;
+	top: 0px;
+	left: 0px;
+	display:block;
+/*	background: url(../media/overlay.png) repeat;	*/
+	background-color :rgba(255, 255, 255, 0.35);
+}
 </style>
 </head>
 
 <body>
 <div id="navpane">
+<!--
+<p><input type="button" onClick="switchStyles()" value=" change styles " /></p>
+-->
 <p>
-	<input type="text" id="search" list="tags" placeholder="type element name here">
+	<input type="text" id="search" list="tags" placeholder="type element name here" />
     <datalist id="tags">
     </datalist>
 </p>
@@ -369,20 +384,24 @@ ul#props li {
 <ul>
     <li><span class="true example">&lt;a&gt;</span> - element is supported</li>
     <li><span class="false example">&lt;listing&gt;</span> - element is not supported</li>
-    <li><span class="nonspecific example">&lt;basefont&gt;</span> - unusual or generic reference (may have different property support), normally the parent (<code>HTMLElement</code>). Hover over the name if followed by an asterisk to see which value was expected.</li>
+    <li><span class="nonspecific example">&lt;basefont&gt;</span> - unusual or generic reference (may have different property support), normally <code>HTMLElement</code>.
+    <br>Hover over the name if followed by an asterisk to see which value was expected.</li>
 </ul>
-<p>Attributes legend:</p>
+<p>Attributes legend (deprecated and / or obsolete attributes are in italics and bold attributes have tooltip info):</p>
 <ul id="props">
-	<li><span class="propgood">rel</span> - attribute is supported <span class="propgood" title="new in HTML5">ping <span class="bld">5</span></span> - attribute is new in HTML5</li>
+	<li><span class="propgood">rel</span> - attribute is curent and supported <span class="propgood" title="new in HTML5">ping <span class="bld">5</span></span> - attribute is new in HTML5</li>
 	<li><span class="propgood required">href</span> - attribute is required</li>
-	<li><span class="propbad">datasrc</span> - attribute is not supported by this browser</li>
+	<li><span class="propbad">datasrc</span> - attribute is deprecated and not supported by this browser</li>
+	<li><span class="propbad missing">form</span> - attribute is current but not supported</li>
 	<li><span class="propgood isdep">coords</span> - attribute is deprecated, but still supported by this browser</li>
 	<li><span class="propgood obsolete">charoff</span> - attribute is obsolete but still supported</li>
 	<li><span class="propgood global">title</span> - global attribute</li>
-	<li><span class="propgood nonstand">volume</span> - attribute is non-standard or browser-specific</li>
+	<li><span class="propgood nonstand">volume</span> - attribute is non-standard, browser-specific or undocumented</li>
 </ul>
 <p>To report any issues, please contact me <a href="mailto:nick%40innovaweb.co.uk?subject=Elements%20and%20properties%20chart">here</a>.</p>
 <script>
+// stylesheet  switchung
+if($("old"))$("old").disabled=true;
 // from Prototypejs
 if (!String.dasherize) Object.defineProperty(String.prototype, "dasherize", {
 	enumerable: false,
@@ -433,151 +452,156 @@ var Browser = {
 	Webkit: /webkit/i.test(navigator.userAgent) || (this.Safari || this.Chrome)
 },
 
-nativeTypesSafari = {
-	blockquote: "Blockquote",
-},
+nativeTypes = {
+	
+	Safari: {
+		blockquote: "Blockquote",
+	},
 
-nativeTypesOpera = {},
+	Opera: {},
 
-nativeTypesFirefox = {},
+	Firefox: {},
 
-nativeTypesChrome = {},
+	Chrome: {
+//		foo: "bar",
+	},
 
-nativeTypesIE = {
-	abbr: "Phrase",
-	acronym: "Phrase",
-	address: "Block",
-	b: "Phrase",
-	bdo: "Phrase",
-	big: "Phrase",
-	blink: "Phrase",
-	blockquote: "Block",
-    center: "Block", 
-    cite: "Phrase", 
-    code: "Phrase", 
-    dd: "DD", 
-    dfn: "Phrase", 
-    dt: "DT", 
-    em: "Phrase", 
-    i: "Phrase", 
-    kbd: "Phrase", 
-    keygen: "Block", 
-    listing: "Block", 
-	nobr: "Phrase",
-    plaintext: "Block", 
-    rp: "Phrase", 
-    rt: "Phrase", 
-    ruby: "Phrase", 
-    s: "Phrase", 
-    samp: "Phrase", 
-    small: "Phrase", 
-    strike: "Phrase", 
-    strong: "Phrase", 
-    sub: "Phrase", 
-    sup: "Phrase", 
-    td: "TableDataCell", 
-    th: "TableHeaderCell", 
-    thead: "TableSection",
-    tt: "Phrase", 
-    u: "Phrase", 
-    var: "Phrase", 
-    xmp: "Block"
-},
+	IE: {
+		abbr: "Phrase",
+		acronym: "Phrase",
+		address: "Block",
+		b: "Phrase",
+		bdo: "Phrase",
+		big: "Phrase",
+		blink: "Phrase",
+		blockquote: "Block",
+		center: "Block", 
+		cite: "Phrase", 
+		code: "Phrase", 
+		dd: "DD", 
+		dfn: "Phrase", 
+		dt: "DT", 
+		em: "Phrase", 
+		i: "Phrase", 
+		kbd: "Phrase", 
+		keygen: "Block", 
+		listing: "Block", 
+		nobr: "Phrase",
+		plaintext: "Block", 
+		rp: "Phrase", 
+		rt: "Phrase", 
+		ruby: "Phrase", 
+		s: "Phrase", 
+		samp: "Phrase", 
+		small: "Phrase", 
+		strike: "Phrase", 
+		strong: "Phrase", 
+		sub: "Phrase", 
+		sup: "Phrase", 
+		td: "TableDataCell", 
+		th: "TableHeaderCell", 
+		thead: "TableSection",
+		tt: "Phrase", 
+		u: "Phrase", 
+		var: "Phrase", 
+		xmp: "Block"
+	},
 // base list
-nativeTypesBase = {
-	a: "Anchor",
-	abbr: "",
-	acronym: "",
-	address: "",
-	article: "",
-	aside: "",
-	b: "",
-//	b: "Bold",
-	basefont: "BaseFont",
-	bdi: "",
-	bdo: "",
-	bgsound: "BGSound",
-	big: "",
-	blink: "",
-	blockquote: "Quote",
-	br: "BR",
-	caption: "TableCaption",
-	center: "",
-	cite: "",
-	code: "",
-	col: "TableCol", // col, colgroup
-	colgroup: "TableCol", // col, colgroup
-	dd: "",
-	del: "Mod", // ins, del
-	dfn: "",
-	dir: "Directory",
-	dl: "DList",
-	dt: "",
-	datalist: "DataList",
-	em: "",
-	fieldset: "FieldSet",
-	figcaption: "",
-	figure: "",
-	footer: "",
-	frameset: "FrameSet",
-	h1: "Heading",
-	h2: "Heading",
-	h3: "Heading",
-	h4: "Heading",
-	h5: "Heading",
-	h6: "Heading",
-	header: "",
-	hgroup: "",
-	hr: "HR",
-    html: "Html", 
-	i: "",
-	iframe: "IFrame",
-	image: "",
-	img: "Image",
-	ins: "Mod", // ins, del
-	isindex: "IsIndex",
-	li: "LI",
-	listing: "Pre",
-	kbd: "",
-	main: "",
-	mark: "",
-	menuitem: "MenuItem",
-	nav: "",
-	nextid: "NextId",
-	nobr: "",
-	noembed: "",
-	noframes: "",
-	noscript: "",
-	ol: "OList",
-	optgroup: "OptGroup",
-	p: "Paragraph",
-	plaintext: "Pre",
-	q: "Quote",
-	rp: "",
-	rt: "",
-	ruby: "",
-	s: "",
-	samp: "",
-	section: "",
-	small: "",
-	strike: "",
-	strong: "",
-	sup: "",
-	sub: "",
-	summary: "",
-	tbody: "TableSection", 
-	td: "TableCell", 
-	textarea: "TextArea",
-	tfoot: "TableSection", 
-	th: "TableCell", 
-	thead: "TableSection", 
-	tr: "TableRow",
-	tt: "",
-	u: "",
-	ul: "UList",
-	var: "",
-	wbr: "",
-	xmp: "Pre"
+	Base: {
+		a: "Anchor",
+		abbr: "",
+		acronym: "",
+		address: "",
+		article: "",
+		aside: "",
+		b: "",
+	//	b: "Bold",
+		basefont: "BaseFont",
+		bdi: "",
+		bdo: "",
+		bgsound: "BGSound",
+		big: "",
+		blink: "",
+		blockquote: "Quote",
+		br: "BR",
+		caption: "TableCaption",
+		center: "",
+		cite: "",
+		code: "",
+		col: "TableCol", // col, colgroup
+		colgroup: "TableCol", // col, colgroup
+		dd: "",
+		del: "Mod", // ins, del
+		dfn: "",
+		dir: "Directory",
+		dl: "DList",
+		dt: "",
+		datalist: "DataList",
+		em: "",
+		fieldset: "FieldSet",
+		figcaption: "",
+		figure: "",
+		footer: "",
+		frameset: "FrameSet",
+		h1: "Heading",
+		h2: "Heading",
+		h3: "Heading",
+		h4: "Heading",
+		h5: "Heading",
+		h6: "Heading",
+		header: "",
+		hgroup: "",
+		hr: "HR",
+		html: "Html", 
+		i: "",
+		iframe: "IFrame",
+		image: "",
+		img: "Image",
+		ins: "Mod", // ins, del
+		isindex: "IsIndex",
+		li: "LI",
+		listing: "Pre",
+		kbd: "",
+		main: "",
+		mark: "",
+		menuitem: "MenuItem",
+		nav: "",
+		nextid: "NextId",
+		nobr: "",
+		noembed: "",
+		noframes: "",
+		noscript: "",
+		ol: "OList",
+		optgroup: "OptGroup",
+		p: "Paragraph",
+		plaintext: "Pre",
+		q: "Quote",
+		rp: "",
+		rt: "",
+		ruby: "",
+		s: "",
+		samp: "",
+		section: "",
+		small: "",
+		strike: "",
+		strong: "",
+		sup: "",
+		sub: "",
+		summary: "",
+		tbody: "TableSection", 
+		td: "TableCell", 
+		textarea: "TextArea",
+		tfoot: "TableSection", 
+		th: "TableCell", 
+		thead: "TableSection", 
+		tr: "TableRow",
+		tt: "",
+		u: "",
+		ul: "UList",
+		var: "",
+		wbr: "",
+		xmp: "Pre"
+	}
 },
 attribsMap = {
 	// array members: 0 - still supported, 1 - deprecated, 2 - replacement method (new attr or "css"), 3 - css array / other repl. options / error message if applicabe (args[2]===false)
@@ -619,7 +643,7 @@ attribsMap = {
 	clear: [null, "br", "css", ["clear"]], // css
 	code: [null, "applet object"], // null, Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
 	codeBase: [null, "applet object"], // null Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
-	codeTag: ["object"], //
+//	codeTag: [null, "object"], //
 	codeType: [null, "object"], // Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
 	color: [null, "basefont font", "css", ["color"]], //	This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
 	cols: ["textarea frameset", "pre"], //	Defines the number of columns in a textarea. // frame
@@ -679,7 +703,7 @@ attribsMap = {
 //	itemprop: ["global"], //
 	keytype: ["keygen"], // Specifies the type of key generated.
 	kind: ["track"], // Specifies the kind of text track.
-	label: ["command track menu menuitem optgroup option tr"], // Specifies a user-readable title of the text track.
+	label: ["command track menuitem optgroup option", "menu tr"], // Specifies a user-readable title of the text track.
 	lang: ["global"],  //	Defines the language used in the element.
 	language: [null, "script"], // 	Defines the script language used in the element.// convert to type
 	leftMargin: [null, "body", "css", ["marginLeft"]],
@@ -691,7 +715,7 @@ attribsMap = {
 	lowsrc: [null, "img"], // progressive jpg
 	manifest: ["html"], // Specifies the URL of the document's cache manifest.
 	max: ["input meter progress"], // Indicates the maximum value allowed.
-	maxLength: ["input textarea"], // Defines the maximum number of characters allowed in the element.
+	maxLength: ["input textarea"], // Defines the maximum number of characters allowed in the element. // email password search tel text url
 	marginHeight: ["frame", "body iframe", "css", ["marginBottom", "marginTop"]], // css
 	marginWidth: ["frame", "body iframe", "css", ["marginLeft", "marginRight"]], 
 	media: ["a area link style source"], // Specifies a hint of the media for which the linked resource was designed.// null Use script to select the media resource(s) to use
@@ -725,14 +749,14 @@ attribsMap = {
 	prompt: ["isindex"],
 	pubDate: ["time"], // Indicates whether this date and time is the date of the nearest <article> ancestor element.
 	radioGroup: ["command menuitem"], //
-	readOnly: ["input textarea iframe"], // Indicates whether the element can be edited.
+	readOnly: ["input textarea", "iframe"], // Indicates whether the element can be edited.
 	rel	: ["a area link"], // Specifies the relationship of the target object to the link object.
 	required: ["input select textarea"], // Indicates whether this element is required to fill out or not.
 	rev: [null, "a link"], //null Use the rel attribute instead, with an opposite term. (For example, instead of rev="made", use rel="author"
 	rightMargin: [null, "body", "css", ["marginRight"]], // css
 	reversed: ["ol"], // Indicates whether the list should be displayed in a descending order instead of a ascending.
 	rows: ["textarea frameset"], // Defines the number of rows in a textarea. // frame
-	rowspan: ["td th"], //	Defines the number of rows a table cell should span over.
+	rowSpan: ["td th"], //	Defines the number of rows a table cell should span over.
 //	results: ["input"], // safari
 	reversed: ["ol"],
 	rules: [null, "table"], //
@@ -782,9 +806,9 @@ attribsMap = {
 	xmlns: ["html"]
 },
 requiredAttrMap = {
-	a: "href",
+//	a: "href", // no longer mandatory
 	applet: "width",
-	area: "href alt",
+//	area: "href alt",
 	basefont: "size",
 	bgsound: "src",
 	form: "action",
@@ -811,20 +835,25 @@ webComponents = "content decorator element shadow template",
 html5attribs = {
 	async: "script",
 	autobuffer: "audio video",
-	autoplay: "audio video",
 	autocomplete: "button input textarea form",
 	autofocus: "button input keygen select textarea",
+	autoplay: "audio video",
 	autosave: "input",
 	challenge: "keygen",
 	charset: "meta",
+	checked: "menuitem",
+	command: "menuitem",
 	contentEditable: true,
 	contextMenu: true,
 	controls: "audio video",
 	crossOrigin: "audio img link script video",
 	dataset: true,
-	disabled: "fieldset keygen",
+	dateTime: "del ins time",
+	"default": "menuitem track",
+	disabled: "fieldset keygen menuitem",
 	download: "a area",
 	draggable: true,
+	dropzone: true,
 	"for": "output",
 	form: "button fieldset input keygen label meter object output progress select textarea",
 	formAction: "input button",
@@ -832,17 +861,18 @@ html5attribs = {
 	formMethod: "button input",
 	formNoValidate: "button input",
 	formTarget: "button input",
-	height: "video",
+	height: "canvas video",
 	hreflang: "area",
 	high: "meter",
 	htmlFor: "output",
+	icon: "menuitem",
 	incremental: "input", // debounced event firing on search inputs
 	indeterminate: "input",
 	inputMode: "input",
 	integrity: "link script",
 	keytype: "keygen",
 	kind: "track",
-	label: "track",
+	label: "menuitem track",
 	list: "input",
 	loop: "audio video",
 	low: "meter",
@@ -850,21 +880,23 @@ html5attribs = {
 	max: "input meter progress",
 	min: "input meter",
 	maxLength: "textarea",
-	minLength: "textarea",
+	minLength: "input textarea",
 	media: "a area source",
 	multiple: "input",
-	muted: true,
+	muted: "audio video",
 	name: "fieldset keygen output",
 	noValidate: "form",
 	mozOpaque: "canvas",
-	open: "details",
+	open: "details dialog",
 	optimum: "meter",
 	pattern: "input",
 	ping: "a",
-	preload: true,
+	preload: "audio video",
 	placeholder: "input textarea",
-	played: true,
+	played: "audio video",
 	poster: "video",
+	pubDate: "time",
+	radioGroup: "menuitem",
 	readOnly: "input",
 	rel: "area",
 	required: "input select textarea",
@@ -874,13 +906,13 @@ html5attribs = {
 	sizes: "img link source",
 //	spellcheck: "input textarea",
 	spellcheck: true,
-	src: "source track video",
+	src: "audio source track video",
 	srcdoc: "iframe",
 	srcLang: "track", //	 
 	srcset: "img source",
 	start: "object ol",
 	step: "input",
-	type: "ol source",
+	type: "ol source menuitem",
 	typeMustMatch: "object",
 	value: "data li meter option output progress",
 	volume: "audio video",
@@ -908,6 +940,7 @@ html5attribsDepr = {
 	classId: ["object", "5"],
 	clear: ["br", "4.01"],
 	codeBase: ["object", "5"],
+//	codeTag: ["object", "5"],
 	codeType: ["object", "5"],
 	coords: ["a", "5"],
 	declare: ["object", "5"],
@@ -956,6 +989,7 @@ attribsObsolete = {
 	classId: ["object", "5"],
 	clear: ["br", "4.01"],
 	codeBase: ["object", "5"],
+//	codeTag: ["object", "5"],
 	codeType: ["object", "5"],
 	coords: ["a", "5"],
 	declare: ["object", "5"],
@@ -1006,7 +1040,7 @@ attribsNonStandard = {
 //	nowrap: ["dd"],
 	remote: ["iframe", "FFOS"],
 	results: ["input", "SAF"],
-	shape: ["area"],
+	shape: ["area", "IE"],
 	src: ["applet", "IE"],
 	target: ["link"],
 	urn: ["a", "IE"],
@@ -1067,8 +1101,10 @@ attribsFalsePositives = {
 // Microdata model, not used as it emulates the fate of betamax :-(
 microdataAttribs = "item itemid itemprop itemref itemscope itemtype".split(" ");
 // add conditions per browser
-function updateObj(modObj) {
-	tmpObj = nativeTypesBase;
+function updateObj(refObj) {
+	tmpObj = nativeTypes.Base;
+	modObj = nativeTypes[refObj] || false;
+//	if (!modObj) console.log("could not ceate lookup object using "+refObj);
 	if (typeof modObj == "object") {
 		for (z in modObj) {
 			if (modObj.hasOwnProperty(z)) tmpObj[z] = modObj[z];
@@ -1090,13 +1126,43 @@ function getProperties(tagName) {
 	return [propSupp, propDepr];
 }
 
+// return an object of matches
+function browserObj() {
+	tmpObj = {};
+	for (b in Browser) {
+		if (Browser[b]) tmpObj[b] = 1;
+	}
+	return tmpObj;
+}
+console.log(browserObj());
+
+
+// return base user agent
+function baseUA() {
+	tmpArr = [];
+	for (b in Browser) {
+		// only base types accepted
+		if (Browser[b] && !in_array(b, tmpArr) && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
+			tmpArr.push(b);
+//		if (Browser[b] && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
+//			return b;
+		}
+	}
+	// shoud be only one entry ...
+	return tmpArr.join("");
+//	return null;
+}
+console.log("baseUA: ", baseUA());
 // main function
 function getNativeTagSupport(label, tagString) {
+	unsupported=[];
 	testName = label.replace(/\s/g, "");
 	tagArr = tagString.split(" ");
 	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+tagArr.length+")</a></h4>");
-	modObj = (Browser.Chrome) ? nativeTypesChrome : (Browser.IE) ? nativeTypesIE : (Browser.Firefox || Browser.FirefoxOS) ? nativeTypesFirefox : (Browser.Opera) ? nativeTypesOpera : (Browser.Safari || Browser.SafariMobile) ? nativeTypesSafari : null;
-	lookupObj = updateObj(modObj) || nativeTypesBase;
+//	modObj = (Browser.Chrome) ? nativeTypes.Chrome : (Browser.IE) ? nativeTypes.IE : (Browser.Firefox || Browser.FirefoxOS) ? nativeTypes.Firefox : (Browser.Opera) ? nativeTypes.Opera : (Browser.Safari || Browser.SafariMobile) ? nativeTypes.Safari : null;
+//	lookupObj = updateObj(modObj) || nativeTypes.Base;
+	thisUA = baseUA();
+	lookupObj = updateObj(thisUA) || nativeTypes.Base;
 	var html = "<a name=\""+testName+"\" id=\""+testName+"\" /><h3>"+label+"</h3>\n<table>\n";
 	tagArr.forEach(function(el){
 		window.tempElem = document.createElement(el);
@@ -1119,23 +1185,46 @@ function getNativeTagSupport(label, tagString) {
 		propsArr.sort();
 		propsArr.forEach(function(g){
 			titleTexts = [];
-			classes = [];
-			obsClass = "";
-			deprClass = (in_array(g, propsDepr) && g in window.tempElem) ? " isdep" : "";
-			if (deprClass.length>0) titleTexts.push("supported but deprecated"+(html5attribsDepr[g] && typeof html5attribsDepr[g][1]=="string" ? " since HTML "+html5attribsDepr[g][1] : ""));
-			reqClass = (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) ? " required" : "";
-			if (reqClass.length>0) titleTexts.push("required by the element");
+			tagAttrClasses = [];
+			// detect unsupported but current attributes
+			if (!(g in window.tempElem) &&
+				!in_array(g, propsDepr) &&
+				(!(g in attribsObsolete)) &&
+				(!(g in html5attribsDepr)) &&
+				actualElemStr!=="HTMLUnknownElement" && // has no attributes
+				actualElemStr!=="HTMLElement" && //  has no attributes
+				!in_array({tag:el, attr:g}, unsupported)
 			
+			) {
+				unsupported.push({tag:el, attr:g});
+				tagAttrClasses.push("missing");
+				titleTexts.push("the element does not support this attribute in this browser");
+			}
+			// deprecated arrs
+			if (in_array(g, propsDepr) && g in window.tempElem) {
+				tagAttrClasses.push("isdep");
+				titleTexts.push("supported but deprecated"+(html5attribsDepr[g] && typeof html5attribsDepr[g][1]=="string" ? " since HTML "+html5attribsDepr[g][1] : ""));
+			}
+			// required
+			if (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) {
+				tagAttrClasses.push("required");
+				titleTexts.push("required by the element");
+			}
+			// html5
 			if (wordInString(el, html5attribs[g])) titleTexts.push("new in HTML5");
+			// obsoete
 			if (g in attribsObsolete && wordInString(el, attribsObsolete[g][0])) {
 				titleTexts.push("supported but obsolete"+(!!attribsObsolete[g][1] ? " since HTML "+attribsObsolete[g][1] : ""));
-				obsClass = " obsolete";
+//				obsClass = " obsolete";
+				tagAttrClasses.push("obsolete");
 			}
+			classStr = (tagAttrClasses.length>0) ? " "+tagAttrClasses.join(" ") : "";
 			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
 			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
-			propsText += "<span class=\"prop"+(g in window.tempElem ? "good" : "bad")+reqClass+deprClass+obsClass+"\""+titleText+">"+propName(g, el)+"</span>";
+			propsText += "<span class=\"prop"+(g in window.tempElem ? "good" : "bad")+classStr+"\""+titleText+">"+propName(g, el)+"</span>";
 		});
-		// not element-specific attributes
+		//
+		// not element-specific attributes: global, non-standardized and vendor-specific, exclude false positives
 		otherProps = [];
 		for (p in window.tempElem) {
 			if (
@@ -1173,9 +1262,7 @@ function getNativeTagSupport(label, tagString) {
 		otherProps.forEach(function(pr) {
 			otherTitleTexts = [];
 			otherClassTxt="";
-//			if (pr in html5attribsDepr && wordInString(el, html5attribsDepr[pr][0]) && !!html5attribsDepr[pr][1]) 
-//				otherTitleTexts.push("Deprecated in HTML "+html5attribsDepr[pr][1]);
-			if (pr in attribsNonStandard && wordInString(el, attribsNonStandard[pr][0])) otherTitleTexts.push((!!attribsNonStandard[pr][1] ? "vendor-specific" : "non-standardized / erroneous"));
+			if (pr in attribsNonStandard && wordInString(el, attribsNonStandard[pr][0])) otherTitleTexts.push((!!attribsNonStandard[pr][1] ? "vendor-specific ("+(uaName[attribsNonStandard[pr][1]])+")" : "non-standardized or erroneous"));
 			if (wordInString(el, html5attribs[pr])) otherTitleTexts.push("new in HTML5");
 			if (!in_array(pr, globalAttribs) && typeof attribsNonStandard[pr]=="undefined") otherTitleTexts.push("not documented but found in the element");
 			else if (in_array(pr, globalAttribs)) otherClassTxt+=" global";
@@ -1190,9 +1277,29 @@ function getNativeTagSupport(label, tagString) {
 	});
 	html += "</table>\n";
 	document.body.insertAdjacentHTML("beforeend", html);
+	// gather unsupported attrs and display in side panel
+//	if (unsupported.length>0) console.log("unsupported attrs: ", unsupported);
+	unsuppTxt = "";
+	unsuppObj={};
+	// sort by tag
+	unsupported.forEach(function(un) {
+		if (!(un.tag in unsuppObj)) unsuppObj[un.tag] = [];
+		unsuppObj[un.tag].push(propName(un.attr));
+//		unsuppTxt += "&lt;"+un.tag+"&gt; is missing the "+propName(un.attr)+" attribute<br>";
+	});
+	for (ob in unsuppObj) {
+		joinStr = unsuppObj[ob].length==2 ? " and " : ", ";
+		unsuppStr = unsuppObj[ob].join(joinStr);
+		if (unsuppObj[ob].length>2) {
+			idx = unsuppStr.lastIndexOf(joinStr);
+			unsuppStr = unsuppStr.substr(0, idx)+" and "+unsuppStr.substr(idx+2);
+		}
+		unsuppTxt += "<p>&lt;"+ob+"&gt; is missing the "+unsuppStr+" attribute"+(unsuppObj[ob].length==1 ? "" : "s")+"</p>";
+	}
+	document.querySelector("#navinfo").insertAdjacentHTML("beforeend", unsuppTxt);
 }
 
-var propNamesExp={
+var propNamesExpand={
 	ch:"char",
 	chOff:"charoff",
 	htmlFor:"for",
@@ -1200,8 +1307,12 @@ var propNamesExp={
 	dataset: "data-*"
 }
 
+function parseAttribute(prop, el) {
+	
+}
+
 function propName(pn, el) {
-	return (pn in propNamesExp ? propNamesExp[pn] : in_array(pn, attribsToKebabCase) ? pn.dasherize() : pn.toLowerCase())+((wordInString(el, html5attribs[pn])) ? " <span class=\"bld\">5</span>" : "");
+	return (pn in propNamesExpand ? propNamesExpand[pn] : in_array(pn, attribsToKebabCase) ? pn.dasherize() : pn.toLowerCase())+((wordInString(el, html5attribs[pn])) ? " <span class=\"bld\">5</span>" : "");
 }
 
 var inputAttribs = {
@@ -1334,8 +1445,8 @@ getNativeTagSupport("Deprecated tags", deprTags);
 getNativeTagSupport("HTML5 tags", html5tags);
 getNativeTagSupport("HTML5 semantic tags", html5semantics);
 getNativeTagSupport("Web Components", webComponents);
-getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
-for (br in Browser) if (!!Browser[br]) console.log("Browser: "+br);
+//	getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
+//	for (br in Browser) if (!!Browser[br]) console.log("Browser: "+br);
 
 // populate the datalist element
 var allTagsArr = [stdTags, deprTags, html5tags, html5semantics, webComponents].join(" ").split(" ");
@@ -1343,6 +1454,7 @@ allTagsArr.sort();
 allTagsArr.forEach(function(tag){
 	opt = document.createElement("option");
 	opt.value = tag;
+	opt.appendChild(document.createTextNode(tag));
 	$("tags").appendChild(opt);
 });
 // search control
@@ -1356,6 +1468,25 @@ $("search").addEventListener("input", function(e) {
 		location.href = href.replace(href.substring(href.indexOf("#")), "")+"#"+goTo;
 	}
 });
+/*
+*/
+function switchStyles() {
+	(([]).slice.call(document.getElementsByTagName("STYLE"))).forEach(function(ss){
+		if (ss.id && /old|new/.test(ss.id)) { // only for sheets with an id of old or new
+			ss.disabled = (ss.disabled==false) ? true : false;
+			console.log("sheet #"+ss.id+" disabed value: "+!!ss.disabled)
+		}
+	});
+}
+
+function showStats() {
+	if (!("overlay")) {
+		overlay = document.createElement("DIV");
+		overlay.id="overlay";
+		document.body.appendChild(overlay);
+	}
+	// ":not(.statspanel) {-webkit-filter: blur(1.5px); filter: blur(1.5px);}"
+}
 </script>
 </body>
 </html>
