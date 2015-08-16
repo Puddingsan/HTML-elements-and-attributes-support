@@ -190,10 +190,10 @@ td strong {
 	https://developer.mozilla.org/en-US/docs/Web/CSS/animation
 	*/
   background-color: #796046;
-  background-image: -webkit-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
-  background-image:    -moz-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 0255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
-  background-image:      -o-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
-  background-image:         linear-gradient(to right, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
+  background-image: -webkit-linear-gradient(    left, rgba( 255,255,255,1.0 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,1.0 ) 75%);
+  background-image:    -moz-linear-gradient(    left, rgba( 255,255,255,1.0 ) 25%, rgba( 0255,255,255,0.1 ) 50%, rgba( 255,255,255,1.0 ) 75%);
+  background-image:      -o-linear-gradient(    left, rgba( 255,255,255,1.0 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,1.0 ) 75%);
+  background-image:         linear-gradient(to right, rgba( 255,255,255,1.0 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,1.0 ) 75%);
   color: white;
   height: 100%;
   width: 20%;

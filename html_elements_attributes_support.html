@@ -6,7 +6,7 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='css/props_attrs_checker_old.css' rel='stylesheet' type='text/css' disabled='disabled' id="old">
-<link href='css/props_attrs_checker.css' rel='stylesheet' type='text/css' id="new rel='stylesheet'">
+<link href='css/props_attrs_checker.css' rel='stylesheet' type='text/css' id="new" rel='stylesheet'>
 <link href='css/props_attrs_checker_common.css' rel='stylesheet' type='text/css'>
 </head>
 
@@ -16,8 +16,10 @@
 <p><input type="button" onClick="switchStyles()" value=" change styles " /></p>
 -->
 	<input type="text" id="search" list="tags" placeholder="type element name here" />
-<p> <img src="stats_icon.png" alt="close panel" name="openstats" width="24" height="24" id="openstats" onClick="showPanel('stats')" />
-<!-- "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAAGXcA1uAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNpi/P//PwMMsIAIRkZGsAgTAxIACCBGZGVMMCVgGSCGcwACCEUZhmEwDop2dB0wABBAOCWYMFRCjWNBNxtoAiNcB4wDorF7kRhXAQQQTglcAKdrkfkwDHM1AzRM/yOz0cVANAij+A7Z6zAx9GBnweoxNGdR5GmAAKI8lCjWgBKk2KIan4expiZsIYUc7Ezo4Y9NMYaTkBUiJ1GcnkZ3Ei7FOBMfPo+THA+0j2mAACPZBlIBC7UMwhUzTKRqJMVwojM0cgIjxWJ4HBCrGBeAJX9sCZYJvcyCsQllCWxy2BI5wZyA7jJsBSjF6RpmCXpJQNVkSm48MTHQGNA8J9PcBwDzGcU571/u1gAAAABJRU5ErkJggg==" -->
+<p> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAAGXcA1uAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNpi/P//PwMMsIAIRkZGsAgTAxIACCBGZGVMMCVgGSCGcwACCEUZhmEwDop2dB0wABBAOCWYMFRCjWNBNxtoAiNcB4wDorF7kRhXAQQQTglcAKdrkfkwDHM1AzRM/yOz0cVANAij+A7Z6zAx9GBnweoxNGdR5GmAAKI8lCjWgBKk2KIan4expiZsIYUc7Ezo4Y9NMYaTkBUiJ1GcnkZ3Ei7FOBMfPo+THA+0j2mAACPZBlIBC7UMwhUzTKRqJMVwojM0cgIjxWJ4HBCrGBeAJX9sCZYJvcyCsQllCWxy2BI5wZyA7jJsBSjF6RpmCXpJQNVkSm48MTHQGNA8J9PcBwDzGcU571/u1gAAAABJRU5ErkJggg==" alt="close panel" name="openstats" width="24" height="24" id="openstats" onClick="showPanel('stats')" />
+<!--
+ 
+-->
 </p>
     <datalist id="tags">
     </datalist>
@@ -457,9 +459,9 @@ function getAttributeInfo(tag, attr) {
 	oReq.open("GET", url, true);
 	tDiv = $("inforight");
 //	tDiv.style.padding = "0px!important";
-	tDiv.style.padding = "0 !important";
+//	tDiv.style.padding = "0 !important";
 	tDiv.textContent = "";
-	tDiv.style.overflow = "hidden"; // !important
+	tDiv.style.overflowY = "hidden"; // !important
 //	tDiv.classList.add('loading');
 	cylon = document.createElement("DIV");
 	cylon.id='cylon';
@@ -470,11 +472,11 @@ function getAttributeInfo(tag, attr) {
 		console.log(response);
 		respTxt = "<p><strong>&lt;"+tag+(!!attr ? " "+attr+"=\"<code>value</code>\"" : "")+"&gt;</strong></p>";
 		if (!response) {
-			respTxt += "<strong>The data could not be displayed</strong>";
+			respTxt += "<strong>The data could not be displayed due to an unknown error</strong>";
 		} else if (response.indexOf("ERROR_NO_DATA")>-1) {
 			respTxt += "No data was found";
 		} else if (response!=="") {
-			respTxt += response.replace(/(^.*?(<\/?dd>).*?$)/gi, "<p>").replace(/(\n|\r|\r\n|\n\r)/gi, "").replace(/\\"/g, '"').replace(/\\'/g, "'"); // .replace(/(<\/dd>)/gi, "</p>")
+			respTxt += response.replace(/(\n|\r|\r\n|\n\r)/gi, "").replace(/\\"/g, '"').replace(/\\'/g, "'"); // .replace(/(<\/dd>)/gi, "</p>") // .replace(/(^.*?(<\/?dd>).*?$)/gi, "<p>")
 		}
 		stopLoading(tDiv, respTxt);
 	}, false);
@@ -484,7 +486,7 @@ function stopLoading(tDiv, txt) {
 //	endTxt = respTxt || txt;
 //	tDiv.classList.remove('loading');
 	$('cylon').parentNode.removeChild($('cylon'));
-	tDiv.style.padding = "1em";
+//	tDiv.style.padding = "1em";
 	tDiv.style.overflowY = "auto"; // !important
 	tDiv.innerHTML = txt;
 }
