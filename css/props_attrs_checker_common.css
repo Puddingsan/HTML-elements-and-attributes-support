@@ -1,0 +1,210 @@
+@charset "utf-8";
+ul li {
+	list-style: none inside;
+	margin-bottom: 0.5em;
+}
+
+#navpane {
+	position:fixed;
+	right: 1em;
+	width: 14em;
+}
+#navinfo {
+	font-size: 0.7em;
+	max-height: 38em;
+	overflow-y: scroll;
+	background-color:#f6f6ff;
+}
+#navinfo p {
+	font-family: "Open Sans", sans-serif, arial;
+	margin:0.3em;
+}
+#navinfo p strong {
+	color:#600;
+}
+#navinfo  p:nth-child(odd) {
+	background-color:#eaeaea;
+}
+#overlay {
+	position: absolute;
+	z-Index: 3001;
+	height:100%;
+	width:100%;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	position:fixed;
+	display:block;
+/*	background: url(../media/overlay.png) repeat;	*/
+	background-color :rgba(255, 255, 240, 0.35);
+}
+#panel {
+	position: fixed;
+	z-Index: 3002;
+	display:block;
+/*	position:fixed;*/
+	background-color :#fffff6;
+	outline: solid 1px #999;
+	width: 60em;
+	margin: 0 auto;
+	top: 2em;
+	left: 2em;
+/*	*/
+	min-height: 20em;
+	padding: 1em;
+	box-shadow: 0em 0em 1.5em #333;
+}
+#panel, #panel * {
+	-webkit-filter: none;
+	filter: none;
+}
+table.stats {
+	width:100%;
+	background:none;
+	background-color:transparent;
+	font-size: 0.85em;
+	font-family: "Open Sans", sans-serif, arial;
+}
+table.stats th {
+	color: #fffff6;
+	background-color: #777;
+/*	outline: 1px solid #777;	*/
+	padding: 0.5em;
+	letter-spacing:0.1em;
+}
+table.stats tbody tr {
+	outline: 1px solid #fffff6;
+}
+table.stats tbody tr:hover {
+	outline: 1px solid #777;
+	background-color: #f6f6ff;
+}
+#statsclose {
+	position:absolute;
+	top: 0px;
+	right: 0px;
+	width: 1em;
+	height: 1em;
+	background-color: #fdd;
+	cursor:pointer;
+}
+img#openstats {
+	cursor:pointer;
+	display:compact;
+	margin-right: 0px;
+}
+td span.good, td span.bad {
+	width:3em;
+	font-weight:bold;
+	text-align:right;
+	display:inline-block;
+}
+td span.good {
+	color:#393;
+}
+td span.bad {
+	color:#933;
+	margin-right:1em;
+}
+td strong {
+	width: 3em;
+	display:inline-block;
+	margin-right: 1.5em;
+	color: #468;
+}
+
+.cntr {
+	text-align:center;
+}
+.ralign {
+	text-align:right;
+}
+#infoleft, #inforight {
+	height: 11em;
+	display: inline-block;
+	padding:1em;
+	top:0px;
+	position:relative;
+	border: solid 1px #aaa;
+	overflow-y: auto;
+	font-size: 0.9em;
+	background-color: #fff;
+}
+#infoleft {
+	width:29%;
+	float:left;
+	left: 0px;
+	font-family: Calibri, Lato, sans-serif, Arial;
+	color:#339;
+}
+#infoleft span a {
+	text-decoration:none;
+	border-bottom:dotted 1px #600;
+	text-decoration:underline;
+	color: #600;
+	font-weight:bold;
+}
+#infocontainer {
+	width:100%;
+	margin-top: 1em;
+}
+#inforight {
+	width:63%;
+	float:right;
+	right: 0px;
+}
+#inforight p, #inforight ul, #inforight dd, #inforight li, #inforight ul, #inforight table {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+#inforight p, #inforight ul, #inforight dd, #inforight ul, #inforight table {
+	margin-bottom: 1em;
+}#inforight table {
+	margin-top: 1em;
+}
+#inforight p:first-child {
+	margin:0 0 1em 0!important;
+	vertical-align:middle;
+}
+.detailslink {
+	font-weight:bold;
+	text-shadow: 0px 0px 3px #777;
+/*	border-bottom: dotted 1px #600;	*/
+	text-decoration:underline;
+	cursor:pointer;
+}
+.loading {
+	/*
+	*/
+	background-image:url(loader.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+#cylon {
+	top:0px;
+	left:0px;
+	margin:0px;
+	padding:0px;
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/CSS/animation
+	*/
+  background-color: #796046;
+  background-image: -webkit-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
+  background-image:    -moz-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 0255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
+  background-image:      -o-linear-gradient(    left, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
+  background-image:         linear-gradient(to right, rgba( 255,255,255,0.9 ) 25%, rgba( 255,255,255,0.1 ) 50%, rgba( 255,255,255,0.9 ) 75%);
+  color: white;
+  height: 100%;
+  width: 20%;
+
+  -webkit-animation: cylon 0.8s linear 0s infinite alternate;
+     -moz-animation: cylon 0.8s linear 0s infinite alternate;
+       -o-animation: cylon 0.8s linear 0s infinite alternate;
+          animation: cylon 0.8s linear 0s infinite alternate;
+}
+
+@-webkit-keyframes cylon { from { margin-left:-20%; } to { margin-left:100%; }  }
+   @-moz-keyframes cylon { from { margin-left:-20%; } to { margin-left:100%; }  }
+     @-o-keyframes cylon { from { margin-left:-20%; } to { margin-left:100%; }  }
+        @keyframes cylon { from { margin-left:-20%; } to { margin-left:100%; }  }
