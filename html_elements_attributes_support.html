@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>HTML elements and attributes support</title>
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='css/props_attrs_checker_old.css' rel='stylesheet' type='text/css' disabled='disabled' id="old">
-<link href='css/props_attrs_checker.css' rel='stylesheet' type='text/css' id="new" rel='stylesheet'>
-<link href='css/props_attrs_checker_common.css' rel='stylesheet' type='text/css'>
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="css/props_attrs_checker_old.css" rel="stylesheet" type="text/css" disabled="disabled" id="old">
+<link href="css/props_attrs_checker.css" rel="stylesheet" type="text/css" id="new">
+<link href="css/props_attrs_checker_common.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -82,7 +82,7 @@ function getNativeTagSupport(label, tagString) {
 		// not supported
 		dataClass = !!(actualElemStr !== "HTMLUnknownElement");
 		// non-specific functions that use the parent (HTMLElement) and iE-specific groups (Phrase|Block|Span)
-		if ((Browser.IE ? (actualElemStr.match(/(Phrase|Block|Span)/) || actualElemStr==="HTMLElement" && lookupObj[el]!=="") : actualElemStr==="HTMLElement" && lookupObj[el]!=="")) dataClass = "nonspecific";
+		if ((Browser.IE ? (actualElemStr.match(/(Phrase|Block|Span)/) || (actualElemStr==="HTMLElement" && lookupObj[el]!=="")) : actualElemStr==="HTMLElement" && lookupObj[el]!=="")) dataClass = "nonspecific";
 		propsText = "";
 		morePropsText = "";
 		elemProps = getProperties(el);
@@ -354,7 +354,7 @@ function showPanel(pType) {
 				switch (pType) {
 					// stats content
 					case "stats" :
-						panelTxt += "\n<h3>Browser support summary</h3>\n"+
+						panelTxt += "\n<p class=\"bld\">Support summary</p>\n"+
 						"<table class=\"stats\"><thead><tr><th>range type</th><th>elements</th><th>element attributes</th><th>vendor specific</th><th>non-standardized</th><th>other</th></tr></thead><tbody>";
 						// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs
 						totElms=0; totBadElms=0;totAttr=0;totBadAttr=0;totVendAttr=0;totNonStandAttr=0;totOtherAttr=0;
@@ -390,15 +390,18 @@ function showPanel(pType) {
 					det.title="click to load details into the lower section";
 					det.addEventListener("click", function(e) {
 						$('infoleft').textContent="";
-						$('inforight').textContent="Click on a red coloured attribute - if found on the left - to view documentation here";
+						$('inforight').textContent="Click on an underlined element name / red coloured attribute (if present) to view documentation here";
 						target = e.target || e.srcElement;
+						statsFound=false;
 						elementStats.forEach(function(st){
-							if (st.name===target.dataset.name) {
+							if (statsFound===false && st.name===target.dataset.name) {
 								statsClicked=st[target.dataset.type+"attrs"];
+								statsFound=true;
 							}
 						});
 						statsClicked.forEach(function(s) {
-							$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;'+s.elm+(!!s.attr ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+s.attr.toLowerCase()+'\')">'+s.attr.toLowerCase()+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
+//							attrname = propName(s.attr, null);
+							$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+"</a>"+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
 						});
 					});
 				});
@@ -444,6 +447,10 @@ function closePanel() {
 	});
 }
 
+function getElementInfo(elm) {
+	return getAttributeInfo(elm, "null");
+}
+
 // display attribute documentation
 function getAttributeInfo(tag, attr) {
 	var oReq = new XMLHttpRequest(),
@@ -461,7 +468,7 @@ function getAttributeInfo(tag, attr) {
 //	tDiv.style.padding = "0px!important";
 //	tDiv.style.padding = "0 !important";
 	tDiv.textContent = "";
-	tDiv.style.overflowY = "hidden"; // !important
+	tDiv.style.overflow = "hidden"; // !important
 //	tDiv.classList.add('loading');
 	cylon = document.createElement("DIV");
 	cylon.id='cylon';
@@ -470,7 +477,7 @@ function getAttributeInfo(tag, attr) {
 	oReq.addEventListener("load", function(event) {
 		response = oReq.response;
 		console.log(response);
-		respTxt = "<p><strong>&lt;"+tag+(!!attr ? " "+attr+"=\"<code>value</code>\"" : "")+"&gt;</strong></p>";
+		respTxt = "<p><strong>&lt;"+tag+(!!attr && attr!=="null" ? " "+attr+"=\"<code>value</code>\"" : "")+"&gt;</strong></p>";
 		if (!response) {
 			respTxt += "<strong>The data could not be displayed due to an unknown error</strong>";
 		} else if (response.indexOf("ERROR_NO_DATA")>-1) {
@@ -485,7 +492,7 @@ function getAttributeInfo(tag, attr) {
 function stopLoading(tDiv, txt) {
 //	endTxt = respTxt || txt;
 //	tDiv.classList.remove('loading');
-	$('cylon').parentNode.removeChild($('cylon'));
+	if ($('cylon')) $('cylon').parentNode.removeChild($('cylon'));
 //	tDiv.style.padding = "1em";
 	tDiv.style.overflowY = "auto"; // !important
 	tDiv.innerHTML = txt;
