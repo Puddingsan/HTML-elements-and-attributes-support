@@ -16,7 +16,7 @@
 <p><input type="button" onClick="switchStyles()" value=" change styles " /></p>
 -->
 	<input type="text" id="search" list="tags" placeholder="type element name here" />
-<p> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAAGXcA1uAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNpi/P//PwMMsIAIRkZGsAgTAxIACCBGZGVMMCVgGSCGcwACCEUZhmEwDop2dB0wABBAOCWYMFRCjWNBNxtoAiNcB4wDorF7kRhXAQQQTglcAKdrkfkwDHM1AzRM/yOz0cVANAij+A7Z6zAx9GBnweoxNGdR5GmAAKI8lCjWgBKk2KIan4expiZsIYUc7Ezo4Y9NMYaTkBUiJ1GcnkZ3Ei7FOBMfPo+THA+0j2mAACPZBlIBC7UMwhUzTKRqJMVwojM0cgIjxWJ4HBCrGBeAJX9sCZYJvcyCsQllCWxy2BI5wZyA7jJsBSjF6RpmCXpJQNVkSm48MTHQGNA8J9PcBwDzGcU571/u1gAAAABJRU5ErkJggg==" alt="close panel" name="openstats" width="24" height="24" id="openstats" onClick="showPanel('stats')" />
+<p> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAAGXcA1uAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNpi/P//PwMMsIAIRkZGsAgTAxIACCBGZGVMMCVgGSCGcwACCEUZhmEwDop2dB0wABBAOCWYMFRCjWNBNxtoAiNcB4wDorF7kRhXAQQQTglcAKdrkfkwDHM1AzRM/yOz0cVANAij+A7Z6zAx9GBnweoxNGdR5GmAAKI8lCjWgBKk2KIan4expiZsIYUc7Ezo4Y9NMYaTkBUiJ1GcnkZ3Ei7FOBMfPo+THA+0j2mAACPZBlIBC7UMwhUzTKRqJMVwojM0cgIjxWJ4HBCrGBeAJX9sCZYJvcyCsQllCWxy2BI5wZyA7jJsBSjF6RpmCXpJQNVkSm48MTHQGNA8J9PcBwDzGcU571/u1gAAAABJRU5ErkJggg==" alt="show stats panel" title="show stats panel" name="openstats" width="24" height="24" id="openstats" onClick="showPanel('stats')" />
 <!--
  
 -->
@@ -52,13 +52,18 @@
 <p>To report any issues, please contact me <a href="mailto:nick%40innovaweb.co.uk?subject=Elements%20and%20properties%20chart">here</a>.</p>
 <script type="text/javascript" src="src/common.js"> </script>
 <script type="text/javascript" src="src/elemsAttribsData.js"> </script>
+<script type="text/javascript" src="src/browserStats.js"> </script>
 <script>
 // stylesheet  switchung
 if($("old"))$("old").disabled=true;
 
 // console.log("baseUA: ", baseUA());
 
-window.elementStats=[];
+window.elementStats={
+	ua:navigator.userAgent,
+	baseua: baseUA(),
+	data: []
+};
 // main function
 function getNativeTagSupport(label, tagString) {
 	unsupported=[];
@@ -233,7 +238,8 @@ function getNativeTagSupport(label, tagString) {
 	document.querySelector("#navinfo").insertAdjacentHTML("beforeend", unsuppTxt);
 	// stats collection
 	//	unSuppArr = unsupported.length;
-	elementStats.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
+	//		ua:navigator.userAgent, baseua: baseUA(), data:{
+	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
 }
 
 function parseAttribute(prop, el) {
@@ -348,63 +354,16 @@ function showPanel(pType) {
 			div.className=elm;
 			div.style.display='block';
 			document.body.appendChild(div);
-			panelTxt = "";
+//			panelTxt = "";
 			// populate the panel
 			if (elm=="panel") {
 				switch (pType) {
 					// stats content
 					case "stats" :
-						panelTxt += "\n<p class=\"bld\">Support summary</p>\n"+
-						"<table class=\"stats\"><thead><tr><th>range type</th><th>elements</th><th>element attributes</th><th>vendor specific</th><th>non-standardized</th><th>other</th></tr></thead><tbody>";
-						// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs
-						totElms=0; totBadElms=0;totAttr=0;totBadAttr=0;totVendAttr=0;totNonStandAttr=0;totOtherAttr=0;
-						elementStats.forEach(function(st){
-							totElms+=st.elms;
-							totBadElms+=st.badelmsattrs.length;
-							totAttr+=st.attrs;
-							totBadAttr+=st.badattrs.length;
-							totVendAttr+=st.vendattrs.length;
-							totNonStandAttr+=st.nonstandardattrs.length;
-							totOtherAttr+=st.otherattrs.length;
-							panelTxt += writeResultRow(st.name, st.elms, st.badelmsattrs, st.attrs, st.badattrs, st.vendattrs, st.nonstandardattrs, st.otherattrs);
-						});
-						// totals
-						panelTxt += writeResultRow("TOTALS", totElms, totBadElms, totAttr, totBadAttr, totVendAttr, totNonStandAttr, totOtherAttr);
-						// close table
-						panelTxt += "</tbody></table>";
-						// info container
-						panelTxt += "<div id=\"infocontainer\">";
-						panelTxt += "<span id=\"infoleft\"></span>";
-						panelTxt += "<span id=\"inforight\">First click on a total above to load the relevant elements into the left hand side below. Then click on a red coloured attribute - if found on the left - to view documentation here</span>";
-						panelTxt += "</div>";
-						
-						// close button, last element to add
-						panelTxt += "<div id=\"statsclose\" onclick=\"closePanel()\" title=\"close stats\">x</div>";
+						insertStatsContent();
 					break;
 				}
-				div.insertAdjacentHTML("beforeend", panelTxt);
-				// event listeners for details
-				allDetailElems = ([]).slice.call(document.querySelectorAll('.detailslink'));
-				var statsClicked = null;
-				allDetailElems.forEach(function(det){
-					det.title="click to load details into the lower section";
-					det.addEventListener("click", function(e) {
-						$('infoleft').textContent="";
-						$('inforight').textContent="Click on an underlined element name / red coloured attribute (if present) to view documentation here";
-						target = e.target || e.srcElement;
-						statsFound=false;
-						elementStats.forEach(function(st){
-							if (statsFound===false && st.name===target.dataset.name) {
-								statsClicked=st[target.dataset.type+"attrs"];
-								statsFound=true;
-							}
-						});
-						statsClicked.forEach(function(s) {
-//							attrname = propName(s.attr, null);
-							$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+"</a>"+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
-						});
-					});
-				});
+//				div.insertAdjacentHTML("beforeend", panelTxt);
 				setDivPosition(elm);
 			} else if (elm=="overlay") {
 				div.addEventListener("click", closePanel, false);
@@ -415,6 +374,69 @@ function showPanel(pType) {
 	document.body.appendChild(sheet);
 	sheet.id="blur";
 	sheet.textContent = "table, h1, h2, h3, p, a, ul, #navpane {-webkit-filter: blur(1.5px); filter: blur(1.5px);}"
+}
+
+function insertStatsContent(statsObj) {
+	thisb = baseUA();
+	oStats = statsObj || elementStats;
+	div = $('panel');
+	div.innerHTML="";
+	panelTxt ='<p><strong>Support summary</strong>';
+	["Firefox", "Chrome", "Safari", "IE", "Opera"].forEach(function(bs){
+		panelTxt += '<span title="'+browserStats[bs].baseua+' '+uaVersion(browserStats[bs].ua, browserStats[bs].baseua)+'" class="statswitchlink'+(((bs==thisb && oStats===elementStats) || (oStats.baseua && oStats.baseua==bs)) ? " native" : "")+(bs==thisb ? " localbr" : "")+'" onclick="insertStatsContent(browserStats.'+bs+')">'+bs+'</span>';
+	});
+	panelTxt += "</p>\n"+
+	"<table class=\"stats\"><thead><tr><th>range type</th><th>elements</th><th>element attributes</th><th>vendor specific</th><th>non-standardized</th><th>other</th></tr></thead><tbody>";
+	// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs
+	totElms=0; totBadElms=0;totAttr=0;totBadAttr=0;totVendAttr=0;totNonStandAttr=0;totOtherAttr=0;
+	oStats.data.forEach(function(st){
+		totElms+=st.elms;
+		totBadElms+=st.badelmsattrs.length;
+		totAttr+=st.attrs;
+		totBadAttr+=st.badattrs.length;
+		totVendAttr+=st.vendattrs.length;
+		totNonStandAttr+=st.nonstandardattrs.length;
+		totOtherAttr+=st.otherattrs.length;
+		panelTxt += writeResultRow(st.name, st.elms, st.badelmsattrs, st.attrs, st.badattrs, st.vendattrs, st.nonstandardattrs, st.otherattrs);
+	});
+	// totals
+	panelTxt += writeResultRow("TOTALS", totElms, totBadElms, totAttr, totBadAttr, totVendAttr, totNonStandAttr, totOtherAttr);
+	// close table
+	panelTxt += "</tbody></table>";
+	// info container
+	panelTxt += "<div id=\"infocontainer\">";
+	panelTxt += "<span id=\"infoleft\"></span>";
+	panelTxt += "<span id=\"inforight\">First click on a total above to load the relevant elements into the left side. Then click on an element name in blue, or a red coloured attribute - if found on the left - to view documentation here</span>";
+	panelTxt += "</div>";
+	
+	// close button, last element to add
+	panelTxt += "<div id=\"statsclose\" onclick=\"closePanel()\" title=\"close stats\">x</div>";
+
+	// event listeners for details
+	// popuate the left info panel
+	div.insertAdjacentHTML("beforeend", panelTxt);
+	allDetailElems = ([]).slice.call(document.querySelectorAll('.detailslink'));
+	var statsClicked = null;
+	allDetailElems.forEach(function(det){
+		det.title="click to load details into the lower section";
+		det.addEventListener("click", function(e) {
+			$('infoleft').textContent="";
+			$('inforight').textContent="Click on a blue element name / red coloured attribute (if present) to view documentation here";
+			target = e.target || e.srcElement;
+			statsFound=false;
+			oStats.data.forEach(function(st){
+				if (statsFound===false && st.name===target.dataset.name) {
+					statsClicked=st[target.dataset.type+"attrs"];
+					statsFound=true;
+				}
+			});
+			statsClicked.forEach(function(s) {
+//							attrname = propName(s.attr, null);
+				$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+"</a>"+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
+			});
+		});
+	});
+	
 }
 
 window.addEventListener("resize", function() {
@@ -490,12 +512,15 @@ function getAttributeInfo(tag, attr) {
 	oReq.send();
 }
 function stopLoading(tDiv, txt) {
+	tDiv = tDiv || $('inforight');
 //	endTxt = respTxt || txt;
 //	tDiv.classList.remove('loading');
 	if ($('cylon')) $('cylon').parentNode.removeChild($('cylon'));
 //	tDiv.style.padding = "1em";
-	tDiv.style.overflowY = "auto"; // !important
-	tDiv.innerHTML = txt;
+	if (tDiv) {
+		tDiv.style.overflowY = "auto"; // !important
+		tDiv.innerHTML = txt;
+	}
 }
 // console.log(elementStats);
 // show relevant errors

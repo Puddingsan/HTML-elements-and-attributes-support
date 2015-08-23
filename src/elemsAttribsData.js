@@ -9,9 +9,7 @@ var nativeTypes = {
 
 	Firefox: {},
 
-	Chrome: {
-//		foo: "bar",
-	},
+	Chrome: {},
 
 	IE: {
 		abbr: "Phrase",
@@ -557,7 +555,7 @@ attribsObsolete = {
 	useMap: ["input", "5"],
 	width: ["basefont col frame hr", "5"]
 },
-attribsToKebabCase = "acceptCharset httpEquiv xMozErrormessage formatDetection".split(" "),
+attribsToKebabCase = "acceptCharset httpEquiv xMozErrormessage formatDetection mozOpaque".split(" "),
 // tag name, user agent
 attribsNonStandard = {
 	allowFullscreen: ["iframe"], // Firefox""
@@ -677,9 +675,9 @@ function getProperties(tagName) {
 var propNamesExpand={
 	ch:"char",
 	chOff:"charoff",
-	htmlFor:"for",
 	className:"class",
-	dataset: "data-*"
+	dataset: "data-*",
+	htmlFor:"for"
 }
 
 var newInputTypes = "color date datetime datetime-local email month number range search tel time url week".split(" ");

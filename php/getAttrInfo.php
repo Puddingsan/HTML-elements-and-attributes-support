@@ -31,7 +31,7 @@ if (is_file($localSrc) && (filemtime($localSrc) && filemtime($localSrc) > $lastM
 } else {
 	$lastModTime = 0;
 	$source = 'www';
-	$docUrl = getURLContent($baseURL);
+	$docUrl = preg_replace('@<script[^>]*?>.*?</script>@si', "", getURLContent($baseURL));
 	$docUrl = preg_replace('/(\r\n|\r|\n)/s', "", $docUrl);
 //	$docUrl = preg_replace('/<script.*?\/script>/gs', "", $docUrl);
 	// will exit if cannot write to file

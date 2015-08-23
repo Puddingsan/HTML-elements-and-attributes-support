@@ -57,10 +57,11 @@ for(prop in newTag) {
 //	if (input.hasOwnProperty(prop)) 
 	// filter out functions and event handlers
 //	if ((!showEv && prop.substring(0, 2)!=="on") && (!showFn && typeof newTag[prop] == "string" && newTag[prop].indexOf("[native code]")<0)) 
+	if (prop.substring(0, 2)!=="on" && typeof newTag[prop] == "string" && newTag[prop].indexOf("[native code]")<0) 
 
 //	document.writeln("<tr><td>"+prop+"</td><td>"+(newTag[prop] ? '<strong>'+newTag[prop]+'</strong>' : '<em>'+({}).toString.call(prop)+'</em>')+"</td></tr>");
-//	document.writeln("<tr><td>"+prop+"</td><td>"+(newTag[prop] ? '<strong>'+newTag[prop]+'</strong>' : '<em>'+(typeof prop)+'</em>')+"</td></tr>");
-	document.writeln("<tr><td>"+prop+"</td><td>"+newTag[prop]+"</td></tr>");
+	document.writeln("<tr><td>"+prop+"</td><td>"+(newTag[prop] ? '<strong>'+newTag[prop]+'</strong>' : '<em>'+(typeof prop)+'</em>')+"</td></tr>");
+//	document.writeln("<tr><td>"+prop+"</td><td>"+newTag[prop]+"</td></tr>");
 	
 //	if (typeof prop=="string")
 //	if (prop.substring(0, 6)=="webkit" || prop.match(/valid/i))
@@ -70,7 +71,7 @@ for(prop in newTag) {
 }
 document.write("</table>");
 // if (theType && typeof newTag.defaultValue !== 'undefined') console.log("defaultValue: "+newTag.defaultValue);
-delete window[newTag];
+delete window.newTag;
 </script>
 </body>
 </html>

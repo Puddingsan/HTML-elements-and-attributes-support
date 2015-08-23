@@ -49,10 +49,12 @@ function viewport() {
 }
 
 // browser detection
+var ua = navigator.userAgent
 var Browser = {
-	Mobile: /mobi/i.test(navigator.userAgent),
+	ua: navigator.userAgent,
+	Mobile: /mobi/i.test(this.ua),
  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-	Opera: !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+	Opera: !!window.opera || this.ua.indexOf(' OPR/') >= 0,
 //	Chrome: !!window.chrome && !this.Opera,             // Chrome 1+
 	IE: /*@cc_on!@*/false || !!document.documentMode,   // At least IE6
 //	SafariMobile: this.Mobile && this.Safari,
@@ -60,21 +62,32 @@ var Browser = {
 	Firefox: typeof InstallTrigger !== 'undefined',  // Firefox 1.0+
 // At least Safari 3+: "[object HTMLElementConstructor]"
 	Safari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
-	Webkit: /webkit/i.test(navigator.userAgent) // || (this.Safari || this.Chrome)
+	Webkit: !!/webkit/i.test(this.ua) // || (this.Safari || this.Chrome)
 };
 
 Browser.SafariMobile = Browser.Safari && Browser.Mobile;
 Browser.Chrome = !!window.chrome && !Browser.Opera; 
 
+Browser.version = uaVersion(Browser.ua);
+//	Browser.version = (!!Browser.Safari || !!Browser.Opera) ? Browser.ua.match(/Version\/([\.0-9]+)\s/)[1] : !!Browser.Chrome ? Browser.ua.match(/Chrome\/([\.0-9]+)\s/)[1]  : !!Browser.Firefox ? Browser.ua.match(/Firefox\/([\.0-9]+)/)[1]  : !!Browser.IE ? Browser.ua.match(/ rv\:([\.0-9]+)\)/)[1]  : "version undetected";
+function uaVersion(ua, baseua) {
+	_baseua = baseua || baseUA();
+	return _baseua=="Safari" ? ua.match(/Version\/([\.0-9]+)\s/)[1] :
+				_baseua=="Opera" ? ua.match(/Version\/([\.0-9]+)$/)[1] :
+				_baseua=="Chrome" ? ua.match(/Chrome\/([\.0-9]+)/)[1]  :
+				_baseua=="Firefox" ? ua.match(/Firefox\/([\.0-9]+)$/)[1]  :
+				_baseua=="IE" ? ua.match(/ rv\:([\.0-9]+).*?$/)[1]  :
+				"version undetected";
+}
 // return an object of matches
 function browserObj() {
 	tmpObj = {};
 	for (b in Browser) {
-		if (Browser[b]) tmpObj[b] = 1;
+		if (Browser[b] && !/(ua|version)/.test(b)) tmpObj[b] = 1;
 	}
 	return tmpObj;
 }
-//	console.log(browserObj());
+console.log(browserObj());
 
 
 // return base user agent
@@ -82,7 +95,7 @@ function baseUA() {
 	tmpArr = [];
 	for (b in Browser) {
 		// only base types accepted
-		if (Browser[b] && !in_array(b, tmpArr) && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
+		if (Browser[b] && !/Webkit|Mobile|FirefoxOS|ua|version/.test(b)) { //  && !in_array(b, tmpArr)
 			tmpArr.push(b);
 //		if (Browser[b] && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
 //			return b;
@@ -98,7 +111,7 @@ function switchStyles() {
 	(([]).slice.call(document.getElementsByTagName("STYLE"))).forEach(function(ss){
 		if (ss.id && /old|new/.test(ss.id)) { // only for sheets with an id of old or new
 			ss.disabled = (ss.disabled==false) ? true : false;
-			console.log("sheet #"+ss.id+" disabled state: "+!!ss.disabled)
+			console.log("style sheet #"+ss.id+" disabled state: "+!!ss.disabled)
 		}
 	});
 }

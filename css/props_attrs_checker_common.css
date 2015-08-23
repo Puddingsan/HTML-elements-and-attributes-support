@@ -146,10 +146,36 @@ td strong {
 	border-bottom:dotted 1px #600;
 	color: #600;
 	font-weight:bold;
+	background-color: #fee;
 }
 #infoleft span a.elmlink {
 	border-bottom:dotted 1px #339;
 	color: #339;
+	background-color: #eef;
+}
+span.statswitchlink {
+	display: inline-block;
+	font-size: 0.8em;
+	border-radius: 0.2em;
+	padding: 0.2em 0.4em;
+	text-align:center;
+	min-width: 4.5em;
+	margin-left: 1.25em;
+	border: solid 1px #246;
+	color: #246;
+	background-color: #f6f6ff;
+	cursor:pointer;
+	letter-spacing: 0.075em;
+}
+span.statswitchlink.native {
+	color: #662;
+	background-color: #ffd;
+	border-color: #662;
+	font-weight:bold;
+}
+span.localbr {
+	text-shadow: 0px 0px 2px #667;
+	box-shadow: 0em 0em 0.35em #000;
 }
 #infocontainer {
 	width:100%;
@@ -169,7 +195,7 @@ td strong {
 }#inforight table {
 	margin-top: 1em;
 }
-#inforight p:first-child {
+#inforight:first-child, #inforight p:first-child {
 	margin:0 0 1em 0!important;
 	vertical-align:middle;
 }
