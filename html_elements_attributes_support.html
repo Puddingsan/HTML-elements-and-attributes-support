@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="html,elements,tags,attributes,properties,html5,support,chart,compatibility,w3c,standards,whatwg,webmaster,tools,standards,compliance" />
+<meta name="author" content="Nick O'Connor (Puddingsan)">
+<meta name="copyright" content="Nick O'Connor (Puddingsan)">
+<meta name="description" content="This programme shows this browser's current support for all HTML elements and their attributes, including deprecated and obsolete, by querying the JavaScript HTML API. Other browser results are shown for comparison." />
 <title>HTML elements and attributes support</title>
-<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-<link href="css/props_attrs_checker_old.css" rel="stylesheet" type="text/css" disabled="disabled" id="old">
-<link href="css/props_attrs_checker.css" rel="stylesheet" type="text/css" id="new">
-<link href="css/props_attrs_checker_common.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css" />
+<link href="css/props_attrs_checker_old.css" rel="stylesheet" type="text/css" disabled="disabled" id="old" />
+<link href="css/props_attrs_checker.css" rel="stylesheet" type="text/css" id="new" />
+<link href="css/props_attrs_checker_common.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -57,13 +61,15 @@
 // stylesheet  switchung
 if($("old"))$("old").disabled=true;
 
-// console.log("baseUA: ", baseUA());
 
+// initialise the stats collection object
 window.elementStats={
 	ua:navigator.userAgent,
 	baseua: baseUA(),
 	data: []
 };
+// remember selected stats for comparison
+var selectedStats = null;
 // main function
 function getNativeTagSupport(label, tagString) {
 	unsupported=[];
@@ -95,7 +101,7 @@ function getNativeTagSupport(label, tagString) {
 		propsArr = [];
 		elemProps.forEach(function(c) {
 			c.forEach(function(d){
-				if (!in_array(d, propsArr)) propsArr.push(d); // .toLowerCase()
+				if (!in_array(d, propsArr)) propsArr.push(d);
 			});
 		});
 		//bad element if non-standard and has attributes
@@ -107,10 +113,8 @@ function getNativeTagSupport(label, tagString) {
 		else if (propsArr.length>0 && (dataClass=="nonspecific" || actualElemStr=="HTMLUnknownElement")) {
 			badTagsArr.push({elm:el});
 			propsArr.forEach(function(bad){
-//				unSuppArr.push({elm:el, attr:bad});
 				unsupported.push({elm:el, attr:bad});
 			});
-//			unSuppArr = unSuppArr.concat(propsArr);
 		}
 		propsArr.sort();
 		propsArr.forEach(function(g){
@@ -162,13 +166,8 @@ function getNativeTagSupport(label, tagString) {
 			!in_array(p, propsArr) &&
 			wordInString(el, attribsFalsePositives[p])===false &&
 			p!=="toString" 
-			/*			&&
-		    p.indexOf("_")<0 &&
-			!p.match(/^(on|insert|create|delete|remove)/)
-			*/
 			) 
 			 otherProps.push(p);
-//			 if (wordInString(el, attribsFalsePositives[p])) console.log("false positive found for "+el+" attribute "+p);
 			// non-standard and vendor-specific
 			 if (p in attribsNonStandard &&
 			 !in_array(p, otherProps) &&
@@ -180,7 +179,6 @@ function getNativeTagSupport(label, tagString) {
 //			 if (in_array(p, microdataAttribs)) otherProps.push(p);
 		}		
 		otherProps.sort();
-//		console.log(el+": ", otherProps);
 		// add some conditional globals for IE
 		if (Browser.IE) {
 			if (lookupObj[el]=="Phrase") globalAttribsStr+=" cite dateTime";
@@ -193,7 +191,6 @@ function getNativeTagSupport(label, tagString) {
 			otherClassTxt="";
 			if (pr in attribsNonStandard && wordInString(el, attribsNonStandard[pr][0])) {
 				otherTitleTexts.push((!!attribsNonStandard[pr][1] ? "vendor-specific ("+(uaName[attribsNonStandard[pr][1]])+")" : "non-standardized or legacy"));
-//				[(!!uaName[attribsNonStandard[pr][1]]) ? vendAttrs : noStandAttrs].push({elm:el, attr:pr});
 				if (!!attribsNonStandard[pr][1]) {
 					vendAttrs.push({elm:el, attr:pr, vend:uaName[attribsNonStandard[pr][1]]});
 				} else {
@@ -237,13 +234,7 @@ function getNativeTagSupport(label, tagString) {
 	}
 	document.querySelector("#navinfo").insertAdjacentHTML("beforeend", unsuppTxt);
 	// stats collection
-	//	unSuppArr = unsupported.length;
-	//		ua:navigator.userAgent, baseua: baseUA(), data:{
 	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
-}
-
-function parseAttribute(prop, el) {
-	
 }
 
 function propName(pn, el) {
@@ -284,14 +275,13 @@ function showNewInputTypes(label, typesArr) {
 			 
 		}
 		attrs.sort();
-//		console.log(attrs);
 		attrsText = "";
 		attrs.forEach(function(atr) {
 			titleTexts = [];
 			if (wordInString("string", html5attribs[atr])) titleTexts.push("This property is new in HTML5");
 			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
 			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
-			attrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+"\""+titleText+">"+propName(atr, "input")+"</span>"; // +reqClass+deprClass
+			attrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+"\""+titleText+">"+propName(atr, "input")+"</span>"; 
 		});
 		// global attributes
 		globAttrs = [];
@@ -305,11 +295,11 @@ function showNewInputTypes(label, typesArr) {
 			if (wordInString("input", html5attribs[atr])) globAttrsTitleTexts.push("This property is new in HTML5");
 			allTitles = globAttrsTitleTexts.length>0 ? globAttrsTitleTexts.join("\n") : null;
 			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
-			globAttrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+" global\""+titleText+">"+propName(atr, "input")+"</span>"; // +reqClass+deprClass
+			globAttrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+" global\""+titleText+">"+propName(atr, "input")+"</span>"; 
 		});
 		html += "<tr class=\""+inputSupported+"\"><td>&lt;input type=\""+type+"\"&gt;</td><td><span class=\""+inputSupported+"\"></span></td><td class=\"info\"><input type=\""+type+"\" /></td><td class=\"propscell\">"+attrsText+"</td><td class=\"altpropscell\">"+globAttrsText+"</td></tr>\n"; 
 		tmpTag.parentNode.removeChild(tmpTag);
-		delete window["tmpTag"];
+		delete window.tmpTag;
 	});
 	html += "</table>\n";
 	document.body.insertAdjacentHTML("beforeend", html);
@@ -340,7 +330,6 @@ $("search").addEventListener("input", function(e) {
 	goTo = e.target.value || e.srcElement.value;
 	if (allTagsArr.indexOf(goTo)>-1) { // valid tag only
 		href = location.href;
-//		location.href = ""+location.href.replace(location.href.hash, "")+"#"+goTo;
 		location.href = href.replace(href.substring(href.indexOf("#")), "")+"#"+goTo;
 	}
 });
@@ -354,16 +343,17 @@ function showPanel(pType) {
 			div.className=elm;
 			div.style.display='block';
 			document.body.appendChild(div);
-//			panelTxt = "";
 			// populate the panel
 			if (elm=="panel") {
 				switch (pType) {
 					// stats content
 					case "stats" :
 						insertStatsContent();
+//						div.draggable=true;
+//						div.ondragstart = function(){div.style.position='absolute'};
+//						div.ondragend = function(){div.style.position='fixed'};
 					break;
 				}
-//				div.insertAdjacentHTML("beforeend", panelTxt);
 				setDivPosition(elm);
 			} else if (elm=="overlay") {
 				div.addEventListener("click", closePanel, false);
@@ -375,6 +365,7 @@ function showPanel(pType) {
 	sheet.id="blur";
 	sheet.textContent = "table, h1, h2, h3, p, a, ul, #navpane {-webkit-filter: blur(1.5px); filter: blur(1.5px);}"
 }
+var lastDetailClick = null;
 
 function insertStatsContent(statsObj) {
 	thisb = baseUA();
@@ -410,7 +401,7 @@ function insertStatsContent(statsObj) {
 	panelTxt += "</div>";
 	
 	// close button, last element to add
-	panelTxt += "<div id=\"statsclose\" onclick=\"closePanel()\" title=\"close stats\">x</div>";
+	panelTxt += "<div id=\"statsclose\" onclick=\"closePanel()\" title=\"close stats\">CLOSE</div>";
 
 	// event listeners for details
 	// popuate the left info panel
@@ -418,8 +409,10 @@ function insertStatsContent(statsObj) {
 	allDetailElems = ([]).slice.call(document.querySelectorAll('.detailslink'));
 	var statsClicked = null;
 	allDetailElems.forEach(function(det){
+		det.id = (det.dataset.name.replace(" ", "")+det.dataset.type+"attrs").toLowerCase();
 		det.title="click to load details into the lower section";
 		det.addEventListener("click", function(e) {
+			lastDetailClick = det.id;
 			$('infoleft').textContent="";
 			$('inforight').textContent="Click on a blue element name / red coloured attribute (if present) to view documentation here";
 			target = e.target || e.srcElement;
@@ -430,13 +423,53 @@ function insertStatsContent(statsObj) {
 					statsFound=true;
 				}
 			});
+			datatype = "";
+			switch (target.dataset.type) {
+				case "badelms" :
+					datatype = "unsupported";
+				break;
+				case "bad" :
+					datatype = "missing attributes";
+				break;
+				case "vend" :
+					datatype = "vendor attributes";
+				break;
+				case "nonstandard" :
+					datatype = "non-standard attributes";
+				break;
+				case "other" :
+					datatype = "other attributes";
+				break;
+			}
+			$('infoleft').insertAdjacentHTML("beforeend", '<p><strong>'+oStats.baseua+' '+target.dataset.name+'</strong> ('+datatype+')</p>'); // .toLowerCase()
+			
+			statsObj={};
+			// sort by tag
 			statsClicked.forEach(function(s) {
-//							attrname = propName(s.attr, null);
-				$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+"</a>"+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
+				if (!(s.elm in statsObj)) statsObj[s.elm] = [];
+				if (s.attr) statsObj[s.elm].push([s.attr, s.vend||null]);
 			});
+//			console.log(statsObj);
+			statsText = '';
+			for (stat in statsObj) {
+				statsText += '<span><a class="elmlink" href="javascript:getElementInfo(\''+stat+'\')">&lt;'+stat+'&gt;</a>';
+				hasAttrib = false;
+				statsObj[stat].forEach(function(at) {
+					hasAttrib = true;
+					statsText += ' <a href="javascript:getAttributeInfo(\''+stat+'\', \''+propName(at[0], null)+'\')">'+propName(at[0], null)+(at[1] ? ' ('+at[1]+') ' : '')+'</a>';
+				});
+				statsText += '</span>'+(hasAttrib ? '<br>' : '');
+			}
+			$('infoleft').insertAdjacentHTML("beforeend", statsText);
+	//			$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+'</a>'+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
+			/*
+			statsClicked.forEach(function(s) {
+				$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+'</a>'+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
+			});
+			*/
 		});
 	});
-	
+	if ($(lastDetailClick)) $(lastDetailClick).click();
 }
 
 window.addEventListener("resize", function() {
@@ -459,7 +492,9 @@ function writeResultRow(title, eTotal, eLow, aTotal, aLow, vend, nonstandard, ot
 	return rowHTML;
 }
 function formatPc(total, low) {
-	return (total==0&&low==0) ? "N/A" : (100-((low*100) / total).toFixed(1))+"%";
+	returnVal = (total==0&&low==0) ? "N/A" : (100-((low*100) / total)).toFixed(1); 
+	if ((""+returnVal).substring(returnVal.length-1) == "0") returnVal = returnVal.substring(0, returnVal.length-2);
+	return returnVal+(returnVal!=="N/A" ? "%" : "");
 }
 function closePanel() {
 	['blur', 'overlay', 'panel'].forEach(function(k){
@@ -487,25 +522,21 @@ function getAttributeInfo(tag, attr) {
 
 	oReq.open("GET", url, true);
 	tDiv = $("inforight");
-//	tDiv.style.padding = "0px!important";
-//	tDiv.style.padding = "0 !important";
 	tDiv.textContent = "";
-	tDiv.style.overflow = "hidden"; // !important
-//	tDiv.classList.add('loading');
+	tDiv.style.overflow = "hidden";
 	cylon = document.createElement("DIV");
 	cylon.id='cylon';
 	tDiv.appendChild(cylon);
 	oReq.responseType = "text";
 	oReq.addEventListener("load", function(event) {
 		response = oReq.response;
-		console.log(response);
 		respTxt = "<p><strong>&lt;"+tag+(!!attr && attr!=="null" ? " "+attr+"=\"<code>value</code>\"" : "")+"&gt;</strong></p>";
 		if (!response) {
 			respTxt += "<strong>The data could not be displayed due to an unknown error</strong>";
 		} else if (response.indexOf("ERROR_NO_DATA")>-1) {
 			respTxt += "No data was found";
 		} else if (response!=="") {
-			respTxt += response.replace(/(\n|\r|\r\n|\n\r)/gi, "").replace(/\\"/g, '"').replace(/\\'/g, "'"); // .replace(/(<\/dd>)/gi, "</p>") // .replace(/(^.*?(<\/?dd>).*?$)/gi, "<p>")
+			respTxt += response.replace(/(\n|\r|\r\n|\n\r)/gi, "").replace(/\\"/g, '"').replace(/\\'/g, "'"); 
 		}
 		stopLoading(tDiv, respTxt);
 	}, false);
@@ -513,21 +544,16 @@ function getAttributeInfo(tag, attr) {
 }
 function stopLoading(tDiv, txt) {
 	tDiv = tDiv || $('inforight');
-//	endTxt = respTxt || txt;
-//	tDiv.classList.remove('loading');
 	if ($('cylon')) $('cylon').parentNode.removeChild($('cylon'));
-//	tDiv.style.padding = "1em";
 	if (tDiv) {
 		tDiv.style.overflowY = "auto"; // !important
 		tDiv.innerHTML = txt;
 	}
 }
-// console.log(elementStats);
 // show relevant errors
 window.addEventListener("error", function(e) {
 	setTimeout(function(){
 		tDiv = $('inforight'); 
-//		console.log(e);
 		stopLoading(tDiv, 'An error occurred that prevented data being seen<br>'+displayError(e.message));
 	}, 1000);
 }, false);

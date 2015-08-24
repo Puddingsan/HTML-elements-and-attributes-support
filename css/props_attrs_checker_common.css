@@ -82,12 +82,16 @@ table.stats tbody tr:hover {
 }
 #statsclose {
 	position:absolute;
-	top: 0px;
-	right: 0px;
-	width: 1em;
-	height: 1em;
-	background-color: #fdd;
+	top: 1em;
+	right: 1em;
+/*	width: 1em;
+	height: 1em;	*/
+	background-color: #fff;
 	cursor:pointer;
+	padding: 0.2em 0.4em;
+	border: solid 1px #999;
+	font-size: 0.7em;
+	letter-spacing: 0.085em;
 }
 img#openstats {
 	cursor:pointer;
@@ -135,23 +139,39 @@ td strong {
 	background-color: #fff;
 }
 #infoleft {
-	width:29%;
+	width:31%;
 	float:left;
 	left: 0px;
 	font-family: Calibri, Lato, sans-serif, Arial;
 	color:#339;
 }
+#infoleft span {
+	line-height: 2;
+}
 #infoleft span a {
 	text-decoration:none;
-	border-bottom:dotted 1px #600;
+/*	border-bottom:dotted 1px #600; 	*/
 	color: #600;
 	font-weight:bold;
 	background-color: #fee;
+	margin-right: 0.3em;
+	padding: 0.12em 0.25em;
+	border: dotted 1px #baa;
+	font-size: 0.85em;
+	letter-spacing: 0.04em;
+	border-radius: 0.22em;
+}
+#infoleft p {
+	margin-right: 0em;
+	margin-top: 0em;
 }
 #infoleft span a.elmlink {
-	border-bottom:dotted 1px #339;
+/*	border-bottom:dotted 1px #339;	*/
 	color: #339;
 	background-color: #eef;
+	margin-right: 0.6em;
+	border-color: #339;
+	border-style:solid;
 }
 span.statswitchlink {
 	display: inline-block;
@@ -182,7 +202,7 @@ span.localbr {
 	margin-top: 1em;
 }
 #inforight {
-	width:63%;
+	width:61%;
 	float:right;
 	right: 0px;
 }

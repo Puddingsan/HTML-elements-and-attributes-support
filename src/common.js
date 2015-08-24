@@ -37,7 +37,7 @@ function wordInString(needle, haystack, flags) {
 
 function getStyle(el, prop, pseudo) { pseu=pseudo || null; return document.defaultView.getComputedStyle(el,pseu).getPropertyValue(prop) || null;};
 
-//for positioning the stats div
+// used for centrally positioning a div
 // http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
 function viewport() {
 	var e = window, a = 'inner';
@@ -87,7 +87,7 @@ function browserObj() {
 	}
 	return tmpObj;
 }
-console.log(browserObj());
+//	console.log(browserObj());
 
 
 // return base user agent
