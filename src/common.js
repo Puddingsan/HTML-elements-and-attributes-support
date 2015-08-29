@@ -5,13 +5,27 @@ if (!String.dasherize) Object.defineProperty(String.prototype, "dasherize", {
 	value: function() {
 		return this.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
 		   .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+		   // added this line for css vendor-specific attributes
+		   .replace(/^(apple|Apple|Wap|wap|Moz|moz|Ms|ms|WebKit|Webkit|webkit|O)(.*?$)/g, '-$1$2')
 		   .toLowerCase();
 	}
 });
+
+if (!String.camelize) Object.defineProperty(String.prototype, "camelize", {
+	enumerable: false,
+	writable: true,
+	value: function() {
+		thisStr = String(this);
+//		thisStr = (thisStr.charAt(0) == "-") ? thisStr.substring(1) : thisStr;
+		return thisStr.replace(/-+(.)?/g, function(match, chr) {
+			return chr ? chr.toUpperCase() : '';
+		});
+	}
+});
+
 function $(id) {
 	return document.getElementById(id);
 }
-
 
 function objLen(obj) {
 	var leng = 0, s;
@@ -49,24 +63,28 @@ function viewport() {
 }
 
 // browser detection
-var ua = navigator.userAgent
 var Browser = {
 	ua: navigator.userAgent,
 	Mobile: /mobi/i.test(this.ua),
  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-	Opera: !!window.opera || this.ua.indexOf(' OPR/') >= 0,
+//	Opera: !!window.opera || this.ua.indexOf(' OPR/') >= 0,
 //	Chrome: !!window.chrome && !this.Opera,             // Chrome 1+
 	IE: /*@cc_on!@*/false || !!document.documentMode,   // At least IE6
-//	SafariMobile: this.Mobile && this.Safari,
 	FirefoxOS: "mozApps" in navigator, // && this.Mobile,
 	Firefox: typeof InstallTrigger !== 'undefined',  // Firefox 1.0+
 // At least Safari 3+: "[object HTMLElementConstructor]"
 	Safari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+//	SafariMobile: this.Mobile && this.Safari,
 	Webkit: !!/webkit/i.test(this.ua) // || (this.Safari || this.Chrome)
 };
 
 Browser.SafariMobile = Browser.Safari && Browser.Mobile;
 Browser.Chrome = !!window.chrome && !Browser.Opera; 
+Browser.Opera = !!window.opera || Browser.ua.indexOf(' OPR/') >= 0
+Browser.base = baseUA();
+Browser.cookies = navigator.cookieEnabled;
+Browser.online = navigator.onLine;
+Browser.platform = navigator.platform;
 
 Browser.version = uaVersion(Browser.ua);
 //	Browser.version = (!!Browser.Safari || !!Browser.Opera) ? Browser.ua.match(/Version\/([\.0-9]+)\s/)[1] : !!Browser.Chrome ? Browser.ua.match(/Chrome\/([\.0-9]+)\s/)[1]  : !!Browser.Firefox ? Browser.ua.match(/Firefox\/([\.0-9]+)/)[1]  : !!Browser.IE ? Browser.ua.match(/ rv\:([\.0-9]+)\)/)[1]  : "version undetected";
@@ -83,10 +101,12 @@ function uaVersion(ua, baseua) {
 function browserObj() {
 	tmpObj = {};
 	for (b in Browser) {
-		if (Browser[b] && !/(ua|version)/.test(b)) tmpObj[b] = 1;
+//		if (Browser[b] && !/(ua|version)/.test(b)) tmpObj[b] = 1;
+		if (Browser.hasOwnProperty(b) && Browser[b]) tmpObj[b] = Browser[b];
 	}
 	return tmpObj;
 }
+// /Webkit|Mobile|FirefoxOS|ua|version|base|cookies|online|platform/
 //	console.log(browserObj());
 
 
@@ -95,7 +115,7 @@ function baseUA() {
 	tmpArr = [];
 	for (b in Browser) {
 		// only base types accepted
-		if (Browser[b] && !/Webkit|Mobile|FirefoxOS|ua|version/.test(b)) { //  && !in_array(b, tmpArr)
+		if (Browser[b] && !/Webkit|Mobile|FirefoxOS|ua|version|base|cookies|online|platform/.test(b)) { //  && !in_array(b, tmpArr)
 			tmpArr.push(b);
 //		if (Browser[b] && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
 //			return b;

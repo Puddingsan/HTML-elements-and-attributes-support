@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="html,elements,tags,attributes,properties,html5,support,chart,compatibility,w3c,standards,whatwg,webmaster,tools,standards,compliance" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="keywords" content="html,elements,tags,attributes,properties,html5,support,chart,compatibility,w3c,standards,whatwg,webmaster,tools,standards,compliance">
 <meta name="author" content="Nick O'Connor (Puddingsan)">
 <meta name="copyright" content="Nick O'Connor (Puddingsan)">
-<meta name="description" content="This programme shows this browser's current support for all HTML elements and their attributes, including deprecated and obsolete, by querying the JavaScript HTML API. Other browser results are shown for comparison." />
+<meta name="description" content="This programme shows this browser's current support for all HTML elements and their attributes, including deprecated and obsolete, by querying the JavaScript HTML API. Other browser results are shown for comparison.">
 <title>HTML elements and attributes support</title>
-<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css" />
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css" />
-<link href="css/props_attrs_checker_old.css" rel="stylesheet" type="text/css" disabled="disabled" id="old" />
-<link href="css/props_attrs_checker.css" rel="stylesheet" type="text/css" id="new" />
-<link href="css/props_attrs_checker_common.css" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+<link href="css/props_attrs_checker_old.css" rel="stylesheet" type="text/css" disabled="disabled" id="old">
+<link href="css/props_attrs_checker.css" rel="stylesheet" type="text/css" id="new">
+<link href="css/props_attrs_checker_common.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -61,11 +61,12 @@
 // stylesheet  switchung
 if($("old"))$("old").disabled=true;
 
-
+//	console.log(browserObj());
 // initialise the stats collection object
 window.elementStats={
 	ua:navigator.userAgent,
 	baseua: baseUA(),
+	timestamp: Date.now(),
 	data: []
 };
 // remember selected stats for comparison
@@ -315,7 +316,7 @@ getNativeTagSupport("HTML5 semantic tags", html5semantics);
 getNativeTagSupport("Web Components", webComponents);
 //	getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
 
-// populate the datalist element
+// populate the datalist element child nodes
 var allTagsArr = [stdTags, deprTags, html5tags, html5semantics, webComponents].join(" ").split(" ");
 allTagsArr.sort();
 allTagsArr.forEach(function(tag){
@@ -376,6 +377,7 @@ function insertStatsContent(statsObj) {
 	["Firefox", "Chrome", "Safari", "IE", "Opera"].forEach(function(bs){
 		panelTxt += '<span title="'+browserStats[bs].baseua+' '+uaVersion(browserStats[bs].ua, browserStats[bs].baseua)+'" class="statswitchlink'+(((bs==thisb && oStats===elementStats) || (oStats.baseua && oStats.baseua==bs)) ? " native" : "")+(bs==thisb ? " localbr" : "")+'" onclick="insertStatsContent(browserStats.'+bs+')">'+bs+'</span>';
 	});
+	panelTxt += ' <em>snapshot taken on '+(""+new Date(oStats.timestamp)).substring(0, 25)+((""+new Date(oStats.timestamp)).substring(25, 33)=="GMT+0100" ? "BST" : (""+new Date(oStats.timestamp)).substring(25, 27))+'</em>';
 	panelTxt += "</p>\n"+
 	"<table class=\"stats\"><thead><tr><th>range type</th><th>elements</th><th>element attributes</th><th>vendor specific</th><th>non-standardized</th><th>other</th></tr></thead><tbody>";
 	// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs
@@ -413,8 +415,32 @@ function insertStatsContent(statsObj) {
 		det.title="click to load details into the lower section";
 		det.addEventListener("click", function(e) {
 			lastDetailClick = det.id;
+//			console.log(lastDetailClick);
 			$('infoleft').textContent="";
-			$('inforight').textContent="Click on a blue element name / red coloured attribute (if present) to view documentation here";
+			$('inforight').textContent="";
+			detailText = '';
+			bname = det.dataset.name; // .toLowerCase()
+			if (lastDetailClick.indexOf('badelmsattrs')>0) {
+				detailText = "Unsupported elements in "+bname;
+			} else if (lastDetailClick.indexOf('badattrs')>0) {
+				detailText = "Unsupported attributes in "+bname;
+			} else if (lastDetailClick.indexOf('vendattrs')>0) {
+				detailText = "Vendor-specific attributes found in "+bname;
+			} else if (lastDetailClick.indexOf('nonstandardattrs')>0) {
+				detailText = "Non-standard attributes found in "+bname;
+			} else if (lastDetailClick.indexOf('otherattrs')>0) {
+				detailText = "Undocumented attributes found in "+bname;
+			}
+			/*
+			badelmsattrs
+			badattrs
+			vendattrs
+			nonstandardattrs
+			otherattrs
+			*/
+			detailText += ' for '+oStats.baseua+' '+uaVersion(oStats.ua, oStats.baseua)+"<br>\n"+'Click on a blue element name / red coloured attribute (if present) to view documentation here';
+//			$('inforight').textContent="Click on a blue element name / red coloured attribute (if present) to view documentation here";
+			$('inforight').insertAdjacentHTML("beforeend", detailText);
 			target = e.target || e.srcElement;
 			statsFound=false;
 			oStats.data.forEach(function(st){
@@ -509,7 +535,7 @@ function getElementInfo(elm) {
 }
 
 // display attribute documentation
-function getAttributeInfo(tag, attr) {
+function getAttributeInfo(tag, attr, targetDiv) {
 	var oReq = new XMLHttpRequest(),
 	url = "php/getAttrInfo.php?tag="+tag+"&attrib="+attr;
 	/*
@@ -521,7 +547,7 @@ function getAttributeInfo(tag, attr) {
 //	oReq.responseType = "arraybuffer";
 
 	oReq.open("GET", url, true);
-	tDiv = $("inforight");
+	tDiv = $(targetDiv || "inforight");
 	tDiv.textContent = "";
 	tDiv.style.overflow = "hidden";
 	cylon = document.createElement("DIV");

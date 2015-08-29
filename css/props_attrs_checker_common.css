@@ -59,6 +59,14 @@ ul li {
 	-webkit-filter: none;
 	filter: none;
 }
+#panel p {
+	margin-right: 0em;
+	font-family: "Open Sans", sans-serif, arial;
+}
+#panel p em {
+	margin-left:3em;
+	font-size: 0.8em;
+}
 table.stats {
 	width:100%;
 	background:none;
@@ -142,7 +150,6 @@ td strong {
 	width:31%;
 	float:left;
 	left: 0px;
-	font-family: Calibri, Lato, sans-serif, Arial;
 	color:#339;
 }
 #infoleft span {
@@ -152,7 +159,6 @@ td strong {
 	text-decoration:none;
 /*	border-bottom:dotted 1px #600; 	*/
 	color: #600;
-	font-weight:bold;
 	background-color: #fee;
 	margin-right: 0.3em;
 	padding: 0.12em 0.25em;
@@ -164,6 +170,7 @@ td strong {
 #infoleft p {
 	margin-right: 0em;
 	margin-top: 0em;
+	font-family: Caibri, Lato, sans-serif, Arial!important;
 }
 #infoleft span a.elmlink {
 /*	border-bottom:dotted 1px #339;	*/
@@ -172,6 +179,7 @@ td strong {
 	margin-right: 0.6em;
 	border-color: #339;
 	border-style:solid;
+	font-weight:bold;
 }
 span.statswitchlink {
 	display: inline-block;
