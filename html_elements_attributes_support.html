@@ -65,7 +65,7 @@ if($("old"))$("old").disabled=true;
 // initialise the stats collection object
 window.elementStats={
 	ua:navigator.userAgent,
-	baseua: baseUA(),
+	baseua: Browser.base,
 	timestamp: Date.now(),
 	data: []
 };
@@ -84,7 +84,7 @@ function getNativeTagSupport(label, tagString) {
 	noStandAttrs=[];
 	otherAttrs=[];
 	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
-	thisUA = baseUA();
+	thisUA = Browser.base;
 	lookupObj = updateObj(thisUA) || nativeTypes.Base;
 	var html = "<a name=\""+testName+"\" id=\""+testName+"\"></a><h3>"+label+"</h3>\n<table class=\"elems\">\n";
 	tagArr.forEach(function(el){
@@ -369,7 +369,7 @@ function showPanel(pType) {
 var lastDetailClick = null;
 
 function insertStatsContent(statsObj) {
-	thisb = baseUA();
+	thisb = Browser.base;
 	oStats = statsObj || elementStats;
 	div = $('panel');
 	div.innerHTML="";

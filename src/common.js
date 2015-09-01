@@ -6,7 +6,7 @@ if (!String.dasherize) Object.defineProperty(String.prototype, "dasherize", {
 		return this.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
 		   .replace(/([a-z\d])([A-Z])/g, '$1-$2')
 		   // added this line for css vendor-specific attributes
-		   .replace(/^(apple|Apple|Wap|wap|Moz|moz|Ms|ms|WebKit|Webkit|webkit|O)(.*?$)/g, '-$1$2')
+		   .replace(/^(apple|Apple|Wap|wap|moz|Ms|ms|WebKit|Webkit|webkit|O)(.*?$)/g, '-$1$2')
 		   .toLowerCase();
 	}
 });
@@ -20,6 +20,15 @@ if (!String.camelize) Object.defineProperty(String.prototype, "camelize", {
 		return thisStr.replace(/-+(.)?/g, function(match, chr) {
 			return chr ? chr.toUpperCase() : '';
 		});
+	}
+});
+
+if (!String.trimSpace) Object.defineProperty(String.prototype, "trimSpace", {
+	enumerable: false,
+	writable: true,
+	value: function() {
+		thisStr = String(this);
+		return thisStr.replace(/^\s|\s$/gm, '');
 	}
 });
 
@@ -63,6 +72,7 @@ function viewport() {
 }
 
 // browser detection
+// need to check specs for iOS devices for accuracy in this programme
 var Browser = {
 	ua: navigator.userAgent,
 	Mobile: /mobi/i.test(this.ua),
@@ -75,21 +85,22 @@ var Browser = {
 // At least Safari 3+: "[object HTMLElementConstructor]"
 	Safari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
 //	SafariMobile: this.Mobile && this.Safari,
-	Webkit: !!/webkit/i.test(this.ua) // || (this.Safari || this.Chrome)
+//	Webkit: !!/webkit/i.test(this.ua) // || (this.Safari || this.Chrome)
 };
 
+Browser.Webkit = /webkit/i.test(Browser.ua)
 Browser.SafariMobile = Browser.Safari && Browser.Mobile;
 Browser.Chrome = !!window.chrome && !Browser.Opera; 
 Browser.Opera = !!window.opera || Browser.ua.indexOf(' OPR/') >= 0
 Browser.base = baseUA();
 Browser.cookies = navigator.cookieEnabled;
 Browser.online = navigator.onLine;
-Browser.platform = navigator.platform;
+Browser.OS = navigator.platform;
 
 Browser.version = uaVersion(Browser.ua);
 //	Browser.version = (!!Browser.Safari || !!Browser.Opera) ? Browser.ua.match(/Version\/([\.0-9]+)\s/)[1] : !!Browser.Chrome ? Browser.ua.match(/Chrome\/([\.0-9]+)\s/)[1]  : !!Browser.Firefox ? Browser.ua.match(/Firefox\/([\.0-9]+)/)[1]  : !!Browser.IE ? Browser.ua.match(/ rv\:([\.0-9]+)\)/)[1]  : "version undetected";
 function uaVersion(ua, baseua) {
-	_baseua = baseua || baseUA();
+	_baseua = baseua || Browser.base;
 	return _baseua=="Safari" ? ua.match(/Version\/([\.0-9]+)\s/)[1] :
 				_baseua=="Opera" ? ua.match(/Version\/([\.0-9]+)$/)[1] :
 				_baseua=="Chrome" ? ua.match(/Chrome\/([\.0-9]+)/)[1]  :
@@ -97,7 +108,7 @@ function uaVersion(ua, baseua) {
 				_baseua=="IE" ? ua.match(/ rv\:([\.0-9]+).*?$/)[1]  :
 				"version undetected";
 }
-// return an object of matches
+// return an object of non-false browser features
 function browserObj() {
 	tmpObj = {};
 	for (b in Browser) {
@@ -115,10 +126,8 @@ function baseUA() {
 	tmpArr = [];
 	for (b in Browser) {
 		// only base types accepted
-		if (Browser[b] && !/Webkit|Mobile|FirefoxOS|ua|version|base|cookies|online|platform/.test(b)) { //  && !in_array(b, tmpArr)
+		if (Browser[b] && !/Webkit|Mobile|FirefoxOS|SafariMobile|ua|version|base|cookies|online|OS/.test(b)) { //  && !in_array(b, tmpArr)
 			tmpArr.push(b);
-//		if (Browser[b] && /Webkit|Mobile|FirefoxOS/.test(b)!==true) {
-//			return b;
 		}
 	}
 	// should be only one entry ...
@@ -139,7 +148,7 @@ function switchStyles() {
 function setDivPosition(div) {
 	var s = $(div || 'panel');
 	if (s) {
-		s.style.left = (((viewport().width-parseInt(getStyle(s, "width").replace("px", ""))) / 2)-32)+'px'; //
-		s.style.top = (((viewport().height-parseInt(getStyle(s, "height").replace("px", ""))) / 2)-16)+'px'; // 
+		s.style.left = (((viewport().width-parseInt(getStyle(s, "width").replace("px", "")))/2)-32)+'px';
+		s.style.top = (((viewport().height-parseInt(getStyle(s, "height").replace("px", "")))/2)-16)+'px';
 	}
 }

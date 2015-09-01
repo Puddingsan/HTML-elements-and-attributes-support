@@ -162,7 +162,7 @@ attribsMap = {
 	archive: [null, "applet object"], // null, Use the data and type attributes to invoke plugins. To set parameters with these names in particular, the param element can be used
 	async: ["script"], //Indicates that the script should be executed asynchronously.
 	autobuffer: [null, "audio video"], //	, "video"
-//	autocapitalize: ["form input textarea"], // safari moile only, Chrome detected aug 2015
+//	autocapitalize: ["form input textarea"], // safari mobile only, Chrome detected aug 2015
 	autocomplete: ["form input textarea"], //	Indicates whether controls in this form can by default have their values automatically completed by the browser.
 //	autocorrect: ["input"], // safari
 	autofocus: ["button input keygen select textarea"], //	The element should be automatically focused after the page loaded.
@@ -671,13 +671,14 @@ function getProperties(tagName) {
 	return [propSupp, propDepr];
 }
 
-
+// irregular namesU
 var propNamesExpand={
 	ch:"char",
 	chOff:"charoff",
 	className:"class",
 	dataset: "data-*",
-	htmlFor:"for"
+	htmlFor:"for",
+	mozOpaque: "moz-opaque" // no trailing slash at beginning
 }
 
 var newInputTypes = "color date datetime datetime-local email month number range search tel time url week".split(" ");
