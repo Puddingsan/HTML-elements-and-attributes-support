@@ -32,6 +32,28 @@ if (!String.trimSpace) Object.defineProperty(String.prototype, "trimSpace", {
 	}
 });
 
+if (!String.jsStyleToCss) Object.defineProperty(String.prototype, "jsStyleToCss", {
+	enumerable: false,
+	writable: true,
+	value: function() {
+		/*
+		thisStr = String(this);
+		endArr = [];
+		thisArr = thisStr.split(/[A-Z]/g);
+		thisArr.forEach(function(st){
+			endArr.push(/[A-Z]/.test(st.charAt(0)) ? "-"+st.toLowerCase() : st);
+		});
+		return endArr.join('');
+	*/
+		thisStr = String(this);
+		return thisStr.replace(/([A-Z])/g, '-$1')
+//		   .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+		   // added this line for css vendor-specific attributes
+		   .replace(/^(apple|Apple|Wap|wap|moz|Ms|ms|WebKit|Webkit|webkit|O|o-)(.*?$)/g, '-$1$2')
+		   .toLowerCase();
+	}
+});
+
 function $(id) {
 	return document.getElementById(id);
 }
@@ -75,7 +97,6 @@ function viewport() {
 // need to check specs for iOS devices for accuracy in this programme
 var Browser = {
 	ua: navigator.userAgent,
-	Mobile: /mobi/i.test(this.ua),
  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
 //	Opera: !!window.opera || this.ua.indexOf(' OPR/') >= 0,
 //	Chrome: !!window.chrome && !this.Opera,             // Chrome 1+
@@ -88,7 +109,8 @@ var Browser = {
 //	Webkit: !!/webkit/i.test(this.ua) // || (this.Safari || this.Chrome)
 };
 
-Browser.Webkit = /webkit/i.test(Browser.ua)
+Browser.Mobile = /mobi/i.test(Browser.ua);
+Browser.Webkit = /webkit/i.test(Browser.ua);
 Browser.SafariMobile = Browser.Safari && Browser.Mobile;
 Browser.Chrome = !!window.chrome && !Browser.Opera; 
 Browser.Opera = !!window.opera || Browser.ua.indexOf(' OPR/') >= 0

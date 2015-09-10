@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>HTML elements and attributes stats dump</title>
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<script type="text/javascript" src="src/common.js"> </script>
+<script type="text/javascript" src="src/elemsAttribsData.js"> </script>
+<script>
+// stylesheet  switchung
+if($("old"))$("old").disabled=true;
+
+// console.log("baseUA: ", baseUA());
+console.log(Browser);
+
+window.elementStats={
+	ua:navigator.userAgent,
+	baseua: Browser.base,
+	timestamp: Date.now(),
+	data: []
+};
+// main function
+function getNativeTagSupport(label, tagString) {
+	unsupported=[];
+	testName = label.replace(/\s/g, "");
+	tagArr = tagString.split(" ");
+	numTags = tagArr.length;
+	badTagsArr = [];
+	numElemProps = 0;
+	unSuppArr = [];
+	vendAttrs=[],
+	noStandAttrs=[];
+	otherAttrs=[];
+//	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
+	thisUA = Browser.base;
+	lookupObj = updateObj(thisUA) || nativeTypes.Base;
+	var html = "<a name=\""+testName+"\" id=\""+testName+"\"></a><h3>"+label+"</h3>\n<table class=\"elems\">\n";
+	tagArr.forEach(function(el){
+		window.tempElem = document.createElement(el);
+//		console.log(instanceof window.tempElem);
+		actualElemStr = ({}).toString.call(window.tempElem).replace("[object ", "").replace("]", "");
+		dynElemStr = "HTML"+((el in lookupObj) ? lookupObj[el] : el.charAt(0).toUpperCase()+el.substring(1))+"Element";
+		// not supported
+		dataClass = !!(actualElemStr !== "HTMLUnknownElement");
+		// non-specific functions that use the parent (HTMLElement) and iE-specific groups (Phrase|Block|Span)
+		if ((Browser.IE ? (actualElemStr.match(/(Phrase|Block|Span)/) || actualElemStr==="HTMLElement" && lookupObj[el]!=="") : actualElemStr==="HTMLElement" && lookupObj[el]!=="")) dataClass = "nonspecific";
+		propsText = "";
+		morePropsText = "";
+		elemProps = getProperties(el);
+		propsDepr = elemProps[1];
+		propsArr = [];
+		elemProps.forEach(function(c) {
+			c.forEach(function(d){
+				if (!in_array(d, propsArr)) propsArr.push(d); // .toLowerCase()
+			});
+		});
+		//bad element if non-standard and has attributes
+		// collect stats
+		numElemProps += propsArr.length;
+		if (dataClass===false) {
+			badTagsArr.push({elm:el});
+		}
+		else if (propsArr.length>0 && (dataClass=="nonspecific" || actualElemStr=="HTMLUnknownElement")) {
+			badTagsArr.push({elm:el});
+			propsArr.forEach(function(bad){
+//				unSuppArr.push({elm:el, attr:bad});
+				unsupported.push({elm:el, attr:bad});
+			});
+//			unSuppArr = unSuppArr.concat(propsArr);
+		}
+		propsArr.sort();
+		propsArr.forEach(function(g){
+			titleTexts = [];
+			tagAttrClasses = [];
+			// detect unsupported but current attributes
+			if (!(g in window.tempElem) &&
+				!in_array(g, propsDepr) &&
+				(!(g in attribsObsolete)) &&
+				(!(g in html5attribsDepr)) &&
+				actualElemStr!=="HTMLUnknownElement" && // has no attributes
+				actualElemStr!=="HTMLElement" && //  has no attributes
+				!in_array({elm:el, attr:g}, unsupported)
+			
+			) {
+				unsupported.push({elm:el, attr:g});
+			}
+			// deprecated arrs
+			if (in_array(g, propsDepr) && g in window.tempElem) {
+				//
+//				titleTexts.push("supported but deprecated"+(html5attribsDepr[g] && typeof html5attribsDepr[g][1]=="string" ? " since HTML "+html5attribsDepr[g][1] : ""));
+			}
+			// required
+			if (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) {
+				//
+			}
+			// html5
+			if (wordInString(el, html5attribs[g])) // titleTexts.push("new in HTML5");
+			// obsolete
+			if (g in window.tempElem && g in attribsObsolete && wordInString(el, attribsObsolete[g][0])) {
+				//
+			}
+		});
+		//
+		// not element-specific attributes: global, non-standardized and vendor-specific, exclude false positives
+		otherProps = [];
+		for (p in window.tempElem) {
+			if (
+			p in attribsMap &&
+			!in_array(p, otherProps) &&
+			!in_array(p, propsArr) &&
+			wordInString(el, attribsFalsePositives[p])===false &&
+			p!=="toString" 
+			/*			&&
+		    p.indexOf("_")<0 &&
+			!p.match(/^(on|insert|create|delete|remove)/)
+			*/
+			) 
+			 otherProps.push(p);
+//			 if (wordInString(el, attribsFalsePositives[p])) console.log("false positive found for "+el+" attribute "+p);
+			// non-standard and vendor-specific
+			 if (p in attribsNonStandard &&
+			 !in_array(p, otherProps) &&
+			 wordInString(el, attribsNonStandard[p][0]) &&
+			 (typeof attribsNonStandard[p][1]=="string" ? !!Browser[uaName[attribsNonStandard[p][1]]] : !attribsNonStandard[p][1])
+			 ) otherProps.push(p);
+			 
+//			 microdata
+//			 if (in_array(p, microdataAttribs)) otherProps.push(p);
+		}		
+		otherProps.sort();
+//		console.log(el+": ", otherProps);
+		// add some conditional globals for IE
+		if (Browser.IE) {
+			if (lookupObj[el]=="Phrase") globalAttribsStr+=" cite dateTime";
+			else if (lookupObj[el]=="Block") globalAttribsStr+=" clear width";
+		}
+		globalAttribs = globalAttribsStr.split(" ");
+		if (Browser.IE) globalAttribs.sort();
+		otherProps.forEach(function(pr) {
+			if (pr in attribsNonStandard && wordInString(el, attribsNonStandard[pr][0])) {
+				if (!!attribsNonStandard[pr][1]) {
+					vendAttrs.push({elm:el, attr:pr, vend:uaName[attribsNonStandard[pr][1]]});
+				} else {
+					noStandAttrs.push({elm:el, attr:pr});
+				}
+			}
+			if (!in_array(pr, globalAttribs) && typeof attribsNonStandard[pr]=="undefined") {
+				otherAttrs.push({elm:el, attr:pr});
+			}
+		});
+		delete window.tempElem;
+	});
+	unsuppObj={};
+	// sort by tag
+	unsupported.forEach(function(un) {
+		if (!(un.elm in unsuppObj)) unsuppObj[un.elm] = [];
+		unsuppObj[un.elm].push(propName(un.attr));
+	});
+	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
+}
+
+function propName(pn, el) {
+	return (pn in propNamesExpand ? propNamesExpand[pn] : in_array(pn, attribsToKebabCase) ? pn.dasherize() : pn.toLowerCase())+(el && (wordInString(el, html5attribs[pn])) ? " <span class=\"bld\">5</span>" : "");
+}
+
+/// build the page
+
+getNativeTagSupport("Standard tags", stdTags);
+getNativeTagSupport("Deprecated tags", deprTags);
+getNativeTagSupport("HTML5 tags", html5tags);
+getNativeTagSupport("HTML5 semantic tags", html5semantics);
+getNativeTagSupport("Web Components", webComponents);
+//	getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
+
+// dump stats, add email link
+bodyText = "UA string:%0A%0A"+navigator.userAgent+"%0A%0AData:%0A%0A"+encodeURIComponent(JSON.stringify(elementStats));
+bTypes = [];
+for (b in browserObj()) if (/^[A-Z]/.test(b)) bTypes.push(b);
+bStr = bTypes.join(",%20");
+//
+document.write('<h1>Is this browser up to date?</h1><div>'+JSON.stringify(elementStats)+'</div><p>Email these results by clicking <a href="mailto:nick@innovaweb.co.uk?subject=element%20stats%20('+bStr+')&body='+bodyText+'" target="_blank">here</a></p>');
+</script>
+
+</body>
+</html>

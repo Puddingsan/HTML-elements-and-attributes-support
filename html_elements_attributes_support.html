@@ -64,7 +64,7 @@ if($("old"))$("old").disabled=true;
 //	console.log(browserObj());
 // initialise the stats collection object
 window.elementStats={
-	ua:navigator.userAgent,
+	ua: Browser.ua,
 	baseua: Browser.base,
 	timestamp: Date.now(),
 	data: []
@@ -221,7 +221,7 @@ function getNativeTagSupport(label, tagString) {
 	// sort by tag
 	unsupported.forEach(function(un) {
 		if (!(un.elm in unsuppObj)) unsuppObj[un.elm] = [];
-		unsuppObj[un.elm].push(propName(un.attr));
+		unsuppObj[un.elm].push('<strong>'+propName(un.attr)+'</strong>');
 	});
 	for (ob in unsuppObj) {
 		// grammar nazi code :-)
@@ -375,7 +375,7 @@ function insertStatsContent(statsObj) {
 	div.innerHTML="";
 	panelTxt ='<p><strong>Support summary</strong>';
 	["Firefox", "Chrome", "Safari", "IE", "Opera"].forEach(function(bs){
-		panelTxt += '<span title="'+browserStats[bs].baseua+' '+uaVersion(browserStats[bs].ua, browserStats[bs].baseua)+'" class="statswitchlink'+(((bs==thisb && oStats===elementStats) || (oStats.baseua && oStats.baseua==bs)) ? " native" : "")+(bs==thisb ? " localbr" : "")+'" onclick="insertStatsContent(browserStats.'+bs+')">'+bs+'</span>';
+		panelTxt += '<span title="'+browserStats[bs].baseua+' '+((bs==thisb && oStats===elementStats) ? Browser.version : uaVersion(browserStats[bs].ua, browserStats[bs].baseua))+'" class="statswitchlink'+(((bs==thisb && oStats===elementStats) || (oStats.baseua && oStats.baseua==bs)) ? " native" : "")+(bs==thisb ? " localbr" : "")+(" "+bs.toLowerCase())+'" onclick="insertStatsContent(browserStats.'+bs+')">'+bs+'</span>';
 	});
 	panelTxt += ' <em>snapshot taken on '+(""+new Date(oStats.timestamp)).substring(0, 25)+((""+new Date(oStats.timestamp)).substring(25, 33)=="GMT+0100" ? "BST" : (""+new Date(oStats.timestamp)).substring(25, 27))+'</em>';
 	panelTxt += "</p>\n"+

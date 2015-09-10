@@ -20,6 +20,9 @@ ul li {
 	margin:0.3em;
 }
 #navinfo p strong {
+	color:#246;
+}
+#navinfo p strong:first-child {
 	color:#600;
 }
 #navinfo  p:nth-child(odd) {
@@ -46,7 +49,7 @@ ul li {
 /*	position:fixed;*/
 	background-color :#fffff6;
 	outline: solid 1px #999;
-	width: 60em;
+	width: 63em;
 	margin: 0 auto;
 	top: 2em;
 	left: 2em;
@@ -191,9 +194,29 @@ span.statswitchlink {
 	margin-left: 1.25em;
 	border: solid 1px #246;
 	color: #246;
-	background-color: #f6f6ff;
 	cursor:pointer;
 	letter-spacing: 0.075em;
+	padding-right:20px;
+	/*
+	background-color: #f6f6ff;
+	background-image: none no-repeat right center;
+	*/
+	background: #f6f6ff none no-repeat 97% center;
+}
+span.statswitchlink.chrome {
+	background-image: url(../img/chrome_16x16.png);
+}
+span.statswitchlink.firefox {
+	background-image: url(../img/firefox_16x16.png);
+}
+span.statswitchlink.ie {
+	background-image: url(../img/ie_16x16.png);
+}
+span.statswitchlink.safari {
+	background-image: url(../img/safari_16x16.png);
+}
+span.statswitchlink.opera {
+	background-image: url(../img/opera_16x16.png);
 }
 span.statswitchlink.native {
 	color: #662;
