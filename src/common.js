@@ -76,7 +76,7 @@ function in_array(needle, haystack) {
 
 function wordInString(needle, haystack, flags) {
 	reFlags=flags|| 'i';
-	// using booean true to pass the test (universally supported)
+	// using boolean true to pass the test (universally supported)
 	return haystack===true || (typeof haystack=="string" && (new RegExp('(^|\\s)'+needle+'(\\s|$)', reFlags)).test(haystack));
 }
 

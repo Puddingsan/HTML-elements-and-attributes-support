@@ -18,7 +18,8 @@ if($("old"))$("old").disabled=true;
 console.log(Browser);
 
 window.elementStats={
-	ua:navigator.userAgent,
+	os: Browser.OS,
+	ua: Browser.ua,
 	baseua: Browser.base,
 	timestamp: Date.now(),
 	data: []
@@ -33,7 +34,7 @@ function getNativeTagSupport(label, tagString) {
 	numElemProps = 0;
 	unSuppArr = [];
 	vendAttrs=[],
-	noStandAttrs=[];
+	nonStandAttrs=[];
 	otherAttrs=[];
 //	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
 	thisUA = Browser.base;
@@ -90,8 +91,6 @@ function getNativeTagSupport(label, tagString) {
 			}
 			// deprecated arrs
 			if (in_array(g, propsDepr) && g in window.tempElem) {
-				//
-//				titleTexts.push("supported but deprecated"+(html5attribsDepr[g] && typeof html5attribsDepr[g][1]=="string" ? " since HTML "+html5attribsDepr[g][1] : ""));
 			}
 			// required
 			if (!!requiredAttrMap[el] && wordInString(g, requiredAttrMap[el])) {
@@ -145,7 +144,7 @@ function getNativeTagSupport(label, tagString) {
 				if (!!attribsNonStandard[pr][1]) {
 					vendAttrs.push({elm:el, attr:pr, vend:uaName[attribsNonStandard[pr][1]]});
 				} else {
-					noStandAttrs.push({elm:el, attr:pr});
+					nonStandAttrs.push({elm:el, attr:pr});
 				}
 			}
 			if (!in_array(pr, globalAttribs) && typeof attribsNonStandard[pr]=="undefined") {
@@ -160,7 +159,72 @@ function getNativeTagSupport(label, tagString) {
 		if (!(un.elm in unsuppObj)) unsuppObj[un.elm] = [];
 		unsuppObj[un.elm].push(propName(un.attr));
 	});
-	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
+	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:nonStandAttrs, otherattrs:otherAttrs});
+}
+
+
+function showNewInputTypes(label, typesArr) {
+	testName = label.replace(/\s/g, "");
+//	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+typesArr.length+")</a></h4>");
+//	var html = "<a name=\""+testName+"\" id=\""+testName+"\" /><h3>"+label+"</h3>\n<table class=\"elems\">\n",
+// best approach is set pattern attribute for matches on false positives ? (but need to rely on UA capabilities for true checking)
+//	inputPatterns = "[\#+[A-Za-z0-9]{6} [0-9\:] ".split(" "),
+	tmpTxt = ":(";
+	typesArr.forEach(function(type) {
+		// borrowed from Mike Taylor
+		var tmpTag = document.createElement("INPUT");
+		document.body.appendChild(tmpTag);
+		tmpTag.setAttribute("type", type);
+		tmpTag.setAttribute("id", type);
+//		tmpTag.value = tmpTxt;
+		tmpTag.setAttribute("value", tmpTxt);
+		// use universal regexp for tel?
+//		if (type=="tel") tmpTag.setAttribute("pattern", "[\+0-9\s\-]");
+//		console.log(type+": "+tmpTxt+" same as "+$(type).value+" ? "+!!(tmpTxt == $(type).value));
+//		if (tmpTxt == $(type).value) console.log("\tvalue is valid ? "+(!!tmpTag.validity ? tmpTag.validity.valid : " validation not supported"));
+		// tel gets a pass at the moment
+		// search accepts any input
+		// do Mike Taylor's check first, then use the constraint vaidation API, otherwise bye bye
+		inputSupported = (type.match(/^(tel|search)$/) || (tmpTxt !== $(type).value) ? true : (tmpTag.validity && !tmpTag.validity.valid)) ? true : false;
+		// safari gives a false positive for color, so .....
+		if (Browser.Safari) {
+			if (type=="color" && tmpTxt==$(type).value) inputSupported = false;
+		}
+		// supported attributes
+		attrs = [];
+		for (var a in inputAttribs) {
+			if (typeof inputAttribs[a][0]=="string" && wordInString(type, inputAttribs[a][0]) && (typeof inputAttribs[a][1] == "undefined" || (typeof inputAttribs[a][1] == "string" ? !!Browser[uaName[inputAttribs[a][1]]] : true)))  attrs.push(a); 
+			 
+		}
+		attrs.sort();
+		attrsText = "";
+		attrs.forEach(function(atr) {
+			titleTexts = [];
+			if (wordInString("string", html5attribs[atr])) titleTexts.push("This property is new in HTML5");
+			allTitles = titleTexts.length>0 ? titleTexts.join("\n") : null;
+			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
+			attrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+"\""+titleText+">"+propName(atr, "input")+"</span>"; 
+		});
+		// global attributes
+		globAttrs = [];
+		for (var b in inputAttribsGlobal) {
+			if (inputAttribsGlobal[b]==true || (typeof inputAttribsGlobal[b] == "string" ? !!Browser[uaName[inputAttribsGlobal[b]]] : !inputAttribsGlobal[b]))  globAttrs.push(b); 
+		}
+		globAttrs.sort();
+		globAttrsText = "";
+		globAttrs.forEach(function(atr) {
+			globAttrsTitleTexts = [];
+			if (wordInString("input", html5attribs[atr])) globAttrsTitleTexts.push("This property is new in HTML5");
+			allTitles = globAttrsTitleTexts.length>0 ? globAttrsTitleTexts.join("\n") : null;
+			titleText = allTitles==null ? "" :  " title=\""+allTitles+"\"";
+			globAttrsText += "<span class=\"prop"+(atr in tmpTag ? "good" : "bad")+" global\""+titleText+">"+propName(atr, "input")+"</span>"; 
+		});
+		html += "<tr class=\""+inputSupported+"\"><td>&lt;input type=\""+type+"\"&gt;</td><td><span class=\""+inputSupported+"\"></span></td><td class=\"info\"><input type=\""+type+"\" /></td><td class=\"propscell\">"+attrsText+"</td><td class=\"altpropscell\">"+globAttrsText+"</td></tr>\n"; 
+		tmpTag.parentNode.removeChild(tmpTag);
+		delete window.tmpTag;
+	});
+	html += "</table>\n";
+	document.body.insertAdjacentHTML("beforeend", html);
 }
 
 function propName(pn, el) {
@@ -177,7 +241,7 @@ getNativeTagSupport("Web Components", webComponents);
 //	getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
 
 // dump stats, add email link
-bodyText = "UA string:%0A%0A"+navigator.userAgent+"%0A%0AData:%0A%0A"+encodeURIComponent(JSON.stringify(elementStats));
+bodyText = "UA string:%0A%0A"+Browser.ua+"%0A%0AData:%0A%0A"+encodeURIComponent(JSON.stringify(elementStats));
 bTypes = [];
 for (b in browserObj()) if (/^[A-Z]/.test(b)) bTypes.push(b);
 bStr = bTypes.join(",%20");

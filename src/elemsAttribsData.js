@@ -671,7 +671,7 @@ function getProperties(tagName) {
 	return [propSupp, propDepr];
 }
 
-// irregular namesU
+// irregular names
 var propNamesExpand={
 	ch:"char",
 	chOff:"charoff",

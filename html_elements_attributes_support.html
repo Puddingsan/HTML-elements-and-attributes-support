@@ -60,15 +60,26 @@
 <script>
 // stylesheet  switchung
 if($("old"))$("old").disabled=true;
-
+// order of displayed results
+var browserArr = ["Firefox", "Chrome", "Safari", "IE", "Opera"];
 //	console.log(browserObj());
 // initialise the stats collection object
 window.elementStats={
+	os: Browser.OS,
 	ua: Browser.ua,
 	baseua: Browser.base,
 	timestamp: Date.now(),
 	data: []
 };
+// prepare to check if current browser differs from stored stats in some way ... notify in stats panel (?)
+// check against user agent
+uaArr = [];
+for (ba in browserStats) {
+	uaArr.push(browserStats[ba]["ua"]);
+}
+// flag if no matching ua, will be false if matches stored stats, true if not
+browserNoMatch = !in_array(Browser.ua, uaArr);
+if (browserNoMatch) console.log('browser not matched to stored data');
 // remember selected stats for comparison
 var selectedStats = null;
 // main function
@@ -81,7 +92,7 @@ function getNativeTagSupport(label, tagString) {
 	numElemProps = 0;
 	unSuppArr = [];
 	vendAttrs=[],
-	noStandAttrs=[];
+	nonStandAttrs=[];
 	otherAttrs=[];
 	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
 	thisUA = Browser.base;
@@ -162,19 +173,21 @@ function getNativeTagSupport(label, tagString) {
 		otherProps = [];
 		for (p in window.tempElem) {
 			if (
-			p in attribsMap &&
-			!in_array(p, otherProps) &&
-			!in_array(p, propsArr) &&
-			wordInString(el, attribsFalsePositives[p])===false &&
-			p!=="toString" 
+				p in attribsMap &&
+				!in_array(p, otherProps) &&
+				!in_array(p, propsArr) &&
+				wordInString(el, attribsFalsePositives[p])===false &&
+				p!=="toString" 
 			) 
 			 otherProps.push(p);
 			// non-standard and vendor-specific
-			 if (p in attribsNonStandard &&
-			 !in_array(p, otherProps) &&
-			 wordInString(el, attribsNonStandard[p][0]) &&
-			 (typeof attribsNonStandard[p][1]=="string" ? !!Browser[uaName[attribsNonStandard[p][1]]] : !attribsNonStandard[p][1])
-			 ) otherProps.push(p);
+			 if (
+				 p in attribsNonStandard &&
+				 !in_array(p, otherProps) &&
+				 wordInString(el, attribsNonStandard[p][0]) &&
+				 (typeof attribsNonStandard[p][1]=="string" ? !!Browser[uaName[attribsNonStandard[p][1]]] : !attribsNonStandard[p][1])
+			 ) 
+			 otherProps.push(p);
 			 
 //			 microdata
 //			 if (in_array(p, microdataAttribs)) otherProps.push(p);
@@ -195,7 +208,7 @@ function getNativeTagSupport(label, tagString) {
 				if (!!attribsNonStandard[pr][1]) {
 					vendAttrs.push({elm:el, attr:pr, vend:uaName[attribsNonStandard[pr][1]]});
 				} else {
-					noStandAttrs.push({elm:el, attr:pr});
+					nonStandAttrs.push({elm:el, attr:pr});
 				}
 			}
 			if (wordInString(el, html5attribs[pr])) otherTitleTexts.push("new in HTML5");
@@ -235,7 +248,7 @@ function getNativeTagSupport(label, tagString) {
 	}
 	document.querySelector("#navinfo").insertAdjacentHTML("beforeend", unsuppTxt);
 	// stats collection
-	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs});
+	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:nonStandAttrs, otherattrs:otherAttrs});
 }
 
 function propName(pn, el) {
@@ -336,6 +349,7 @@ $("search").addEventListener("input", function(e) {
 });
 
 function showPanel(pType) {
+	args = arguments;
 	// make panels
 	if (!$('overlay')) {
 		["overlay", "panel"].forEach(function(elm){
@@ -350,9 +364,9 @@ function showPanel(pType) {
 					// stats content
 					case "stats" :
 						insertStatsContent();
-//						div.draggable=true;
-//						div.ondragstart = function(){div.style.position='absolute'};
-//						div.ondragend = function(){div.style.position='fixed'};
+					break;
+					case "info" :
+						insertInfoContent(args);
 					break;
 				}
 				setDivPosition(elm);
@@ -374,13 +388,13 @@ function insertStatsContent(statsObj) {
 	div = $('panel');
 	div.innerHTML="";
 	panelTxt ='<p><strong>Support summary</strong>';
-	["Firefox", "Chrome", "Safari", "IE", "Opera"].forEach(function(bs){
+	browserArr.forEach(function(bs){
 		panelTxt += '<span title="'+browserStats[bs].baseua+' '+((bs==thisb && oStats===elementStats) ? Browser.version : uaVersion(browserStats[bs].ua, browserStats[bs].baseua))+'" class="statswitchlink'+(((bs==thisb && oStats===elementStats) || (oStats.baseua && oStats.baseua==bs)) ? " native" : "")+(bs==thisb ? " localbr" : "")+(" "+bs.toLowerCase())+'" onclick="insertStatsContent(browserStats.'+bs+')">'+bs+'</span>';
 	});
 	panelTxt += ' <em>snapshot taken on '+(""+new Date(oStats.timestamp)).substring(0, 25)+((""+new Date(oStats.timestamp)).substring(25, 33)=="GMT+0100" ? "BST" : (""+new Date(oStats.timestamp)).substring(25, 27))+'</em>';
 	panelTxt += "</p>\n"+
 	"<table class=\"stats\"><thead><tr><th>range type</th><th>elements</th><th>element attributes</th><th>vendor specific</th><th>non-standardized</th><th>other</th></tr></thead><tbody>";
-	// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:noStandAttrs, otherattrs:otherAttrs
+	// name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:nonStandAttrs, otherattrs:otherAttrs
 	totElms=0; totBadElms=0;totAttr=0;totBadAttr=0;totVendAttr=0;totNonStandAttr=0;totOtherAttr=0;
 	oStats.data.forEach(function(st){
 		totElms+=st.elms;
@@ -423,7 +437,7 @@ function insertStatsContent(statsObj) {
 			if (lastDetailClick.indexOf('badelmsattrs')>0) {
 				detailText = "Unsupported elements in "+bname;
 			} else if (lastDetailClick.indexOf('badattrs')>0) {
-				detailText = "Unsupported attributes in "+bname;
+				detailText = "Missing attributes in "+bname;
 			} else if (lastDetailClick.indexOf('vendattrs')>0) {
 				detailText = "Vendor-specific attributes found in "+bname;
 			} else if (lastDetailClick.indexOf('nonstandardattrs')>0) {
@@ -487,12 +501,6 @@ function insertStatsContent(statsObj) {
 				statsText += '</span>'+(hasAttrib ? '<br>' : '');
 			}
 			$('infoleft').insertAdjacentHTML("beforeend", statsText);
-	//			$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+'</a>'+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
-			/*
-			statsClicked.forEach(function(s) {
-				$('infoleft').insertAdjacentHTML("beforeend", '<span>&lt;<a class="elmlink" href="javascript:getElementInfo(\''+s.elm+'\')">'+s.elm+'</a>'+((!!s.attr && s.attr !== "null") ? ' <a href="javascript:getAttributeInfo(\''+s.elm+'\', \''+propName(s.attr, null)+'\')">'+propName(s.attr, null)+'</a>="value"' : '')+'&gt;'+(!!s.vend ? " ("+s.vend+")" : "")+'</span><br>');
-			});
-			*/
 		});
 	});
 	if ($(lastDetailClick)) $(lastDetailClick).click();
