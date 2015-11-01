@@ -94,7 +94,7 @@ function getNativeTagSupport(label, tagString) {
 	vendAttrs=[],
 	nonStandAttrs=[];
 	otherAttrs=[];
-	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
+	document.querySelector("#navlinks").inject("<h4><a href=\"#"+testName+"\">"+label+" ("+numTags+")</a></h4>");
 	thisUA = Browser.base;
 	lookupObj = updateObj(thisUA) || nativeTypes.Base;
 	var html = "<a name=\""+testName+"\" id=\""+testName+"\"></a><h3>"+label+"</h3>\n<table class=\"elems\">\n";
@@ -122,7 +122,9 @@ function getNativeTagSupport(label, tagString) {
 		if (dataClass===false) {
 			badTagsArr.push({elm:el});
 		}
-		else if (propsArr.length>0 && (dataClass=="nonspecific" || actualElemStr=="HTMLUnknownElement")) {
+		// fix this- need to check property vaidity (move further down?)
+//		else if (propsArr.length>0 && (dataClass=="nonspecific" || actualElemStr=="HTMLUnknownElement")) {
+		else if (propsArr.length>0 && (dataClass=="nonspecific" || actualElemStr=="HTMLUnknownElement")) { // propsDepr.length>0  &&
 			badTagsArr.push({elm:el});
 			propsArr.forEach(function(bad){
 				unsupported.push({elm:el, attr:bad});
@@ -227,26 +229,45 @@ function getNativeTagSupport(label, tagString) {
 		delete window.tempElem;
 	});
 	html += "</table>\n";
-	document.body.insertAdjacentHTML("beforeend", html);
+	inject(html);
 	// gather unsupported attrs and display in side panel
 	unsuppTxt = "";
 	unsuppObj={};
+	unsuppObjArr = [];
 	// sort by tag
-	unsupported.forEach(function(un) {
-		if (!(un.elm in unsuppObj)) unsuppObj[un.elm] = [];
-		unsuppObj[un.elm].push('<strong>'+propName(un.attr)+'</strong>');
+	unsupported.forEach(function(uns) {
+		if (!in_array(uns.elm, unsuppObjArr)) unsuppObjArr.push(uns.elm);
 	});
-	for (ob in unsuppObj) {
-		// grammar nazi code :-)
-		joinStr = unsuppObj[ob].length==2 ? " and " : ", ";
-		unsuppStr = unsuppObj[ob].join(joinStr);
-		if (unsuppObj[ob].length>2) {
-			idx = unsuppStr.lastIndexOf(joinStr);
-			unsuppStr = unsuppStr.substr(0, idx)+" and "+unsuppStr.substr(idx+2);
+	unsuppObjArr.sort();
+	console.log(unsuppObjArr);
+	unsuppObjArr.forEach(function(uoa) {
+		unsuppObj[uoa] = [];
+	});
+	// build properties array
+	unsupported.forEach(function(un) {
+		// exclude the deprecated set from results
+		if (!wordInString(un.elm, deprTags)) {
+//			if (!(un.elm in unsuppObj)) unsuppObj[un.elm] = [];
+			unsuppObj[un.elm].push('<strong>'+propName(un.attr)+'</strong>');
 		}
-		unsuppTxt += "<p><strong>&lt;"+ob+"&gt;</strong> is missing the "+unsuppStr+" attribute"+(unsuppObj[ob].length==1 ? "" : "s")+"</p>";
+	})
+	tt = false;
+	for (ob in unsuppObj) {
+		// only show elements with attributes
+		if (unsuppObj[ob].length>0) {
+			if (!tt)  unsuppTxt += "<p class=\"titlepara\"><strong >"+label+"</strong></p>";
+			tt = true;
+			// grammar nazi code :-)
+			joinStr = unsuppObj[ob].length==2 ? " and " : ", ";
+			unsuppStr = unsuppObj[ob].join(joinStr);
+			if (unsuppObj[ob].length>2) {
+				idx = unsuppStr.lastIndexOf(joinStr);
+				unsuppStr = unsuppStr.substr(0, idx)+" and "+unsuppStr.substr(idx+2);
+			}
+			unsuppTxt += "<p><strong>&lt;"+ob+"&gt;</strong> is missing the "+unsuppStr+" attribute"+(unsuppObj[ob].length==1 ? "" : "s")+"</p>";
+		}
 	}
-	document.querySelector("#navinfo").insertAdjacentHTML("beforeend", unsuppTxt);
+	document.querySelector("#navinfo").inject(unsuppTxt);
 	// stats collection
 	elementStats.data.push({name:label, elms:numTags, badelmsattrs:badTagsArr, attrs:numElemProps, badattrs:unsupported, vendattrs:vendAttrs, nonstandardattrs:nonStandAttrs, otherattrs:otherAttrs});
 }
@@ -257,7 +278,7 @@ function propName(pn, el) {
 
 function showNewInputTypes(label, typesArr) {
 	testName = label.replace(/\s/g, "");
-	document.querySelector("#navlinks").insertAdjacentHTML("beforeend", "<h4><a href=\"#"+testName+"\">"+label+" ("+typesArr.length+")</a></h4>");
+	document.querySelector("#navlinks").inject("<h4><a href=\"#"+testName+"\">"+label+" ("+typesArr.length+")</a></h4>");
 	var html = "<a name=\""+testName+"\" id=\""+testName+"\" /><h3>"+label+"</h3>\n<table class=\"elems\">\n",
 // best approach is set pattern attribute for matches on false positives ? (but need to rely on UA capabilities for true checking)
 //	inputPatterns = "[\#+[A-Za-z0-9]{6} [0-9\:] ".split(" "),
@@ -316,7 +337,7 @@ function showNewInputTypes(label, typesArr) {
 		delete window.tmpTag;
 	});
 	html += "</table>\n";
-	document.body.insertAdjacentHTML("beforeend", html);
+	document.body.inject(html);
 }
 
 /// build the page
@@ -327,7 +348,7 @@ getNativeTagSupport("Deprecated tags", deprTags);
 getNativeTagSupport("HTML5 tags", html5tags);
 getNativeTagSupport("HTML5 semantic tags", html5semantics);
 getNativeTagSupport("Web Components", webComponents);
-//	getNativeTagSupport("Custom selection", "applet audio bgsound embed input marquee object");
+//	getNativeTagSupport("Custom selection", "applet audio bgsound blink embed input marquee object source track video");
 
 // populate the datalist element child nodes
 var allTagsArr = [stdTags, deprTags, html5tags, html5semantics, webComponents].join(" ").split(" ");
@@ -421,7 +442,7 @@ function insertStatsContent(statsObj) {
 
 	// event listeners for details
 	// popuate the left info panel
-	div.insertAdjacentHTML("beforeend", panelTxt);
+	div.inject(panelTxt);
 	allDetailElems = ([]).slice.call(document.querySelectorAll('.detailslink'));
 	var statsClicked = null;
 	allDetailElems.forEach(function(det){
@@ -454,7 +475,7 @@ function insertStatsContent(statsObj) {
 			*/
 			detailText += ' for '+oStats.baseua+' '+uaVersion(oStats.ua, oStats.baseua)+"<br>\n"+'Click on a blue element name / red coloured attribute (if present) to view documentation here';
 //			$('inforight').textContent="Click on a blue element name / red coloured attribute (if present) to view documentation here";
-			$('inforight').insertAdjacentHTML("beforeend", detailText);
+			$('inforight').inject(detailText);
 			target = e.target || e.srcElement;
 			statsFound=false;
 			oStats.data.forEach(function(st){
@@ -481,7 +502,7 @@ function insertStatsContent(statsObj) {
 					datatype = "other attributes";
 				break;
 			}
-			$('infoleft').insertAdjacentHTML("beforeend", '<p><strong>'+oStats.baseua+' '+target.dataset.name+'</strong> ('+datatype+')</p>'); // .toLowerCase()
+			$('infoleft').inject('<p><strong>'+oStats.baseua+' '+target.dataset.name+'</strong> ('+datatype+')</p>'); // .toLowerCase()
 			
 			statsObj={};
 			// sort by tag
@@ -498,9 +519,10 @@ function insertStatsContent(statsObj) {
 					hasAttrib = true;
 					statsText += ' <a href="javascript:getAttributeInfo(\''+stat+'\', \''+propName(at[0], null)+'\')">'+propName(at[0], null)+(at[1] ? ' ('+at[1]+') ' : '')+'</a>';
 				});
-				statsText += '</span>'+(hasAttrib ? '<br>' : '');
+//				statsText += '</span>'+(hasAttrib ? '<br>' : '');
+				statsText += '</span><br>';
 			}
-			$('infoleft').insertAdjacentHTML("beforeend", statsText);
+			$('infoleft').inject(statsText);
 		});
 	});
 	if ($(lastDetailClick)) $(lastDetailClick).click();
